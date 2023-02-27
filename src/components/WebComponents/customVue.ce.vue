@@ -5,8 +5,11 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 
+interface Props {
+    name: string
+}
 defineProps<{
-    obj: any
+    obj: Props
 }>()
 </script>
 
