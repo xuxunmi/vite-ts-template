@@ -13,7 +13,7 @@ import vueSetupExtend from 'vite-plugin-vue-setup-extend'
 import AutoImport from 'unplugin-auto-import/vite'
 // PC端/移动端适配方案
 import postcssPxToViewport from 'postcss-px-to-viewport'
-// PWA离线存储技术
+// vite打包性能优化之PWA离线存储技术
 import { VitePWA } from 'vite-plugin-pwa'
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -29,7 +29,14 @@ export default defineConfig({
     // 静态资源服务的文件夹, 默认"public"
     publicDir: 'public',
     plugins: [
-        vue(),
+      vue({
+            // web components 模式使用,需要以 .ce.vue 结尾才会开启模式
+            template: {
+                compilerOptions: {
+                    isCustomElement: tag => tag.includes('custom-')
+                }
+            }
+        }),
         vueJsx(),
         legacy({
             targets: ['defaults', 'not IE 11']
