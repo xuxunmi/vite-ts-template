@@ -15,6 +15,9 @@ import AutoImport from 'unplugin-auto-import/vite'
 import postcssPxToViewport from 'postcss-px-to-viewport'
 // vite打包性能优化之PWA离线存储技术
 import { VitePWA } from 'vite-plugin-pwa'
+// Element Plus按需引入
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -29,7 +32,7 @@ export default defineConfig({
     // 静态资源服务的文件夹, 默认"public"
     publicDir: 'public',
     plugins: [
-      vue({
+        vue({
             // web components 模式使用,需要以 .ce.vue 结尾才会开启模式
             template: {
                 compilerOptions: {
@@ -44,7 +47,8 @@ export default defineConfig({
         vueSetupExtend(),
         AutoImport({
             imports: ['vue', 'vue-router'],
-            dts: 'src/auto-imports.d.ts'
+            dts: 'src/auto-imports.d.ts',
+            resolvers: [ElementPlusResolver()]
         }),
         VitePWA({
             manifest: false,
@@ -73,6 +77,9 @@ export default defineConfig({
                     }
                 ]
             }
+        }),
+        Components({
+            resolvers: [ElementPlusResolver()]
         })
     ],
     resolve: {

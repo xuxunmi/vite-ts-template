@@ -1,4 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+const Login = () => import('@/views/Login/index.vue')
+const Error = () => import('@/views/Error/404.vue')
 
 const routes: Array<RouteRecordRaw> = [
     // {
@@ -18,6 +20,23 @@ const routes: Array<RouteRecordRaw> = [
     //     // which is lazy-loaded when the route is visited.
     //     component: () => import('../views/AboutView.vue')
     // }
+    {
+        path: '/login',
+        name: 'login',
+        component: Login,
+        meta: {
+            title: '登录',
+            hidden: true
+        }
+    },
+    {
+        path: '/404',
+        component: Error,
+        meta: {
+            title: '404',
+            hidden: true
+        }
+    }
 ]
 
 const router = createRouter({
