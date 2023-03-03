@@ -6,3 +6,10 @@ declare module '*.vue' {
     const component: DefineComponent<{}, {}, any>
     export default component
 }
+
+interface ImportMetaEnv {
+    VITE_PORT: number
+    VITE_PUBLIC_PATH: string
+    VITE_PROXY_DOMAIN: string
+    VITE_PROXY_DOMAIN_REAL: string
+}

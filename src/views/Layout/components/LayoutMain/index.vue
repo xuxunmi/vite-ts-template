@@ -48,7 +48,7 @@ const init = () => {
             waterfallList.push(props.list[i])
         }
     }
-    console.log(props.list)
+    // console.log(props.list)
 }
 
 onMounted(() => {
