@@ -20,6 +20,7 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 const isProduction = process.env.NODE_ENV === 'production'
+console.log('isProduction: ', isProduction);
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -152,7 +153,15 @@ export default defineConfig({
         // 构建后是否生成source map文件，默认false
         sourcemap: false,
         // 为true时，会生成manifest.json文件，用于后端集成
-        manifest: false
+        manifest: false,
+        // 生产环境时移除console,debugger
+        minify: 'terser',
+        terserOptions: {
+            compress: {
+                drop_console: true,
+                drop_debugger: true
+            }
+        }
     }
     // ssr: false,
 })
