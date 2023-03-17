@@ -20,7 +20,7 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 const isProduction = process.env.NODE_ENV === 'production'
-console.log('isProduction: ', isProduction);
+console.log('isProduction: ', isProduction)
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -84,9 +84,12 @@ export default defineConfig({
         })
     ],
     resolve: {
+        // 设置路径别名
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url))
-        }
+        },
+        // 引入文件时忽略的文件后缀
+        extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
     },
     css: {
         postcss: {
