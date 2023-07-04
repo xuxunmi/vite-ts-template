@@ -116,8 +116,8 @@ html,
 body {
     width: 100vw;
     height: 100%;
-    font-family: Helvetica Neue, PingFang SC, Hiragino Sans GB, HeitiSC, Helvetica, Arial,
-        Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
+    font-family: Helvetica Neue, PingFang SC, Hiragino Sans GB, HeitiSC, Helvetica, Arial, Microsoft YaHei,
+        WenQuanYi Micro Hei, sans-serif;
     font-size: 16px;
     line-height: 1.5;
     color: #495060;
@@ -170,7 +170,7 @@ body p {
     margin: 0;
 }
 
-ul  {
+ul {
     list-style: none;
 }
 
@@ -209,7 +209,7 @@ a:active,
 a:hover {
     outline: 0;
     text-decoration: none;
-    transition: .1s;
+    transition: 0.1s;
 }
 
 a[disabled] {
@@ -265,4 +265,34 @@ input[type='number'] {
 **/
 .el-input__inner {
     line-height: 1px !important;
+}
+
+/*
+* 设置全局el-table表格字体大小
+*/
+/* .el-table {
+    font-size: 14px;
+} */
+
+/*去除upload组件过渡效果*/
+/*.el-upload-list__item {
+    transition: none !important;
+}
+.el-upload-list__item-thumbnail {
+    /~ 图片在方框内显示长边 ~/
+    -o-object-fit: scale-down !important;
+       object-fit: scale-down !important;
+}*/
+
+/* 清除自动填充时的背景颜色 */
+input:-webkit-autofill,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px inset !important;
+    -webkit-text-fill-color: #fff;
+    background-color: transparent;
+    background-image: none;
 }

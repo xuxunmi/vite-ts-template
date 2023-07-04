@@ -9,6 +9,7 @@ declare module '*.vue' {
 
 interface ImportMetaEnv {
     VITE_PORT: number
+    VITE_BASE_API: string
     VITE_PUBLIC_PATH: string
     VITE_PROXY_DOMAIN: string
     VITE_PROXY_DOMAIN_REAL: string

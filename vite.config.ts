@@ -51,6 +51,9 @@ export default defineConfig({
             dts: 'src/auto-imports.d.ts',
             resolvers: [ElementPlusResolver()]
         }),
+        Components({
+            resolvers: [ElementPlusResolver()]
+        }),
         VitePWA({
             manifest: false,
             workbox: {
@@ -78,9 +81,6 @@ export default defineConfig({
                     }
                 ]
             }
-        }),
-        Components({
-            resolvers: [ElementPlusResolver()]
         })
     ],
     resolve: {
@@ -163,6 +163,10 @@ export default defineConfig({
             compress: {
                 drop_console: true,
                 drop_debugger: true
+            },
+            format: {
+                /** 删除注释 */
+                comments: false
             }
         }
     }
