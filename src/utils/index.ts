@@ -4,7 +4,7 @@
  * @param {*} tree 树
  * @param {*} items 节点集合
  */
-export function removeItemsInTree<T>(tree: any, items: Array<T>): void {
+export const removeItemsInTree = <T>(tree: any, items: Array<T>): void => {
     items.forEach(item => removeItemInTree(tree, item))
 }
 
@@ -13,7 +13,7 @@ export function removeItemsInTree<T>(tree: any, items: Array<T>): void {
  * @param {*} tree 树
  * @param {*} node 节点
  */
-export function removeItemInTree(tree: any, node: any) {
+export const removeItemInTree = (tree: any, node: any): boolean => {
     const index = tree.indexOf(node)
     if (index !== -1) {
         tree.splice(index, 1)

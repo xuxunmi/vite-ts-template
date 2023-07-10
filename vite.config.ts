@@ -142,6 +142,9 @@ export default defineConfig({
                 changeOrigin: true,
                 rewrite: path => path.replace(/^\/api/, '')
             }
+        },
+        client: {
+            overlay: false // 关闭 Uncaught error 的全屏提示
         }
     },
     build: {

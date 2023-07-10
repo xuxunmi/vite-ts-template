@@ -1,0 +1,63 @@
+/** 自定义 Element UI 样式 */
+.el-table {
+    font-size: 14px;
+    &.row-click {
+        cursor: pointer;
+    }
+    th.el-table__cell {
+        background-color: #f5f7fa !important;
+    }
+}
+
+/* 解决级联选择器超出屏幕现象 */
+.el-cascader-panel {
+    height: 600px;
+}
+
+/* 解决el-input设置类型为number时，去掉输入框后面上下箭头 */
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+}
+input[type='number'] {
+    -moz-appearance: textfield !important;
+}
+/* 解决el-input设置类型为number时，中文输入法光标上移问题 */
+.el-input__inner {
+    line-height: 1px !important;
+}
+
+/*去除upload组件过渡效果*/
+/*.el-upload-list__item {
+    transition: none !important;
+}
+.el-upload-list__item-thumbnail {
+    /~ 图片在方框内显示长边 ~/
+    -o-object-fit: scale-down !important;
+       object-fit: scale-down !important;
+}*/
+
+/* 清除自动填充时的背景颜色 */
+input:-webkit-autofill,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px inset !important;
+    -webkit-text-fill-color: #fff;
+    background-color: transparent;
+    background-image: none;
+}
+
+/* 分页，参考 Bootstrap 的响应式设计 WIDTH = 768 */
+.el-pagination {
+    @media screen and (max-width: 768px) {
+        .el-pagination__total,
+        .el-pagination__sizes,
+        .el-pagination__jump,
+        .btn-prev,
+        .btn-next {
+            display: none !important;
+        }
+    }
+}
