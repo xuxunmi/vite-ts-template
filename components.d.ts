@@ -10,7 +10,11 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     'CustomVue.ce': typeof import('./src/components/WebComponents/customVue.ce.vue')['default']
+    DialogFrame: typeof import('./src/components/dialogFrame/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
+    ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElRow: typeof import('element-plus/es')['ElRow']
     Index: typeof import('./src/components/WebComponents/Index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
