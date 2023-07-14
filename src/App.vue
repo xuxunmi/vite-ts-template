@@ -6,7 +6,7 @@
 </template>
 <script setup lang="ts">
 import layout from '@/views/Layout/index.vue'
-import zhCn from 'element-plus/lib/locale/lang/zh-cn'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 // 中文国际化
 const locale = zhCn
