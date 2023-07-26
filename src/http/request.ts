@@ -93,15 +93,24 @@ const request = {
      * @returns {Promise}
      */
     get<T>(url: string, params: object = {}): Promise<T> {
-        return new Promise<T>((resolve, reject) => {
-            instance
-                .get(url, { params: params })
-                .then((response: AxiosResponse<T>) => {
-                    resolve(response.data)
-                })
-                .catch((error: AxiosError) => {
-                    reject(error)
-                })
+        return new Promise<T>(async (resolve, reject) => {
+            // 第一种方式
+            // instance
+            //     .get(url, { params: params })
+            //     .then((response: AxiosResponse<T>) => {
+            //         resolve(response.data)
+            //     })
+            //     .catch((error: AxiosError) => {
+            //         reject(error)
+            //     })
+
+            // 第二种方式
+            try {
+                const response: AxiosResponse<T> = await instance.get(url, { params: params })
+                resolve(response.data)
+            } catch (error) {
+                reject(error)
+            }
         })
     },
     /**
@@ -111,7 +120,7 @@ const request = {
      * @returns {Promise}
      */
     post<T>(url: string, data: object = {}): Promise<T> {
-        return new Promise<T>((resolve, reject) => {
+        return new Promise<T>(async (resolve, reject) => {
             instance
                 .post(url, JSON.stringify(data))
                 .then((response: AxiosResponse) => {
@@ -134,6 +143,58 @@ const request = {
                 .put(url, data)
                 .then((response: AxiosResponse) => {
                     resolve(response.data)
+                })
+                .catch((error: AxiosError) => {
+                    reject(error)
+                })
+        })
+    },
+    /**
+     * 封装upload请求
+     * @param url
+     * @param formData: new FormData()格式
+     * @returns {Promise}
+     */
+    upload<T>(url: string, formData: FormData): Promise<T> {
+        return new Promise<T>((resolve, reject) => {
+            instance
+                .post(url, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+                .then((response: AxiosResponse) => {
+                    resolve(response.data)
+                })
+                .catch((error: AxiosError) => {
+                    reject(error)
+                })
+        })
+    },
+    /**
+     * 封装下载文件流请求
+     * @param url
+     * @param params
+     * @fileName 下载文件名
+     * @returns {Promise}
+     */
+    downBlobFile<T>(url: string, params: object = {}, fileName: string): Promise<T> {
+        return new Promise<T>((resolve, reject) => {
+            instance
+                .get(url, { params: params, responseType: 'blob' })
+                .then((response: AxiosResponse<Blob>) => {
+                    const blob = new Blob([response.data], {
+                        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    })
+                    if (blob && blob.size === 0) {
+                        showErrorMsg('内容为空，无法下载')
+                        return
+                    }
+                    const link = document.createElement('a')
+                    link.href = URL.createObjectURL(blob)
+                    link.download = fileName
+                    document.body.appendChild(link)
+                    link.click()
+                    window.setTimeout(function () {
+                        document.body.removeChild(link)
+                        URL.revokeObjectURL(link.href)
+                    }, 0)
                 })
                 .catch((error: AxiosError) => {
                     reject(error)
