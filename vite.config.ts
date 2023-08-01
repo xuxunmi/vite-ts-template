@@ -18,6 +18,9 @@ import { VitePWA } from 'vite-plugin-pwa'
 // Element Plus按需引入
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+// 使用svg
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import path, { resolve } from 'path'
 
 const isProduction = process.env.NODE_ENV === 'production'
 console.log('isProduction: ', isProduction)
@@ -53,6 +56,10 @@ export default defineConfig({
         }),
         Components({
             resolvers: [ElementPlusResolver()]
+        }),
+        createSvgIconsPlugin({
+            iconDirs: [path.resolve(process.cwd(), 'src/icons/svg')],
+            symbolId: 'icon-[dir]-[name]'
         }),
         VitePWA({
             manifest: false,

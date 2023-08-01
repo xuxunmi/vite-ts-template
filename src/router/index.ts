@@ -9,6 +9,20 @@ const routes: Array<RouteRecordRaw> = [
     // },
     // {
     //     path: '/',
+    //     name: 'redirect',
+    //     component: Layout,
+    //     meta: {
+    //         hidden: true
+    //     },
+    //     children: [
+    //         {
+    //             path: '/:path(.*)',
+    //             component: () => import('@/views/dashboard/index.vue')
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/',
     //     name: 'home',
     //     component: HomeView
     // },
@@ -29,13 +43,15 @@ const routes: Array<RouteRecordRaw> = [
             hidden: true
         }
     },
+    // vue3对404配置进行了修改，必须要用正则匹配
     {
         path: '/404',
         component: Error,
         meta: {
             title: '404',
             hidden: true
-        }
+        },
+        alias: '/:pathMatch(.*)*'
     }
 ]
 

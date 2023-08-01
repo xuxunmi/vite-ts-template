@@ -36,12 +36,10 @@
  *        <el-button size="small" type="primary" @click="handleConfirm">确认</el-button>
       </div>
  *    
- *    const props = defineProps({
- *        visible: {
- *            type: Boolean
- *        }
+ *    const props = withDefaults(defineProps<Props>(), {
+ *        visible: false
  *    })
- *    const emits = defineEmits(["update:visible", "confirmSuccess"])
+ *    const emits = defineEmits(["update:visible"])
  */
 
 import { ref, watch } from 'vue'
