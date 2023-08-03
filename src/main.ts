@@ -4,6 +4,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import App from './App.vue'
 import router from '@/router'
+// 引入动态路由
 import '@/router/permission'
 
 import '@/styles/global.css'

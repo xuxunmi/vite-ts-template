@@ -1,6 +1,5 @@
 import { type Directive } from 'vue'
-import { useStore } from '@/stores/index'
-// import { get as getStorage } from '@/utils/storage.js';
+import { getPermissionsBtn } from '@/caches/localStorage'
 
 /**
  * 按钮权限,多权限使用
@@ -9,11 +8,10 @@ import { useStore } from '@/stores/index'
 export const permission: Directive = {
     mounted(el, binding) {
         const { value } = binding
-        const { user } = useStore()
-        const { roles } = user
+        const btnList: string[] = getPermissionsBtn()
         if (Array.isArray(value) && value.length > 0) {
             const permissionRoles = value
-            const hasPermission = roles.some(role => permissionRoles.includes(role))
+            const hasPermission = btnList.some((btn: string) => permissionRoles.includes(btn))
             if (!hasPermission) {
                 // 隐藏
                 // el.style.display = "none"

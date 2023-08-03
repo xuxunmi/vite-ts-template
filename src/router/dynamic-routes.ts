@@ -49,21 +49,21 @@ export const systemManageRoutes: RouteRecordRaw[] = [
 
 /* 项目监控路由 */
 export const projectMonitorRoutes: RouteRecordRaw[] = [
-    // {
-    //     path: '/monitor',
-    //     name: 'projectMonitor',
-    //     component: Layout,
-    //     children: [
-    //         {
-    //             path: 'project',
-    //             component: () => import('@/views/monitor/index.vue'),
-    //             name: 'monitor',
-    //             meta: {
-    //                 title: '项目监控',
-    //                 elIcon: 'Grid',
-    //                 keepAlive: true
-    //             }
-    //         }
-    //     ]
-    // }
+    {
+        path: '/monitor',
+        name: 'projectMonitor',
+        component: Layout,
+        children: [
+            {
+                path: 'project',
+                component: () => import('@/views/monitor/index.vue'),
+                name: 'monitor',
+                meta: {
+                    title: '项目监控',
+                    elIcon: 'Grid',
+                    keepAlive: true
+                }
+            }
+        ]
+    }
 ]

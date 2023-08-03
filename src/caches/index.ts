@@ -4,8 +4,8 @@ const SYSTEM_CACHE_NAME = 'VITE-CACHE-KEY'
 class CacheKey {
     static readonly TOKEN = `${SYSTEM_CACHE_NAME}-token`
     static readonly USER_INFO = `${SYSTEM_CACHE_NAME}-userInfo`
-    static readonly SIDEBAR_STATUS = `${SYSTEM_CACHE_NAME}-sidebar-status-key`
-    static readonly ACTIVE_THEME_NAME = `${SYSTEM_CACHE_NAME}-active-theme-name-key`
+    static readonly DYNAMICS_MENU_LIST = `${SYSTEM_CACHE_NAME}-dynamics-menu-list`
+    static readonly PERMISSIONS_BTN_LIST = `${SYSTEM_CACHE_NAME}-permissions-btn-list`
 }
 
 export default CacheKey

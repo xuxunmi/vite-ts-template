@@ -2,7 +2,8 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 const Login = () => import('@/views/Login/index.vue')
 const Error = () => import('@/views/Error/404.vue')
 
-const routes: Array<RouteRecordRaw> = [
+/* 静态路由 */
+const constantRoutes: Array<RouteRecordRaw> = [
     // {
     //     path: '/',
     //     redirect: '/home'
@@ -65,7 +66,23 @@ const router = createRouter({
             return { left: 0, top: 0 }
         }
     },
-    routes
+    routes: constantRoutes
 })
+
+/** 重置路由 */
+export const resetRouter = () => {
+    // 注意：所有动态路由路由必须带有 Name 属性，否则可能会不能完全重置干净
+    try {
+        router.getRoutes().forEach(route => {
+            const { name } = route
+            if (name) {
+                router.hasRoute(name) && router.removeRoute(name)
+            }
+        })
+    } catch (error) {
+        // 强制刷新浏览器也行，只是交互体验不是很好
+        window.location.reload()
+    }
+}
 
 export default router
