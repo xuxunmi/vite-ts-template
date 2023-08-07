@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import { SelectInterface } from '@/interface/common'
 
 /**
  * // 移除el-table树中的指定节点集合,可以用于前端table多行勾选假删除
@@ -98,4 +99,14 @@ export const formatDateTime = (time: string | number | Date, format: string | un
     }
     const date = new Date(time)
     return dayjs(date).format(format)
+}
+
+/**
+ * 根据id查找name
+ * @param arr 数组
+ * @param id id
+ */
+export const getNameById = (arr: SelectInterface[], id: string | number) => {
+    const element = arr.find(ele => ele.id === id)
+    return element?.name || undefined
 }
