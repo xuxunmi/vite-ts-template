@@ -1,23 +1,29 @@
 {
-  "compilerOptions": {
-    // 允许从没有设置默认导出的模块中默认导入。这并不影响代码的输出，仅为了类型检查
-    "allowSyntheticDefaultImports": true,
-    "target": "esnext",
-    "useDefineForClassFields": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "jsx": "preserve",
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "lib": ["esnext", "dom"],
-    "types": ["node", "vite/client", "element-plus/global"],
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["*","src/*"]
-    }
-  },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "postcss-px-to-viewport.d.ts"]
+    "compilerOptions": {
+        // 允许从没有设置默认导出的模块中默认导入。这并不影响代码的输出，仅为了类型检查
+        "allowSyntheticDefaultImports": true,
+        "target": "esnext",
+        "useDefineForClassFields": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "strict": true,
+        "jsx": "preserve",
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "lib": ["esnext", "dom"],
+        "types": ["node", "vite/client", "element-plus/global"],
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["*", "src/*"]
+        }
+    },
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.d.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue",
+        "postcss-px-to-viewport.d.ts",
+        "types/**/*.d.ts"
+    ]
 }
-

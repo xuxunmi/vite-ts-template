@@ -164,7 +164,7 @@ export default defineConfig({
         sourcemap: false,
         // 为true时，会生成manifest.json文件，用于后端集成
         manifest: false,
-        // 生产环境时移除console,debugger
+        // 生产环境时移除console,debugger,Vite 2.6.x 以上需要配置 minify: "terser", terserOptions 才能生效
         minify: 'terser',
         terserOptions: {
             compress: {

@@ -33,6 +33,56 @@ export const removeItemInTree = (tree: any, node: any): boolean => {
 }
 
 /**
+ *
+ * @param {array} tree 树数据源
+ * @param {string} targetId 目标树节点id
+ * @return {string[]}  当前节点id的所有父级ids,按照从根节点到直接父节点的顺序排序
+ */
+export const findParentIds = (tree: any[], targetId: string): string[] => {
+    const parentIds: string[] = []
+    function traverse(node: any, targetId: string): boolean {
+        if (node.id === targetId) {
+            parentIds.push(node.id)
+            return true
+        }
+        if (node.children.length) {
+            for (const child of node.children) {
+                if (traverse(child, targetId)) {
+                    parentIds.push(node.id)
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    for (const node of tree) {
+        if (traverse(node, targetId)) {
+            break
+        }
+    }
+    return parentIds
+}
+
+/**
+ *
+ * @param {array} tree 树数据源
+ * @param {string} targetId 目标树节点id
+ * @return {string[]}  当前节点id的直接父节点id
+ */
+export function findParentId(nodes: any[], targetId: string): string | null {
+    for (const node of nodes) {
+        if (node.id === targetId) {
+            return node.id
+        }
+        const parentId = findParentId(node.children, targetId)
+        if (parentId) {
+            return parentId
+        }
+    }
+    return null
+}
+
+/**
  * @param  tree 树数据源
  * @param targetId 当前树节点id
  * @return {} 当前同层树节点的下一个兄弟元素

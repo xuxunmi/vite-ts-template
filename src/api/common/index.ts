@@ -1,10 +1,11 @@
-import request from '@/http/request.js'
+import request from '@/http/request'
+import type * as Common from './types'
 
 /**
  * @description:登录
  */
-export function login(params: object) {
-    return request.post('/securityUsers/login', params)
+export function login(params: Common.CommonRequestParamsData) {
+    return request.post<Common.CommonResponseData>('/securityUsers/login', params)
 }
 
 /**

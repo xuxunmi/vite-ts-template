@@ -23,6 +23,7 @@ const props = defineProps({
         type: String,
         default: 'icon'
     },
+    // 图标名称
     name: {
         type: String,
         required: true
