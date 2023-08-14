@@ -12,14 +12,14 @@
                 mode="vertical"
                 router
             >
-                <MenuNavBar v-for="route in routesMenuList" :key="route.id" :childItems="route" />
+                <MenuNavBar v-for="route in routesMenuList" :key="route.path" :childItems="route" />
             </el-menu>
         </el-scrollbar>
     </div>
 </template>
 
 <script setup lang="ts">
-import MenuNavBar from '../menuNavBar/index.vue'
+import MenuNavBar from '../MenuNavBar/index.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { type RouteRecordRaw } from 'vue-router'
 
@@ -42,7 +42,7 @@ const isCollapse = computed(() => {
 
 // 路由菜单列表
 const routesMenuList = computed(() => {
-    const routersList: RouteRecordRaw[] = router.options.routes[0].children
+    const routersList: RouteRecordRaw[] | undefined = router.options.routes[0].children
     console.log('routersList: ', router.options.routes[0].children)
     return routersList
 })

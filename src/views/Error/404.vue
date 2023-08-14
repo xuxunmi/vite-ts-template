@@ -9,7 +9,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="Error">
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

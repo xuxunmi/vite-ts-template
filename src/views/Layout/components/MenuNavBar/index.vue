@@ -27,7 +27,6 @@
 </template>
 
 <script setup lang="ts" name="MenuNavBar">
-// import MenuNavBar from '../menuNavBar/index.vue'
 import { type PropType } from 'vue'
 import { type RouteRecordRaw } from 'vue-router'
 
