@@ -1,8 +1,7 @@
 <template>
-    <layout></layout>
-    <!-- <el-config-provider :locale="locale">
+    <el-config-provider :locale="locale">
         <router-view />
-    </el-config-provider> -->
+    </el-config-provider>
 </template>
 <script setup lang="ts">
 import layout from '@/views/Layout/index.vue'
@@ -14,8 +13,4 @@ const locale = zhCn
 console.log('VITE_PORT环境变量: ', import.meta.env.VITE_PORT)
 </script>
 
-<style lang="less" scoped>
-#app {
-    height: 100vh;
-}
-</style>
+<style lang="less" scoped></style>

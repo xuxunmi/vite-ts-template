@@ -126,7 +126,7 @@ export default defineConfig({
         // 引入全局变量 less
         preprocessorOptions: {
             less: {
-                additionalData: `@import '@/styles/variables.less';`
+                additionalData: `@import '@/styles/variables-color.less';`
             }
         }
     },

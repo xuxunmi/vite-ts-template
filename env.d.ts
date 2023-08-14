@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+// 三斜线指令: 用于在 TypeScript 文件中引入 Vite 的类型声明文件
 
 declare module '*.vue' {
     import { DefineComponent } from 'vue'

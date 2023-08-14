@@ -1,2 +1,136 @@
+// 全局 CSS 变量
+@import './variables.css';
 // Element Plus
 @import './elementPlus.less';
+
+// 业务页面几乎都应该在根元素上挂载 class="app-container"，以保持页面美观
+#app {
+    height: 100%;
+}
+
+.app-container {
+    padding: var(--v3-container-padding);
+}
+
+.sf-container {
+    width: 100%;
+    height: var(--v3-container-height);
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
+    .sf-container-header {
+        width: 100%;
+        height: var(--v3-container-header-height);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border-bottom: 1px solid #ddd;
+        padding: 0 8px;
+        overflow: auto;
+        overflow-y: hidden;
+        &::-webkit-scrollbar {
+            height: 6px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: #ddd;
+            border-radius: 6px;
+        }
+    }
+    .sf-container-main {
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        flex: 1;
+        .sf-container-main-left {
+            width: 430px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px;
+            .sf-table-wrapper {
+                flex: 1;
+                overflow: auto;
+            }
+            .sf-table-edit {
+                display: flex;
+                gap: 4px;
+                height: 32px;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        .sf-container-main-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px;
+            .sf-form-wrapper {
+                flex: 1;
+                overflow: auto;
+                .el-select {
+                    width: 100%;
+                }
+            }
+            .sf-form-edit {
+                display: flex;
+                justify-content: center;
+            }
+        }
+        .sf-container-main-line {
+            width: 1px;
+            height: 100%;
+            background-color: #ddd;
+            cursor: col-resize;
+            &:hover {
+                box-shadow: 0 0 0 1px #409eff;
+                background-color: #409eff;
+            }
+        }
+        .sf-container-main-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            .sf-search-wrapper {
+                width: 100%;
+                padding: 8px;
+                padding-bottom: 0;
+                border-bottom: 1px solid #ccc;
+                .el-form-item {
+                    margin-bottom: 8px;
+                    margin-right: 12px;
+                    .el-input {
+                        width: 180px;
+                    }
+                }
+            }
+            .sf-table-wrapper {
+                width: 100%;
+                height: 0;
+                flex: 1;
+            }
+        }
+    }
+}
+.fromWrapper {
+    .fromWrapper_title {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 12px;
+        color: #303133;
+    }
+    .el-scrollbar__wrap {
+        width: calc(100% - 12px);
+    }
+    .el-date-editor.el-input {
+        width: 180px;
+    }
+    .el-input-number--small {
+        width: 100%;
+        .el-input__inner {
+            text-align: left;
+        }
+    }
+}

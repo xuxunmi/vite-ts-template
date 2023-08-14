@@ -1,40 +1,48 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+const Layout = () => import('@/views/Layout/index.vue')
+const Index = () => import('@/views/Index/index.vue')
 const Login = () => import('@/views/Login/index.vue')
 const Error = () => import('@/views/Error/404.vue')
 
 /* 静态路由 */
 const constantRoutes: Array<RouteRecordRaw> = [
-    // {
-    //     path: '/',
-    //     redirect: '/home'
-    // },
-    // {
-    //     path: '/',
-    //     name: 'redirect',
-    //     component: Layout,
-    //     meta: {
-    //         hidden: true
-    //     },
-    //     children: [
-    //         {
-    //             path: '/:path(.*)',
-    //             component: () => import('@/views/dashboard/index.vue')
-    //         }
-    //     ]
-    // },
-    // {
-    //     path: '/',
-    //     name: 'home',
-    //     component: HomeView
-    // },
-    // {
-    //     path: '/about',
-    //     name: 'about',
-    //     // route level code-splitting
-    //     // this generates a separate chunk (About.[hash].js) for this route
-    //     // which is lazy-loaded when the route is visited.
-    //     component: () => import('../views/AboutView.vue')
-    // }
+    {
+        path: '/',
+        name: 'Layout',
+        redirect: '/home',
+        component: Layout,
+        children: [
+            {
+                path: '/home',
+                name: 'Home',
+                component: () => import('@/views/Home/index.vue'),
+                meta: {
+                    title: '首页',
+                    elIcon: 'dashboard'
+                }
+            },
+            {
+                path: '/user',
+                name: 'UserManage',
+                component: Index,
+                meta: {
+                    title: '用户管理',
+                    elIcon: 'dashboard'
+                },
+                children: [
+                    {
+                        path: '/user/codeRain',
+                        name: 'CodeRain',
+                        component: () => import('@/views/UserManage/CodeRain/index.vue'),
+                        meta: {
+                            title: '代码雨',
+                            elIcon: 'dashboard'
+                        }
+                    }
+                ]
+            }
+        ]
+    },
     {
         path: '/login',
         name: 'login',

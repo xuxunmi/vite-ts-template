@@ -15,13 +15,13 @@ const app = createApp(App)
 
 const pinia = createPinia().use(piniaPluginPersistedstate)
 
-// 自定义指令
-import directives from '@/directives/index'
-app.use(directives)
-
 // 注册所有elementPlus图标
 import { loadElementPlusIcon } from '@/plugins/elementPlus'
 loadElementPlusIcon(app)
+
+// 自定义指令
+import directives from '@/directives/index'
+app.use(directives)
 
 // 注册全局svg组件
 import { loadSvg } from '@/icons'

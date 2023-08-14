@@ -1,11 +1,9 @@
 <template>
-    <router-view></router-view>
+    <div>代码雨111111112222</div>
 </template>
 
 <script setup lang="ts">
-defineOptions({
-    name: 'LayoutMain'
-})
+import { ref, reactive } from 'vue'
 </script>
 
 <style lang="less" scoped></style>

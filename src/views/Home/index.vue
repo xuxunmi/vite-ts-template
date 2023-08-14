@@ -1,40 +1,27 @@
 <template>
     <div class="layout-container">
-        <el-container>
-            <!-- 头部区域 -->
-            <el-header>
-                <LayoutHeader></LayoutHeader>
-            </el-header>
-            <!-- 页面主体区域 -->
-            <el-container>
-                <!-- 左侧边导航栏 -->
-                <el-aside width="210px">
-                    <LayoutNavMenu></LayoutNavMenu>
-                </el-aside>
-                <el-main>
-                    <!-- main主体内容 -->
-                    <LayoutMain></LayoutMain>
-                </el-main>
-            </el-container>
-        </el-container>
+        <div
+            :style="{
+                height: item.height + 'px',
+                background: item.background,
+                top: item.top + 'px',
+                left: item.left + 'px'
+            }"
+            v-for="item in waterfallList"
+            class="items"
+        ></div>
     </div>
 </template>
 
-<script setup lang="ts" name="layout">
-import LayoutHeader from './components/LayoutHeader/index.vue'
-import LayoutNavMenu from './components/LayoutNavMenu/index.vue'
-import LayoutMain from './components/LayoutMain/index.vue'
-
-// 父组件通过ref接收子组件实例暴露的属性/方法
-const layoutMenuExpose = ref<InstanceType<typeof LayoutNavMenu>>()
-
-const handleHeaderClick = (value: string) => {
-    console.log('value : ', value)
-    console.log('layoutMenuExpose: ', layoutMenuExpose.value?.name, layoutMenuExpose.value?.open())
+<script setup lang="ts" name="Home">
+interface List {
+    height: number
+    background: string
+    top?: number
+    left?: number
 }
-
 // 瀑布流数据
-const list = reactive<any[]>([
+const list = ref<List[]>([
     {
         height: 300,
         background: 'red'
@@ -196,28 +183,57 @@ const list = reactive<any[]>([
         background: 'green'
     }
 ])
+const waterfallList = reactive<any[]>([])
+const init = () => {
+    const heightList: any[] = []
+    const width = 130
+    const x = document.getElementsByClassName('layout-container')[0].clientWidth
+    const column = Math.floor(x / width)
+
+    for (let i = 0; i < list.value.length; i++) {
+        if (i < column) {
+            list.value[i].top = 10
+            list.value[i].left = i * width + 20
+            heightList.push(list.value[i].height + 10)
+            waterfallList.push(list.value[i])
+        } else {
+            let current = heightList[0]
+            let index = 0
+            heightList.forEach((h, inx) => {
+                if (current > h) {
+                    current = h
+                    index = inx
+                }
+            })
+            // console.log(current, 'c')
+            list.value[i].top = current + 20
+            // console.log(list.value[i].top, 'top', i)
+            list.value[i].left = index * width + 20
+            heightList[index] = heightList[index] + list.value[i].height + 20
+            waterfallList.push(list.value[i])
+        }
+    }
+}
+
+onMounted(() => {
+    window.onresize = () => init()
+    init()
+})
 </script>
 
 <style lang="less" scoped>
 .layout-container {
-    width: 100%;
+    flex: 1;
     height: 100%;
     position: relative;
-    overflow: hidden;
-    background-color: var(--v3-body-bg-color);
-    .el-container {
-        height: 100%;
-        .el-header {
-            background-color: @header-bg-color;
-        }
-        .el-container {
-            .el-aside {
-                background-color: @aside-bg-color;
-            }
-            .el-main {
-                padding: 10px;
-            }
-        }
+    overflow-y: scroll;
+    .items {
+        position: absolute;
+        width: 120px;
     }
+}
+// 隐藏滚动条
+::-webkit-scrollbar {
+    display: none;
 }
 </style>
