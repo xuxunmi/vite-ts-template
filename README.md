@@ -29,7 +29,7 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 ## Project Setup
 
 ```sh
-npm install
+pnpm install
 ```
 
 ### Compile and Hot-Reload for Development
@@ -59,7 +59,7 @@ chore: 构建过程或辅助工具的变动
 ```
 
 //
-// Created by sl on 2023/3/1.
+// Created by xxm on 2023/3/1.
 //
 // (一)本代码的质量保证期（简称“质保期”）为上线内 3 个月，质保期内乙方对所代码实行包修改服务。
 // (二)本代码提供三包服务（包阅读、包编译、包运行）不包熟
