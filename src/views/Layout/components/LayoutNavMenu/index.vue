@@ -1,5 +1,15 @@
 <template>
     <div class="layout-main">
+        <div class="logo-container">
+            <transition name="sidebar-logo-fade">
+                <router-link key="expand" to="/">
+                    <div class="logo-text">
+                        <img src="@/assets/logo.svg" />
+                        <span v-if="!isCollapse">Vite+TS+Admin</span>
+                    </div>
+                </router-link>
+            </transition>
+        </div>
         <el-scrollbar wrap-class="scrollbar-wrapper">
             <el-menu
                 :default-active="activeMenu"
@@ -22,6 +32,7 @@
 import MenuNavBar from '../MenuNavBar/index.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { type RouteRecordRaw } from 'vue-router'
+import { useAppStore } from '@/stores'
 
 defineOptions({
     name: 'LayoutMain'
@@ -29,6 +40,7 @@ defineOptions({
 
 const route = useRoute()
 const router = useRouter()
+const useApp = useAppStore()
 
 // 默认激活菜单的 index
 const activeMenu = computed(() => {
@@ -36,9 +48,7 @@ const activeMenu = computed(() => {
     return path
 })
 
-const isCollapse = computed(() => {
-    return false
-})
+const isCollapse = computed(() => useApp.isCollapse)
 
 // 路由菜单列表
 const routesMenuList = computed(() => {
@@ -50,6 +60,26 @@ const routesMenuList = computed(() => {
 
 <style lang="less" scoped>
 .layout-main {
+    .logo-container {
+        height: var(--v3-logo-header-height);
+        padding: 5px;
+        .logo-text {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100%;
+            img {
+                width: 40px;
+                height: 40px;
+                vertical-align: middle;
+            }
+            span {
+                font-weight: bold;
+                font-size: 18px;
+                color: @color-danger;
+            }
+        }
+    }
     .el-scrollbar {
         height: 100%;
         :deep(.scrollbar-wrapper) {
@@ -81,7 +111,6 @@ const routesMenuList = computed(() => {
             &:hover {
                 background-color: @menu-hover-bg-color;
             }
-            display: block;
             * {
                 vertical-align: middle;
             }

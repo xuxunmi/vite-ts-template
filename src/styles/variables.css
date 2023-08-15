@@ -2,12 +2,13 @@
     /** 全局背景色 */
     --v3-body-bg-color: #f2f3f5;
     --v3-header-height: 60px;
-    --v3-sidebarlogo-bg-color: #6266a7;
     --v3-container-header-height: 40px;
+    /* logo内容 */
+    --v3-logo-header-height: 60px;
+    /* 标签页内容 */
+    --v3-tagsview-height: 40px;
     /** app-container 内容  */
     --v3-container-padding: 5px;
     /** sf-container 内容  */
-    --v3-container-height: calc(
-        100vh - var(--v3-navigationbar-height) - var(--v3-header-height) - var(--v3-container-padding)
-    );
+    --v3-container-height: calc(100vh - var(--v3-header-height) - var(--v3-container-padding));
 }

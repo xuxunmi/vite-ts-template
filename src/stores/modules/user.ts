@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia'
+import { removeToken, removeDynamicsMenu, removePermissionsBtn } from '@/caches/localStorage'
+import router from '@/router'
 
 export const useUserStore = defineStore('user', {
     state: () => {
@@ -12,12 +14,29 @@ export const useUserStore = defineStore('user', {
         setToken(token: string) {
             console.log('传参token: ', token)
             this.token = token
-        }
+        },
         // 异步需要搭配 async await 语法
         // async getTokenAsync() {
         //     const result = await login()
         //     this.token = result
         // }
+        // 退出登录
+        logout() {
+            const loading = ElLoading.service({
+                lock: true,
+                text: '正在退出登录...',
+                background: 'rgba(0, 0, 0, 0.7)'
+            })
+            // logoutApi({ token: token.value }).finally(() => {
+            setTimeout(() => {
+                removeToken()
+                removeDynamicsMenu()
+                removePermissionsBtn()
+                router.push('/login')
+                loading.close()
+            }, 2000)
+            // })
+        }
     },
     // persist: true // 开启持久化
     persist: {

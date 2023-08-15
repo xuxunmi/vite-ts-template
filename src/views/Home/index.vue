@@ -1,5 +1,5 @@
 <template>
-    <div class="layout-container">
+    <div class="app-container">
         <div
             :style="{
                 height: item.height + 'px',
@@ -187,7 +187,7 @@ const waterfallList = reactive<any[]>([])
 const init = () => {
     const heightList: any[] = []
     const width = 130
-    const x = document.getElementsByClassName('layout-container')[0].clientWidth
+    const x = document.getElementsByClassName('app-container')[0].clientWidth
     const column = Math.floor(x / width)
 
     for (let i = 0; i < list.value.length; i++) {
@@ -222,7 +222,7 @@ onMounted(() => {
 </script>
 
 <style lang="less" scoped>
-.layout-container {
+.app-container {
     flex: 1;
     height: 100%;
     position: relative;

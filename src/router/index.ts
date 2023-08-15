@@ -18,7 +18,7 @@ const constantRoutes: Array<RouteRecordRaw> = [
                 component: () => import('@/views/Home/index.vue'),
                 meta: {
                     title: '首页',
-                    elIcon: 'dashboard'
+                    elIcon: 'HomeFilled'
                 }
             },
             {
@@ -27,7 +27,7 @@ const constantRoutes: Array<RouteRecordRaw> = [
                 component: Index,
                 meta: {
                     title: '用户管理',
-                    elIcon: 'dashboard'
+                    elIcon: 'Management'
                 },
                 children: [
                     {
@@ -35,8 +35,7 @@ const constantRoutes: Array<RouteRecordRaw> = [
                         name: 'CodeRain',
                         component: () => import('@/views/UserManage/CodeRain/index.vue'),
                         meta: {
-                            title: '代码雨',
-                            elIcon: 'dashboard'
+                            title: '代码雨'
                         }
                     }
                 ]

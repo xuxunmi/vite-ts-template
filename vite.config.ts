@@ -22,6 +22,8 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path, { resolve } from 'path'
 
+import svgLoader from 'vite-svg-loader'
+
 const isProduction = process.env.NODE_ENV === 'production'
 console.log('isProduction: ', isProduction)
 
@@ -44,6 +46,8 @@ export default defineConfig({
                 }
             }
         }),
+        // 将 SVG 静态图转化为 Vue 组件
+        svgLoader({ defaultImport: 'url' }), // params: url, raw, component
         vueJsx(),
         legacy({
             targets: ['defaults', 'not IE 11']

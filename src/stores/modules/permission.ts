@@ -60,7 +60,6 @@ export const usePermissionStore = defineStore('permission', () => {
     return { isSetRoutes, dynamicRoutes, getDynamicRoutes, setRoutes, permissionsBtnList }
 })
 
-/** 在 setup 外使用 */
 export function usePermissionStoreHook() {
     return usePermissionStore(store)
 }

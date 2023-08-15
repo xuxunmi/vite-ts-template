@@ -27,6 +27,7 @@
     "postcss-import": "^15.1.0",
     "qs": "^6.11.2",
     "unplugin-vue-macros": "^1.9.1",
+    "vite-svg-loader": "^4.0.0",
     "vue": "^3.3.4",
     "vue-router": "^4.1.6"
   },
