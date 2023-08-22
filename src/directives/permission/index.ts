@@ -16,7 +16,7 @@ export const permission: Directive = {
                 // 隐藏
                 // el.style.display = "none"
                 // 销毁
-                el.parentNode?.removeChild(el)
+                el.parentNode && el.parentNode.removeChild(el)
             }
         } else {
             throw new Error(`need roles! Like v-permission="['admin','editor']"`)
