@@ -9,6 +9,8 @@ import legacy from '@vitejs/plugin-legacy'
 
 // 自定义组件name插件
 import vueSetupExtend from 'vite-plugin-vue-setup-extend'
+//使用defineOptions自定义组件name
+import DefineOptions from 'unplugin-vue-define-options/vite'
 // API自动导入插件,如 ref reactive等api不需要手动引入
 import AutoImport from 'unplugin-auto-import/vite'
 // PC端/移动端适配方案
@@ -53,6 +55,7 @@ export default defineConfig({
             targets: ['defaults', 'not IE 11']
         }),
         vueSetupExtend(),
+        DefineOptions(),
         AutoImport({
             imports: ['vue', 'vue-router'],
             dts: 'src/auto-imports.d.ts',

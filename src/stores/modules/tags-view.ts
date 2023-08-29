@@ -1,11 +1,8 @@
 import { ref } from 'vue'
 import { defineStore, createPinia } from 'pinia'
-import { type RouteLocationNormalized } from 'vue-router'
 import { TagsViewInterface } from '@/interface/common'
 
 const store = createPinia()
-
-// export type TagView = Partial<RouteLocationNormalized>
 
 export const useTagsViewStore = defineStore(
     'tags-view',
@@ -19,7 +16,7 @@ export const useTagsViewStore = defineStore(
         }
 
         // 添加标签
-        const setTagView = (tag: TagView) => {
+        const setTagView = (tag: TagsViewInterface) => {
             tagsList.value.push(tag)
         }
 
@@ -29,7 +26,7 @@ export const useTagsViewStore = defineStore(
         }
 
         // 关闭其他标签
-        const closeOthersTagView = (tag: any) => {
+        const closeOthersTagView = (tag: TagsViewInterface[]) => {
             tagsList.value = tag
         }
 

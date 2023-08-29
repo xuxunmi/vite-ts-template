@@ -1,3 +1,5 @@
+import { LocationQueryRaw } from 'vue-router'
+
 /**
  * description：下拉数据接口
  */
@@ -13,4 +15,5 @@ export interface TagsViewInterface {
     name: string
     title: string
     path: string
+    query?: LocationQueryRaw
 }

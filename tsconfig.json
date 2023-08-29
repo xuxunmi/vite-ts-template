@@ -12,7 +12,7 @@
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "lib": ["esnext", "dom"],
-        "types": ["node", "vite/client", "element-plus/global"],
+        "types": ["node", "vite/client", "element-plus/global", "unplugin-vue-define-options/macros-global"],
         "baseUrl": ".",
         "paths": {
             "@/*": ["*", "src/*"]

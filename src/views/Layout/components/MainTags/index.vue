@@ -4,45 +4,58 @@
             <ul class="item-list">
                 <li
                     class="tags-item"
-                    v-for="(item, index) in tagsList"
-                    :class="{ active: isActive(item.path) }"
+                    v-for="(tag, index) in tagsList"
+                    :class="{ active: isActive(tag.path) }"
                     :key="index"
                 >
-                    <router-link :to="item.path" class="tags-item-title">{{ item.title }}</router-link>
-                    <span class="tags-item-icon" @click="closeTags(index)">
-                        <i v-show="tagsList.lenght !== 1 && item.title !== '首页'" class="el-icon-close"></i>
-                    </span>
+                    <router-link :to="{ path: tag.path, query: tag.query }" class="tags-item-title">{{
+                        tag.title
+                    }}</router-link>
+                    <el-icon
+                        class="tags-item-icon"
+                        v-show="tagsList.length !== 1 && tag.title !== '首页'"
+                        @click="closeTags(index)"
+                        ><Close
+                    /></el-icon>
                 </li>
             </ul>
         </el-scrollbar>
+        <div class="tags-close-box">
+            <el-dropdown ref="dropdown" @command="handleTags">
+                <el-button size="small" type="primary">
+                    标签选项<el-icon class="el-icon--right"><arrow-down /></el-icon>
+                </el-button>
+                <template #dropdown>
+                    <el-dropdown-menu size="small">
+                        <el-dropdown-item command="other">关闭其他</el-dropdown-item>
+                        <el-dropdown-item command="all">关闭所有</el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts" name="MainTags">
-import { ref, reactive } from 'vue'
-import { useRoute, useRouter, type RouteLocationNormalized } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useTagsViewStoreHook } from '@/stores/modules/tags-view'
-import { TagsViewInterface } from '@/interface/common'
 
 const route = useRoute()
 const router = useRouter()
 const useTagsViewStore = useTagsViewStoreHook()
 const { tagsList, deleteTagView, setTagView, clearTagView, closeOthersTagView } = useTagsViewStore
 
-const isCollapse = computed((): boolean => {
-    return false
-})
-
+// 当前标签页
 const isActive = (path: string) => {
     return path === route.fullPath
 }
 
 const showTags = computed((): boolean => {
-    return true
+    return tagsList.length > 0
 })
 
 // 设置标签
-const setTags = (route: RouteLocationNormalized) => {
+const setTags = (route: any) => {
     const isExist = tagsList.some(item => {
         return item.path === route.fullPath
     })
@@ -58,19 +71,70 @@ const setTags = (route: RouteLocationNormalized) => {
     }
 }
 
-onMounted(() => {
-    setTags(route)
+watch(
+    () => route,
+    to => {
+        setTags(to)
+    },
+    { immediate: true, deep: true }
+)
+
+// 关闭单个标签
+const closeTags = (index: number) => {
+    const delItem = tagsList[index]
+    deleteTagView(index)
+    const item = tagsList[index] ? tagsList[index] : tagsList[index - 1]
+    if (item) {
+        delItem.path === route.fullPath && router.push({ path: item.path })
+    }
+}
+
+// 关闭其他标签
+const closeOtherTags = () => {
+    const curItem = tagsList.filter(item => {
+        return item.path === route.fullPath
+    })
+    closeOthersTagView(curItem)
+}
+
+// 关闭全部标签
+const closeAllTags = () => {
+    // 判断当前tags是否唯一且为首页
+    if (tagsList.length === 1 && route.name === 'home') return
+    clearTagView()
+    // 设置tagsList
+    setTagView({
+        name: 'home',
+        title: '首页',
+        path: '/home'
+    })
+    router.push({ path: '/home' })
+}
+
+const handleTags = (command: string) => {
+    switchCommandAction(command)
+}
+
+const switchCommandAction = (value: string) => {
+    switch (value) {
+        case 'other':
+            closeOtherTags()
+            break
+        case 'all':
+            closeAllTags()
+            break
+        default:
+            break
+    }
+}
+
+// f5刷新不触发
+onBeforeRouteUpdate(to => {
+    setTags(to)
 })
 </script>
 
 <style lang="less" scoped>
-.w-calc-64 {
-    width: calc(100vh - 64px) !important;
-}
-.w-calc-210 {
-    width: calc(100vh - 210px) !important;
-}
-
 .tags-view-container {
     position: fixed;
     top: var(--v3-header-height);
@@ -102,13 +166,14 @@ onMounted(() => {
             line-height: 40px;
         }
         .tags-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             height: 40px;
-            margin-right: 6px;
-            padding: 0 10px 0 5px;
+            padding: 0 5px;
             line-height: 40px;
             text-align: center;
             font-size: 14px;
-
             -webkit-transition: all 0.3s ease-in;
             -moz-transition: all 0.3s ease-in;
             transition: all 0.3s ease-in;
@@ -117,7 +182,7 @@ onMounted(() => {
             &-title,
             &-icon {
                 position: relative;
-                top: 1px;
+                top: 3px;
             }
             &-title {
                 min-width: 50px;
@@ -135,6 +200,16 @@ onMounted(() => {
         .tags-item.active {
             border-bottom: 2px solid #409eff;
         }
+    }
+    .tags-close-box {
+        position: fixed;
+        top: calc(var(--v3-header-height) + 8px);
+        right: 5px;
+        z-index: 9;
+        text-align: center;
+        background-color: #f2f3f5;
+        box-shadow: -3px 0 15px 3px rgba(0, 0, 0, 0.1);
+        z-index: 9;
     }
 }
 </style>

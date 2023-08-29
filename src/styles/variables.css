@@ -1,6 +1,7 @@
 :root {
     /** 全局背景色 */
     --v3-body-bg-color: #f2f3f5;
+    /* 头部导航高度 */
     --v3-header-height: 60px;
     --v3-container-header-height: 40px;
     /* logo内容 */
