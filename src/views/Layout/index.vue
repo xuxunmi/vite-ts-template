@@ -34,6 +34,8 @@ const isCollapse = computed(() => useApp.isCollapse)
 </script>
 
 <style lang="less" scoped>
+@import '@/styles/scrollbar.less';
+
 .layout-container {
     width: 100%;
     height: 100%;

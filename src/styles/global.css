@@ -193,6 +193,7 @@ input::-ms-reveal {
 a {
     color: #2672ff;
     background: 0 0;
+    background-image: none;
     text-decoration: none;
     outline: 0;
     cursor: pointer;
@@ -201,6 +202,8 @@ a {
 
 a:hover {
     color: #57a3f3;
+    outline: 0;
+    text-decoration: none;
 }
 
 a:active {
@@ -236,6 +239,10 @@ a[disabled] {
 ::-moz-placeholder {
     /* Mozilla Firefox 19+ */
     color: #aaaaaa;
+}
+
+pre {
+    white-space: pre-wrap;
 }
 
 input:-ms-input-placeholder,

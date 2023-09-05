@@ -143,7 +143,7 @@ onBeforeRouteUpdate(to => {
     height: var(--v3-tagsview-height);
     padding: 0 3px;
     border-bottom: 1px solid #d8dce5;
-    box-shadow: 0 1px 7px 0 #00000010, 0 0 3px 0 #00000010;
+    box-shadow: 2px 2px 2px #cacbcb;
     background-color: #f2f3f5;
     .el-scrollbar {
         height: 40px; // 必须设置el-scrollbar的高度
