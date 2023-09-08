@@ -119,8 +119,8 @@ body {
     background-color: #f2f3f5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: Helvetica Neue, PingFang SC, Hiragino Sans GB, HeitiSC, Helvetica, Arial, Microsoft YaHei,
-        WenQuanYi Micro Hei, sans-serif, '微软雅黑', 'Microsoft YaHei';
+    font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial,
+        sans-serif;
     font-size: 16px;
     line-height: 1.5;
     color: #495060;
