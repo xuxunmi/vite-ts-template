@@ -160,3 +160,13 @@ export const getNameById = (arr: SelectInterface[], id: string | number) => {
     const element = arr.find(ele => ele.id === id)
     return element?.name || undefined
 }
+
+/**
+ * 保留指定位小数
+ * @param {*} src
+ * @param {*} pos
+ * @returns
+ */
+export const formatFloat = (src: number, pos = 2) => {
+    return Math.round(src * Math.pow(10, pos)) / Math.pow(10, pos)
+}

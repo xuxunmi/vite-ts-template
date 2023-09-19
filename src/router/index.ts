@@ -22,6 +22,15 @@ const constantRoutes: Array<RouteRecordRaw> = [
                 }
             },
             {
+                path: '/tablePlus',
+                name: 'TablePlus',
+                component: () => import('@/views/TablePlus/index.vue'),
+                meta: {
+                    title: '自定义表格',
+                    elIcon: 'Grid'
+                }
+            },
+            {
                 path: '/user',
                 name: 'UserManage',
                 component: Index,
@@ -38,6 +47,25 @@ const constantRoutes: Array<RouteRecordRaw> = [
                             title: '代码雨'
                         }
                     }
+                ]
+            },
+            {
+                path: '/tools',
+                name: 'ToolsManage',
+                component: Index,
+                meta: {
+                    title: '工具管理',
+                    elIcon: 'Tools'
+                },
+                children: [
+                    // {
+                    //     path: '/user/codeRain',
+                    //     name: 'CodeRain',
+                    //     component: () => import('@/views/UserManage/CodeRain/index.vue'),
+                    //     meta: {
+                    //         title: '代码雨'
+                    //     }
+                    // }
                 ]
             }
         ]
