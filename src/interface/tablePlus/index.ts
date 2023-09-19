@@ -2,8 +2,9 @@
  * description: 编辑下拉接口类型
  */
 export interface ControlSelectEditPropsInterface {
-    value: string | number
-    label: string
+    optionValue: string | number
+    optionLabel: string
+    [key: string]: any
 }
 
 /*
@@ -11,6 +12,7 @@ export interface ControlSelectEditPropsInterface {
  */
 export interface ToolbarCustomBtnsInterface {
     label: string
+    type: string
     onClick: () => void
 }
 
@@ -18,14 +20,17 @@ export interface ToolbarCustomBtnsInterface {
  * description: 表格数据列接口类型
  */
 export interface TableColumnsInterface {
+    slotProp?: string
     prop: string
     label: string
-    width: string
-    fixed: 'left' | 'right' | undefined
-    editable: boolean
-    editProps: any
-    showOverflowTooltip: boolean
-    formatter: Function
+    width?: string | number
+    type?: string
+    fixed?: 'left' | 'right' | undefined
+    editable?: boolean
+    editProps?: any
+    showOverflowTooltip?: boolean
+    formatter?: Function
+    visible?: boolean
 }
 
 /*
@@ -38,4 +43,5 @@ export interface SortableOptionsInterface {
     filter: string
     onMove: Function
     onEnd: Function
+    destroy: Function
 }

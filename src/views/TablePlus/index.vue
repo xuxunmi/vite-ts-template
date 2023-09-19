@@ -1,6 +1,6 @@
 <template>
-    <div class="app-container bg-white">
-        <div class="app-layout w-full h-full overflow-hidden">
+    <div class="app-container bg-white h-screen">
+        <div class="app-layout">
             <h1 class="mb-8">TablePlus表格：</h1>
             <div class="app-layout__container h-full">
                 <div ref="tableWrapper" class="app-layout__left">
@@ -21,16 +21,16 @@
                         stripe
                         border
                         size="small"
-                        :maxHeight="tableHeight"
+                        :maxHeight="tableMaxHeight"
                         @row-remove="handleRowRemove"
                         @row-edit-value-change="handleRowEditValueChange"
                         @row-select="hanldeRowSelect"
                     >
-                        <!-- <template v-slot:status="{ row }">
-                        <el-tag :type="row.status === 1 ? 'success' : 'info'" size="mini">
-                            {{ row.status === 1 ? '启用' : row.status === 0 ? '停用' : '未知' }}
-                        </el-tag>
-                    </template> -->
+                        <template v-slot:status="{ row }">
+                            <el-tag :type="row.status === 1 ? 'success' : 'info'" size="small">
+                                {{ row.status === 1 ? '启用' : row.status === 0 ? '停用' : '未知' }}
+                            </el-tag>
+                        </template>
                     </table-plus>
                 </div>
                 <div class="app-layout__right">
@@ -62,7 +62,7 @@ defineOptions({
 })
 
 const loading = ref(false)
-const tableHeight = ref(0)
+const tableMaxHeight = ref(0)
 const nameOptions = [
     { id: 100, name: '可选项1', age: 1, sex: '男', city: '无锡' },
     { id: 200, name: '可选项2', age: 2, sex: '女', city: '南通' }
@@ -115,6 +115,7 @@ const columns = [
         align: 'center',
         showOverflowTooltip: true,
         editable: false,
+        sortable: true,
         width: '180'
     },
     {
@@ -123,15 +124,15 @@ const columns = [
         align: 'center',
         showOverflowTooltip: true,
         editable: true,
-        sortable: true,
+        sortable: 'custom',
         width: '180'
     },
     { prop: 'city', label: '城市', align: 'center', showOverflowTooltip: true, editable: true },
     { prop: 'deposit', label: '存款', align: 'center', showOverflowTooltip: true, editable: true },
     {
-        prop: 'status', // 用于 formatter 属性
+        // prop: 'status', // 用于 formatter 属性
         label: '状态',
-        // slotProp: 'status', // 用template具名插槽属性
+        slotProp: 'status', // 用template具名插槽属性
         align: 'center',
         showOverflowTooltip: true,
         editable: true,
@@ -152,7 +153,7 @@ const dataSource = [
     {
         id: 1,
         sequence: 1,
-        name: '三上悠亚',
+        name: '徐某某',
         age: 22,
         sex: '男',
         city: '上海',
@@ -181,10 +182,10 @@ const dataSource = [
         //     }
         // ]
     },
-    { id: 2, sequence: 2, name: '明日花绮罗', age: 28, sex: '女', city: '苏州', deposit: 99, status: 0 },
-    { id: 3, sequence: 3, name: '桃乃木香奈', age: 20, sex: '女', city: '杭州', deposit: 88, status: 1 },
-    { id: 4, sequence: 4, name: '葵伊吹', age: 18, sex: '男', city: '南京', deposit: 87, status: 1 },
-    { id: 5, sequence: 5, name: '楪可怜', age: 18, sex: '男', city: '南京', deposit: 87, status: 1 }
+    { id: 2, sequence: 2, name: '朱某某', age: 28, sex: '女', city: '苏州', deposit: 99, status: 0 },
+    { id: 3, sequence: 3, name: '罗某某', age: 20, sex: '女', city: '杭州', deposit: 88, status: 1 },
+    { id: 4, sequence: 4, name: '凡某某', age: 18, sex: '男', city: '南京', deposit: 87, status: 1 },
+    { id: 5, sequence: 5, name: '宋某某', age: 18, sex: '男', city: '南京', deposit: 87, status: 1 }
 ]
 
 /**
@@ -241,6 +242,7 @@ const hanldeRowSelect = selectedRows => {
  * 行编辑变化,带出当前行其他值
  */
 const handleRowEditValueChange = ({ value, prop, rowModel }) => {
+    console.log('value ', value, prop, rowModel)
     if (prop === 'name') {
         const option = nameOptions.find(item => item.id === value)
         console.log('option: ', option)
@@ -353,6 +355,21 @@ const getSummaries = (param: SummaryMethodProps) => {
     })
     return sums
 }
+
+// 设置表格最大高度
+const setTableMaxHeight = () => {
+    nextTick(() => {
+        const bodyH = document.body.clientHeight || 0
+        const layoutHeader = document.querySelector('.layout-header-container')?.clientHeight || 0
+        const tagsViewContainer = document.querySelector('.tags-view-container')?.clientHeight || 0
+        tableMaxHeight.value = bodyH - layoutHeader - tagsViewContainer
+        console.dir(tableMaxHeight.value)
+    })
+}
+
+onMounted(() => {
+    setTableMaxHeight()
+})
 </script>
 
 <style lang="less" scoped>

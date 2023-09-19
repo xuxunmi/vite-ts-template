@@ -4,9 +4,9 @@
             v-if="showSearchBar"
             class="w-60"
             v-model="searchText"
-            placeholder="搜索"
-            prefix-icon="el-icon-search"
+            placeholder="请输入搜索条件"
             size="small"
+            clearable
             @change="handleSearchTextChange"
         />
         <div class="flex flex-1 ml-4">
@@ -34,11 +34,7 @@
                     <el-button type="warning" class="mr-3" size="small" plain>作废</el-button>
                 </template>
             </el-popconfirm>
-            <el-popconfirm
-                v-if="showRemoveBtn"
-                title="确定删除选择的记录吗？"
-                @confirm="emits('row-remove')"
-            >
+            <el-popconfirm v-if="showRemoveBtn" title="确定删除选择的记录吗？" @confirm="emits('row-remove')">
                 <template #reference>
                     <el-button type="danger" class="mr-3" size="small" plain>删除</el-button>
                 </template>
@@ -79,11 +75,8 @@ export default {
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ToolbarCustomBtnsInterface, TableColumnsInterface } from '@/interface/tablePlus'
-
-// defineOptions({
-//     name: 'TablePlusToolbar'
-// })
+import { ToolbarCustomBtnsInterface } from '@/interface/tablePlus'
+import type { CheckboxValueType } from 'element-plus'
 
 const props = defineProps({
     /**
@@ -139,7 +132,7 @@ const props = defineProps({
      * 自定义按钮组
      */
     customBtns: {
-        type: Array as () => ToolbarCustomBtnsInterface[],
+        type: Array as () => any[],
         default: () => []
     },
     /**
@@ -160,8 +153,8 @@ const props = defineProps({
      * 筛选列数据列
      */
     columns: {
-        type: Array as () => TableColumnsInterface[],
-        default: () => []
+        type: Array,
+        default: () => [] as any[]
     }
 })
 
@@ -189,7 +182,7 @@ const handleSearchTextChange = (val: string) => {
 }
 
 /* 筛选列变化 */
-const handleFilteredColumnsChange = (value: string[]) => {
+const handleFilteredColumnsChange = (value: CheckboxValueType[]) => {
     emits('filtered-columns-change', value)
 }
 </script>

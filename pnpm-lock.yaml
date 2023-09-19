@@ -4,6 +4,7 @@ specifiers:
   '@element-plus/icons-vue': ^2.1.0
   '@types/node': ^18.14.0
   '@types/qs': ^6.9.7
+  '@types/sortablejs': ^1.15.2
   '@vitejs/plugin-legacy': ^4.0.1
   '@vitejs/plugin-vue': ^4.2.3
   '@vitejs/plugin-vue-jsx': ^3.0.1
@@ -59,6 +60,7 @@ dependencies:
 
 devDependencies:
   '@types/node': registry.npmmirror.com/@types/node/18.16.17
+  '@types/sortablejs': 1.15.2
   '@vitejs/plugin-vue': registry.npmmirror.com/@vitejs/plugin-vue/4.2.3_vite@4.3.9+vue@3.3.4
   '@vitejs/plugin-vue-jsx': registry.npmmirror.com/@vitejs/plugin-vue-jsx/3.0.1_vite@4.3.9+vue@3.3.4
   '@vue-macros/volar': registry.npmmirror.com/@vue-macros/volar/0.14.2_ppdgbl2fu26s6ywjzsuywlxelm
@@ -261,6 +263,10 @@ packages:
   /@sxzz/popperjs-es/2.11.7:
     resolution: {integrity: sha512-Ccy0NlLkzr0Ex2FKvh2X+OyERHXJ88XJ1MXtsI9y9fGexlaXaVTPzBCRBwIxFkORuOb+uBqeu+RqnpgYTEZRUQ==}
     dev: false
+
+  /@types/sortablejs/1.15.2:
+    resolution: {integrity: sha512-mOIv/EnPMzAZAVbuh9uGjOZ1BBdimP9Y6IPGntsvQJtko5yapSDKB7GwB3AOlF5N3bkpk4sBwQRpS3aEkiUbaA==}
+    dev: true
 
   /adler-32/1.2.0:
     resolution: {integrity: sha512-/vUqU/UY4MVeFsg+SsK6c+/05RZXIHZMGJA+PX5JyWI0ZRcBpupnRuPLU/NXXoFwMYCPCoxIfElM2eS+DUXCqQ==}

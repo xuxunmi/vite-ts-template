@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.14.0",
+    "@types/sortablejs": "^1.15.2",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitejs/plugin-vue-jsx": "^3.0.1",
     "@vue-macros/volar": "^0.14.2",

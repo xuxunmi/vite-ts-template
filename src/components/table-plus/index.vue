@@ -23,10 +23,12 @@
             :row-key="getRowKey"
             :row-class-name="generateRowClassName"
             :cell-class-name="generateCellClassName"
+            :max-height="maxHeight"
             highlight-current-row
             @row-click="handleRowClick"
             @selection-change="handleSelectionChange"
             @current-change="handleCurrentChange"
+            @sort-change="handleSortChange"
         >
             <el-table-column v-if="rowSortable" width="60">
                 <el-icon class="cursor-move table-plus__drag-handler"><Rank /></el-icon>
@@ -48,7 +50,7 @@
                                 v-model="currentEditRowModel[columnItem.prop]"
                                 v-bind="columnItem.editProps || {}"
                                 @change="
-                                    val =>
+                                    (val: string) =>
                                         handleEditValueChange({
                                             value: val,
                                             prop: columnItem.prop,
@@ -120,12 +122,14 @@ import TablePlusControl from './control/index.vue'
 import Sortable from 'sortablejs'
 import { removeItemsInTree } from '@/utils'
 import { getLevelFromClassName, randomString } from './utils'
-import { TableColumnsInterface, SortableOptionsInterface } from '@/interface/tablePlus'
-import { ElTable, ElMessage } from 'element-plus'
-import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
+import { ElMessage } from 'element-plus'
+import type { ElTable, CheckboxValueType } from 'element-plus'
+import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount, useAttrs } from 'vue'
 
+const attrs = useAttrs()
+console.log('attrs:', attrs)
 // sortable 实例
-let sortable: SortableOptionsInterface | null = null
+let sortable: Sortable | null = null
 // 表格实例
 const tableRef = ref<InstanceType<typeof ElTable>>()
 
@@ -148,7 +152,7 @@ const props = defineProps({
      * 列配置
      */
     columns: {
-        type: Array as () => TableColumnsInterface[],
+        type: Array as () => any[],
         default: () => []
     },
     /**
@@ -231,9 +235,8 @@ const props = defineProps({
     /**
      * 是否设置表格高度,达到固定表头
      */
-    height: {
-        type: String,
-        default: '100%'
+    maxHeight: {
+        type: Number
     }
 })
 
@@ -249,13 +252,14 @@ const emits = defineEmits([
     'row-click',
     'row-select',
     'row-edit-value-change',
-    'row-sort'
+    'row-sort',
+    'custom-sortable'
 ])
 
 // 当前搜索文字
 const searchText = ref<string>('')
 // 当前选中的列
-const filteredColumnProps = ref<string[]>([])
+const filteredColumnProps = ref<CheckboxValueType[]>([])
 // 选择的行
 const selectedRows = ref([])
 // 当前高亮行
@@ -320,24 +324,24 @@ const initTableSortable = () => {
             return draggedLevel === relatedLevel
         },
         onEnd: ({ oldIndex, newIndex }) => {
-            // eslint-disable-next-line vue/no-mutating-props
-            const currentRow = props.dataSource.splice(oldIndex, 1)[0]
-            // eslint-disable-next-line vue/no-mutating-props
-            props.dataSource.splice(newIndex, 0, currentRow)
-            nextTick(() => {
-                if (props.rowSortSequenceField) {
-                    props.dataSource.forEach((item: any, index) => {
-                        if (props.rowSortSequenceField) {
-                            item[props.rowSortSequenceField] = index + 1
-                        }
-                    })
+            if (oldIndex && newIndex) {
+                const currentRow = props.dataSource.splice(oldIndex, 1)[0]
+                props.dataSource.splice(newIndex, 0, currentRow)
+                nextTick(() => {
+                    if (props.rowSortSequenceField) {
+                        props.dataSource.forEach((item: any, index) => {
+                            if (props.rowSortSequenceField) {
+                                item[props.rowSortSequenceField] = index + 1
+                            }
+                        })
+                    }
+                })
+                emits('row-sort', { oldIndex, newIndex })
+                // 重置当前正在编辑的行的工具栏，防止位置错乱
+                if (currentEditRow.value) {
+                    editToolbarVisible.value = false
+                    nextTick(() => (editToolbarVisible.value = true))
                 }
-            })
-            emits('row-sort', { oldIndex, newIndex })
-            // 重置当前正在编辑的行的工具栏，防止位置错乱
-            if (currentEditRow.value) {
-                editToolbarVisible.value = false
-                nextTick(() => (editToolbarVisible.value = true))
             }
         }
     })
@@ -346,14 +350,14 @@ const initTableSortable = () => {
 /**
  * 获取 rowKey 值
  */
-const getRowKey = row => {
+const getRowKey = (row: any) => {
     return row[props.rowKey] ?? row['_newRowId']
 }
 
 /**
  * 生成表格行类名
  */
-const generateRowClassName = ({ row, rowIndex }) => {
+const generateRowClassName = ({ row, rowIndex }: { row: any; rowIndex: number }) => {
     let classes = props.rowClassName ? props.rowClassName({ row, rowIndex }) : ''
     if (row.children?.length) {
         classes += ' row-draggable--disabled'
@@ -364,7 +368,17 @@ const generateRowClassName = ({ row, rowIndex }) => {
 /**
  * 生成表格单元格类名
  */
-const generateCellClassName = ({ row, column, rowIndex, columnIndex }) => {
+const generateCellClassName = ({
+    row,
+    column,
+    rowIndex,
+    columnIndex
+}: {
+    row: any
+    column: any
+    rowIndex: number
+    columnIndex: number
+}) => {
     let classes = props.cellClassName ? props.cellClassName({ row, column, rowIndex, columnIndex }) : ''
     return `${classes} table-plus__cell`
 }
@@ -372,14 +386,22 @@ const generateCellClassName = ({ row, column, rowIndex, columnIndex }) => {
 /**
  * 处理表格当前行点击事件
  */
-const handleCurrentChange = row => {
+const handleCurrentChange = (row: any) => {
     currentHighlightRow.value = row
+}
+
+/**
+ * 处理表格排序远程搜索
+ */
+const handleSortChange = ({ column, prop, order }: { column: any; prop: string; order: any }) => {
+    console.log(' order:', column, prop, order)
+    emits('custom-sortable', { column, prop, order })
 }
 
 /**
  * 处理单击时行编辑事件
  */
-const handleRowClick = row => {
+const handleRowClick = (row: any) => {
     emits('row-click')
     if (!props.rowEditable) {
         return
@@ -390,7 +412,7 @@ const handleRowClick = row => {
 /**
  * 处理选择行事件
  */
-const handleSelectionChange = selection => {
+const handleSelectionChange = (selection: any) => {
     selectedRows.value = selection
     emits('row-select', selection)
 }
@@ -398,7 +420,7 @@ const handleSelectionChange = selection => {
 /**
  * 渲染 Column 文本
  */
-const renderColumnText = ({ column, text, row, index }) => {
+const renderColumnText = ({ column, text, row, index }: { column: any; text: string; row: any; index: number }) => {
     if (column.formatter) {
         return column.formatter(row, column, text, index)
     }
@@ -522,7 +544,7 @@ const handleSearch = (val: string) => {
 /**
  * 处理列过滤事件
  */
-const handleFilteredColumnsChange = (value: string[]) => {
+const handleFilteredColumnsChange = (value: CheckboxValueType[]) => {
     filteredColumnProps.value = value
     nextTick(() => tableRef.value!.doLayout())
 }
@@ -555,7 +577,8 @@ const filterList = (list: any[], text: string) => {
  * prop: 当前编辑的属性
  * rowModel: 当前编辑的行实体
  */
-const handleEditValueChange = ({ value, prop, rowModel }) => {
+
+const handleEditValueChange = ({ value, prop, rowModel }: { value: string; prop: string; rowModel: any }) => {
     emits('row-edit-value-change', { value, prop, rowModel })
 }
 
