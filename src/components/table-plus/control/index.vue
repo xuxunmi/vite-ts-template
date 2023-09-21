@@ -2,7 +2,7 @@
     <el-select
         v-if="type === 'select'"
         v-bind="$attrs"
-        :value="value"
+        :model-value="modelValue"
         :placeholder="$attrs.placeholder || '请选择'"
         :size="size"
         @input="handleInput"
@@ -14,11 +14,17 @@
             :value="item[optionValue]"
         />
     </el-select>
-    <el-switch v-else-if="type === 'switch'" v-bind="$attrs" :value="value" :size="size" @input="handleInput" />
+    <el-switch
+        v-else-if="type === 'switch'"
+        v-bind="$attrs"
+        :model-value="modelValue"
+        :size="size"
+        @input="handleInput"
+    />
     <el-input-number
         v-else-if="type === 'inputNumber'"
         v-bind="$attrs"
-        :value="value"
+        :model-value="modelValue"
         :placeholder="$attrs.placeholder || '请输入'"
         :size="size"
         @input="handleInput"
@@ -26,7 +32,7 @@
     <el-date-picker
         v-else-if="type === 'datePicker'"
         v-bind="$attrs"
-        :value="value"
+        :model-value="modelValue"
         :placeholder="$attrs.placeholder || '请选择日期'"
         :value-format="$attrs.valueFormat"
         :type="$attrs.pickerType"
@@ -36,7 +42,7 @@
     <el-input
         v-else
         v-bind="$attrs"
-        :value="value"
+        :model-value="modelValue"
         :type="type"
         :placeholder="$attrs.placeholder || '请输入'"
         :size="size"
@@ -44,16 +50,14 @@
     />
 </template>
 
-<script lang="ts">
-export default {
+<script setup lang="ts">
+import { computed, useAttrs } from 'vue'
+import { ControlSelectEditPropsInterface } from '@/interface/tablePlus'
+
+defineOptions({
     inheritAttrs: false,
     name: 'TablePlusControl'
-}
-</script>
-
-<script setup lang="ts">
-import { ref, computed, useAttrs } from 'vue'
-import { ControlSelectEditPropsInterface } from '@/interface/tablePlus'
+})
 
 const props = defineProps({
     /**
@@ -84,31 +88,26 @@ const props = defineProps({
         type: String,
         default: 'value'
     },
-    value: {
-        required: true
-    },
-    onChange: {
-        type: Function
+    /**
+     * v-model语法糖值
+     */
+    modelValue: {
+        required: true,
+        default: ''
     }
 })
 
 const attrs = useAttrs()
-console.log('attrs:', attrs)
 
-const emits = defineEmits(['input'])
+const emits = defineEmits(['update:modelValue'])
 
 const size = computed(() => {
     return attrs.size ?? 'small'
 })
 
-// 当前搜索文字
-const searchText = ref<string>('')
-// 当前选中的列
-const filteredColumns = ref<string[]>([])
-
 /* 处理输入 */
-const handleInput = val => {
-    emits('input', val)
+const handleInput = (val: any) => {
+    emits('update:modelValue', val)
 }
 </script>
 

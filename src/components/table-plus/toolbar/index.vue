@@ -16,29 +16,12 @@
             <el-button v-if="showAddChildBtn" class="mr-3" size="small" plain @click="emits('row-add-child')">
                 新增子项
             </el-button>
-            <el-button v-if="showModifyBtn" class="mr-3" size="small" plain @click="emits('row-modify')"
-                >修改</el-button
+            <el-button v-if="showDisableBtn" class="mr-3" size="small" plain @click="emits('row-disable')"
+                >停用</el-button
             >
-            <el-popconfirm v-if="showEnableBtn" title="确定启用选择的记录吗？" @confirm="emits('row-enable')">
-                <template #reference>
-                    <el-button type="success" class="mr-3" size="small" plain>启用</el-button>
-                </template>
-            </el-popconfirm>
-            <el-popconfirm v-if="showDisableBtn" title="确定停用选择的记录吗？" @confirm="emits('row-disable')">
-                <template #reference>
-                    <el-button class="mr-3" size="small" plain>停用</el-button>
-                </template>
-            </el-popconfirm>
-            <el-popconfirm v-if="showBeInvalidBtn" title="确定作废选择的记录吗？" @confirm="emits('row-be-invalid')">
-                <template #reference>
-                    <el-button type="warning" class="mr-3" size="small" plain>作废</el-button>
-                </template>
-            </el-popconfirm>
-            <el-popconfirm v-if="showRemoveBtn" title="确定删除选择的记录吗？" @confirm="emits('row-remove')">
-                <template #reference>
-                    <el-button type="danger" class="mr-3" size="small" plain>删除</el-button>
-                </template>
-            </el-popconfirm>
+            <el-button v-if="showRemoveBtn" class="mr-3" type="danger" size="small" plain @click="emits('row-remove')"
+                >删除</el-button
+            >
             <el-button
                 v-for="(item, index) in customBtns"
                 class="mr-3"
@@ -66,17 +49,15 @@
     </div>
 </template>
 
-<script lang="ts">
-export default {
-    inheritAttrs: false,
-    name: 'TablePlusToolbar'
-}
-</script>
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ToolbarCustomBtnsInterface } from '@/interface/tablePlus'
 import type { CheckboxValueType } from 'element-plus'
+
+defineOptions({
+    inheritAttrs: false,
+    name: 'TablePlusToolbar'
+})
 
 const props = defineProps({
     /**
@@ -94,30 +75,9 @@ const props = defineProps({
         default: true
     },
     /**
-     * 是否显示修改按钮，默认显示
-     */
-    showModifyBtn: {
-        type: Boolean,
-        default: true
-    },
-    /**
-     * 是否显示作废按钮，默认显示
-     */
-    showBeInvalidBtn: {
-        type: Boolean,
-        default: true
-    },
-    /**
-     * 是否显示移除按钮，默认显示
+     * 是否显示删除按钮，默认显示
      */
     showRemoveBtn: {
-        type: Boolean,
-        default: true
-    },
-    /**
-     * 是否显示启用按钮，默认显示
-     */
-    showEnableBtn: {
         type: Boolean,
         default: true
     },
@@ -161,10 +121,7 @@ const props = defineProps({
 const emits = defineEmits([
     'row-add',
     'row-add-child',
-    'row-modify',
-    'row-enable',
     'row-disable',
-    'row-be-invalid',
     'row-remove',
     'custom-btn-click',
     'search',

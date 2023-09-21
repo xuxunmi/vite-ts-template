@@ -6,10 +6,7 @@
             @row-add="handleRowAdd"
             @row-add-child="handleRowAddChild"
             @row-remove="handleRowRemove"
-            @row-modify="handleRowModify"
-            @row-enable="handleRowEnable"
             @row-disable="handleRowDisable"
-            @row-be-invalid="handleRowBeInvalid"
             @custom-btn-click="handleCustomBtnClick"
             @search="handleSearch"
             @filtered-columns-change="handleFilteredColumnsChange"
@@ -58,11 +55,9 @@
                                         })
                                 "
                             />
-
                             <template v-else-if="columnItem.slotProp">
                                 <slot :name="columnItem.slotProp" :row="scope.row" />
                             </template>
-
                             <span v-else>
                                 {{
                                     renderColumnText({
@@ -87,11 +82,9 @@
                                 <el-button size="small" @click="cancelEdit">取消</el-button>
                             </el-popover> -->
                         </template>
-
                         <template v-else-if="columnItem.slotProp">
                             <slot :name="columnItem.slotProp" :row="scope.row" />
                         </template>
-
                         <span v-else>
                             {{
                                 renderColumnText({
@@ -109,13 +102,6 @@
     </div>
 </template>
 
-<script lang="ts">
-export default {
-    inheritAttrs: false,
-    name: 'TablePlus'
-}
-</script>
-
 <script setup lang="ts">
 import TablePlusToolbar from './toolbar/index.vue'
 import TablePlusControl from './control/index.vue'
@@ -124,10 +110,13 @@ import { removeItemsInTree } from '@/utils'
 import { getLevelFromClassName, randomString } from './utils'
 import { ElMessage } from 'element-plus'
 import type { ElTable, CheckboxValueType } from 'element-plus'
-import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount, useAttrs } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 
-const attrs = useAttrs()
-console.log('attrs:', attrs)
+defineOptions({
+    inheritAttrs: false,
+    name: 'TablePlus'
+})
+
 // sortable 实例
 let sortable: Sortable | null = null
 // 表格实例
@@ -184,7 +173,7 @@ const props = defineProps({
         default: false
     },
     /**
-     * 是否启用行排序
+     * 是否启用行排序和拖拽
      */
     rowSortable: {
         type: Boolean,
@@ -243,10 +232,7 @@ const props = defineProps({
 const emits = defineEmits([
     'row-add',
     'row-remove',
-    'row-modify',
-    'row-enable',
     'row-disable',
-    'row-be-invalid',
     'row-edit-confirm',
     'search',
     'row-click',
@@ -261,9 +247,9 @@ const searchText = ref<string>('')
 // 当前选中的列
 const filteredColumnProps = ref<CheckboxValueType[]>([])
 // 选择的行
-const selectedRows = ref([])
+const selectedRows = ref<any[]>([])
 // 当前高亮行
-const currentHighlightRow = ref(null)
+const currentHighlightRow = ref<any>(null)
 // 当前编辑的行
 const currentEditRow = ref(null)
 // 当前编辑的行模型
@@ -436,7 +422,7 @@ const handleRowAdd = () => {
         return
     }
     const newRow = initNewRow()
-    props.dataSource.push(newRow)
+    props.dataSource.unshift(newRow)
     editRow(newRow)
 }
 
@@ -444,7 +430,7 @@ const handleRowAdd = () => {
  * 处理树形表格增加子行事件
  */
 const handleRowAddChild = () => {
-    const parentRow = currentHighlightRow.value || selectedRows[0].value
+    const parentRow = currentHighlightRow.value || selectedRows.value[0]
     if (!parentRow) {
         ElMessage({
             type: 'warning',
@@ -466,38 +452,13 @@ const handleRowAddChild = () => {
  * 处理行移除事件
  */
 const handleRowRemove = () => {
-    if (!selectedRows.value.length) {
-        ElMessage({
-            type: 'warning',
-            message: '请先选中一条记录!',
-            center: true
-        })
+    if (!checkSelectedRows()) {
         return
     }
     if (props.rowLocalRemove) {
         removeItemsInTree(props.dataSource, selectedRows.value)
     }
     emits('row-remove', selectedRows.value)
-}
-
-/**
- * 处理点击修改按钮事件
- */
-const handleRowModify = () => {
-    if (!checkSelectedRows()) {
-        return
-    }
-    emits('row-modify', selectedRows.value)
-}
-
-/**
- * 点击启用
- */
-const handleRowEnable = () => {
-    if (!checkSelectedRows()) {
-        return
-    }
-    emits('row-enable', selectedRows.value)
 }
 
 /**
@@ -508,16 +469,6 @@ const handleRowDisable = () => {
         return
     }
     emits('row-disable', selectedRows.value)
-}
-
-/**
- * 处理点击作废按钮事件
- */
-const handleRowBeInvalid = () => {
-    if (!checkSelectedRows()) {
-        return
-    }
-    emits('row-be-invalid', selectedRows.value)
 }
 
 /**
@@ -578,7 +529,10 @@ const filterList = (list: any[], text: string) => {
  * rowModel: 当前编辑的行实体
  */
 
-const handleEditValueChange = ({ value, prop, rowModel }: { value: string; prop: string; rowModel: any }) => {
+const handleEditValueChange = ({ value, prop, rowModel }: { value: string; prop: string; rowModel: string }) => {
+    console.log('value : ',value)
+    console.log('prop : ', value)
+    console.log('rowModel : ',value)
     emits('row-edit-value-change', { value, prop, rowModel })
 }
 
@@ -607,7 +561,7 @@ const checkSelectedRows = () => {
 /**
  * 编辑指定行
  */
-const editRow = row => {
+const editRow = (row: any) => {
     if (currentEditRow.value) {
         confirmEdit()
     }
@@ -639,8 +593,8 @@ const cancelEdit = () => {
 /**
  * 替换列表中指定项，支持树形结构
  */
-const replaceItemInList = (list, oldItem, newItem) => {
-    const index = list.findIndex(item => isSameRow(item, oldItem))
+const replaceItemInList = (list: any, oldItem: any, newItem: any) => {
+    const index = list.findIndex((item: any) => isSameRow(item, oldItem))
     if (index !== -1) {
         Object.assign(list[index], newItem)
         return true
@@ -657,7 +611,7 @@ const replaceItemInList = (list, oldItem, newItem) => {
 /**
  * 是否是同一行
  */
-const isSameRow = (row1, row2) => {
+const isSameRow = (row1: any, row2: any) => {
     if (!row1 || !row2) {
         return false
     }
@@ -691,11 +645,6 @@ onBeforeUnmount(() => {
 
 :deep(.table-plus) {
     height: 100%;
-    &__cell .cell {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
 }
 .popper__table-edit-toolbar {
     min-width: 120px;

@@ -64,8 +64,8 @@ defineOptions({
 const loading = ref(false)
 const tableMaxHeight = ref(0)
 const nameOptions = [
-    { id: 100, name: '可选项1', age: 1, sex: '男', city: '无锡' },
-    { id: 200, name: '可选项2', age: 2, sex: '女', city: '南通' }
+    { id: 100, name: '可选项1', age: 18, sex: '男', city: '无锡' },
+    { id: 200, name: '可选项2', age: 20, sex: '女', city: '南通' }
 ]
 
 // 新增行数据
@@ -94,7 +94,7 @@ const statusList = [
 
 // 表格列
 const columns = [
-    { prop: 'sequence', label: '序号', width: '60', fixed: 'left' },
+    { prop: 'sequence', label: '序号', width: '120', fixed: 'left' },
     {
         prop: 'name',
         label: '姓名',
@@ -141,7 +141,7 @@ const columns = [
             activeValue: 1,
             inactiveValue: 0
         },
-        formatter: row => {
+        formatter: (row: any) => {
             // return this.statusList.find(item => item.id === row.status)?.name;
             return row.status === 1 ? '启用' : row.status === 0 ? '停用' : '未知'
         }
@@ -149,7 +149,7 @@ const columns = [
 ]
 
 // 表格数据
-const dataSource = [
+const dataSource = ref([
     {
         id: 1,
         sequence: 1,
@@ -158,54 +158,78 @@ const dataSource = [
         sex: '男',
         city: '上海',
         deposit: 99,
-        status: 1
-        // children: [
-        //     {
-        //         id: 11,
-        //         sequence: '1-1',
-        //         name: '河北彩花',
-        //         age: 18,
-        //         sex: '女',
-        //         city: '徐汇',
-        //         deposit: 98,
-        //         status: 1
-        //     },
-        //     {
-        //         id: 12,
-        //         sequence: '1-2',
-        //         name: '深田咏美',
-        //         age: 28,
-        //         sex: '女',
-        //         city: '浦东',
-        //         deposit: 97,
-        //         status: 1
-        //     }
-        // ]
+        status: 1,
+        children: [
+            {
+                id: 11,
+                sequence: '1-1',
+                name: '用户1',
+                age: 18,
+                sex: '女',
+                city: '徐汇',
+                deposit: 98,
+                status: 1,
+                children: [
+                    {
+                        id: 111,
+                        sequence: '1-1',
+                        name: '用户3',
+                        age: 18,
+                        sex: '女',
+                        city: '徐汇',
+                        deposit: 98,
+                        status: 1
+                    },
+                    {
+                        id: 112,
+                        sequence: '1-2',
+                        name: '用户4',
+                        age: 28,
+                        sex: '女',
+                        city: '浦东',
+                        deposit: 97,
+                        status: 1
+                    }
+                ]
+            },
+            {
+                id: 12,
+                sequence: '1-2',
+                name: '用户2',
+                age: 28,
+                sex: '女',
+                city: '浦东',
+                deposit: 97,
+                status: 1
+            }
+        ]
     },
     { id: 2, sequence: 2, name: '朱某某', age: 28, sex: '女', city: '苏州', deposit: 99, status: 0 },
     { id: 3, sequence: 3, name: '罗某某', age: 20, sex: '女', city: '杭州', deposit: 88, status: 1 },
     { id: 4, sequence: 4, name: '凡某某', age: 18, sex: '男', city: '南京', deposit: 87, status: 1 },
     { id: 5, sequence: 5, name: '宋某某', age: 18, sex: '男', city: '南京', deposit: 87, status: 1 }
-]
+])
 
 /**
  * 处理导出Excel按钮
  */
 const handleExportExcel = () => {
-    const columns = this.columns.filter(item => item.label)
-    console.log('columns: ', columns)
+    let columnsLsit = columns.filter((item: any) => item.label)
+    console.log('columnsLsit: ', columnsLsit)
     // TODO：待处理处理树形结构表格，目无法导出children中的数据的问题
-    const sheetData = this.dataSource.map(item =>
-        columns.map(columnItem => (columnItem.formatter ? columnItem.formatter(item) : item[columnItem.prop]))
+    const sheetData = dataSource.value.map((item: any) =>
+        columnsLsit.map((columnItem: any) =>
+            columnItem.formatter ? columnItem.formatter(item) : item[columnItem.prop]
+        )
     )
     console.log('sheetData: ', sheetData)
     const option = {
         fileName: '导出插件使用',
         datas: [
             {
-                sheetHeader: columns.map(item => item.label),
+                sheetHeader: columnsLsit.map((item: any) => item.label),
                 sheetData: sheetData,
-                columnWidths: new Array(columns.length).fill(10)
+                columnWidths: new Array(columnsLsit.length).fill(10)
             }
         ]
     }
@@ -217,14 +241,15 @@ const handleExportExcel = () => {
 const customBtns = [
     {
         label: '自定义按钮',
-        onClick: selections => {
-            const names = selections.filter(item => item.name).map(item => item.name)
+        onClick: (selections: any) => {
+            const names = selections.filter((item: any) => item.name).map((item: any) => item.name)
             if (names.length) {
-                this.$message({
+                ElMessage({
                     type: 'info',
                     message: `选中了${names.join('、')}`,
                     center: true
                 })
+                return
             }
         }
     },
@@ -234,18 +259,16 @@ const customBtns = [
 /**
  *  行选中
  */
-const hanldeRowSelect = selectedRows => {
+const hanldeRowSelect = (selectedRows: any) => {
     console.log('行选中selectedRows: ', selectedRows)
 }
 
 /**
  * 行编辑变化,带出当前行其他值
  */
-const handleRowEditValueChange = ({ value, prop, rowModel }) => {
-    console.log('value ', value, prop, rowModel)
+const handleRowEditValueChange = ({ value, prop, rowModel }: { value: string; prop: string; rowModel: string }) => {
     if (prop === 'name') {
-        const option = nameOptions.find(item => item.id === value)
-        console.log('option: ', option)
+        const option = nameOptions.find((item: any) => item.id === value)
         Object.assign(rowModel, option)
     }
 }
@@ -253,8 +276,8 @@ const handleRowEditValueChange = ({ value, prop, rowModel }) => {
 /**
  * 行移除(可用于操作接口)
  */
-const handleRowRemove = selections => {
-    const names = selections.filter(item => item.name).map(item => item.name)
+const handleRowRemove = (selectedRows: any) => {
+    const names = selectedRows.filter((item: any) => item.name).map((item: any) => item.name)
     if (names.length) {
         ElMessage({
             type: 'success',
