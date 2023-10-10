@@ -1,10 +1,11 @@
 import { type RouteRecordRaw } from 'vue-router'
+const Index = () => import('@/views/Index/index.vue')
 
 /* 首页路由 */
 export const homeRoutes: RouteRecordRaw[] = [
     // {
     //     path: '/',
-    //     component: Layout,
+    //     component: Index,
     //     name: 'home',
     //     redirect: '/dashboard',
     //     children: [
@@ -26,7 +27,7 @@ export const homeRoutes: RouteRecordRaw[] = [
 export const systemManageRoutes: RouteRecordRaw[] = [
     // {
     //     path: '/system',
-    //     component: Layout,
+    //     component: Index,
     //     redirect: '/system/organization',
     //     name: 'systemManage',
     //     meta: {
@@ -52,7 +53,7 @@ export const projectMonitorRoutes: RouteRecordRaw[] = [
     {
         path: '/monitor',
         name: 'projectMonitor',
-        component: Layout,
+        component: Index,
         children: [
             {
                 path: 'project',

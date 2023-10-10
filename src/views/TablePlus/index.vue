@@ -15,6 +15,7 @@
                         show-summary
                         row-key="id"
                         row-sort-sequence-field="sequence"
+                        :show-search-bar="false"
                         row-sortable
                         row-editable
                         row-local-remove
@@ -26,9 +27,9 @@
                         @row-edit-value-change="handleRowEditValueChange"
                         @row-select="hanldeRowSelect"
                     >
-                        <template v-slot:status="{ row }">
+                        <template v-slot:status="{ row, index }">
                             <el-tag :type="row.status === 1 ? 'success' : 'info'" size="small">
-                                {{ row.status === 1 ? '启用' : row.status === 0 ? '停用' : '未知' }}
+                                {{ row.status === 1 ? '启用' : row.status === 0 ? '停用' : '未知' }}---下标：{{ index }}
                             </el-tag>
                         </template>
                     </table-plus>
@@ -365,15 +366,17 @@ const getSummaries = (param: SummaryMethodProps) => {
         }
         const values = data.map(item => Number(item[column.property]))
         if (column.property === 'age' || column.property === 'deposit') {
-            sums[index] = values.reduce((prev, curr) => {
-                const value = Number(curr)
-                if (!isNaN(value)) {
-                    return prev + curr
-                } else {
-                    return prev
-                }
-            }, 0)
-            sums[index] = formatFloat(sums[index], 4) + ' 万'
+            sums[index] = values
+                .reduce((prev, curr) => {
+                    const value = Number(curr)
+                    if (!isNaN(value)) {
+                        return prev + curr
+                    } else {
+                        return prev
+                    }
+                }, 0)
+                .toString()
+            sums[index] = formatFloat(+sums[index], 4) + ' 万'
         }
     })
     return sums

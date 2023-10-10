@@ -42,12 +42,13 @@
                 >
                     <template #default="scope">
                         <template v-if="isSameRow(scope.row, currentEditRow)">
-                            <table-plus-control
+                            <TablePlusControl
                                 v-if="columnItem.editable"
                                 v-model="currentEditRowModel[columnItem.prop]"
                                 v-bind="columnItem.editProps || {}"
+                                :size="$attrs.size"
                                 @change="
-                                    (val: string) =>
+                                    (val: any) =>
                                         handleEditValueChange({
                                             value: val,
                                             prop: columnItem.prop,
@@ -56,7 +57,7 @@
                                 "
                             />
                             <template v-else-if="columnItem.slotProp">
-                                <slot :name="columnItem.slotProp" :row="scope.row" />
+                                <slot :name="columnItem.slotProp" :row="scope.row" :index="scope.$index" />
                             </template>
                             <span v-else>
                                 {{
@@ -68,22 +69,22 @@
                                     })
                                 }}
                             </span>
-
                             <!-- <el-popover
-                                v-if="columnIndex === columns.length - 1"
-                                v-model="editToolbarVisible"
-                                popper-class="popper__table-edit-toolbar"
-                                placement="bottom"
-                                trigger="contextmenu"
-                                :show-arrow="false"
-                            >
-                                <template #reference> </template>
-                                <el-button type="primary" size="small" @click="confirmEdit">确认</el-button>
-                                <el-button size="small" @click="cancelEdit">取消</el-button>
-                            </el-popover> -->
+                                v-if="columnIndex === columns.length - 1"
+                                :visible="editToolbarVisible"
+                                popper-class="popper__table-edit-toolbar"
+                                placement="bottom"
+                                trigger="contextmenu"
+                                :show-arrow="false"
+                            >
+                                <template #default>
+                                    <el-button type="primary" size="small" @click="confirmEdit">确认</el-button>
+                                    <el-button size="small" @click="cancelEdit">取消</el-button>
+                                </template>
+                            </el-popover> -->
                         </template>
                         <template v-else-if="columnItem.slotProp">
-                            <slot :name="columnItem.slotProp" :row="scope.row" />
+                            <slot :name="columnItem.slotProp" :row="scope.row" :index="scope.$index" />
                         </template>
                         <span v-else>
                             {{
@@ -187,13 +188,6 @@ const props = defineProps({
         default: undefined
     },
     /**
-     * 是否显示搜索框，默认显示
-     */
-    showSearchBar: {
-        type: Boolean,
-        default: true
-    },
-    /**
      * 是否启用本地移除
      */
     rowLocalRemove: {
@@ -253,7 +247,7 @@ const currentHighlightRow = ref<any>(null)
 // 当前编辑的行
 const currentEditRow = ref(null)
 // 当前编辑的行模型
-const currentEditRowModel = ref<any>(null)
+const currentEditRowModel = ref<any>({})
 // 是否显示编辑工具栏
 const editToolbarVisible = ref(false)
 
@@ -283,14 +277,18 @@ watch(
  */
 watch(
     () => currentEditRow.value,
-    (val: any) => {
+    (value: any) => {
         editToolbarVisible.value = false
-        if (!val) {
-            currentEditRowModel.value = null
+        if (!value) {
+            currentEditRowModel.value = {}
             return
         }
         nextTick(() => (editToolbarVisible.value = true))
-        currentEditRowModel.value = { ...val }
+        currentEditRowModel.value = { ...value }
+        // console.log('当前编辑行currentEditRowModel: ', currentEditRowModel.value)
+    },
+    {
+        deep: true
     }
 )
 
@@ -323,11 +321,11 @@ const initTableSortable = () => {
                     }
                 })
                 emits('row-sort', { oldIndex, newIndex })
-                // 重置当前正在编辑的行的工具栏，防止位置错乱
-                if (currentEditRow.value) {
-                    editToolbarVisible.value = false
-                    nextTick(() => (editToolbarVisible.value = true))
-                }
+                // // 重置当前正在编辑的行的工具栏，防止位置错乱
+                // if (currentEditRow.value) {
+                //     editToolbarVisible.value = false
+                //     nextTick(() => (editToolbarVisible.value = true))
+                // }
             }
         }
     })
@@ -529,11 +527,11 @@ const filterList = (list: any[], text: string) => {
  * rowModel: 当前编辑的行实体
  */
 
-const handleEditValueChange = ({ value, prop, rowModel }: { value: string; prop: string; rowModel: string }) => {
-    console.log('value : ',value)
-    console.log('prop : ', value)
-    console.log('rowModel : ',value)
+const handleEditValueChange = ({ value, prop, rowModel }: { value: any; prop: any; rowModel: any }) => {
     emits('row-edit-value-change', { value, prop, rowModel })
+    if (currentEditRow.value) {
+        confirmEdit()
+    }
 }
 
 /**
@@ -577,7 +575,7 @@ const editRow = (row: any) => {
  * 确认编辑
  */
 const confirmEdit = () => {
-    const newRow = { ...currentEditRowModel.value }
+    const newRow = currentEditRowModel.value
     emits('row-edit-confirm', newRow)
     replaceItemInList(props.dataSource, currentEditRow.value, newRow)
     currentEditRow.value = null

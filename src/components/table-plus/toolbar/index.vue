@@ -40,7 +40,7 @@
                     </el-button>
                 </template>
                 <el-checkbox-group v-model="filteredColumns" @change="handleFilteredColumnsChange">
-                    <el-checkbox v-for="column in columns" class="" :label="column.prop" :key="column.prop" checked>
+                    <el-checkbox v-for="column in columns" :label="column.prop" :key="column.prop" checked>
                         {{ column.label }}
                     </el-checkbox>
                 </el-checkbox-group>
@@ -113,8 +113,8 @@ const props = defineProps({
      * 筛选列数据列
      */
     columns: {
-        type: Array,
-        default: () => [] as any[]
+        type: Array as () => any[],
+        default: () => []
     }
 })
 

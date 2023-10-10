@@ -1,10 +1,9 @@
 <template>
     <el-select
-        v-if="type === 'select'"
+        v-if="editType === 'select'"
         v-bind="$attrs"
-        :model-value="modelValue"
-        :placeholder="$attrs.placeholder || '请选择'"
-        :size="size"
+        v-model="value"
+        :placeholder="placeholder || '请选择'"
         @input="handleInput"
     >
         <el-option
@@ -14,38 +13,27 @@
             :value="item[optionValue]"
         />
     </el-select>
-    <el-switch
-        v-else-if="type === 'switch'"
-        v-bind="$attrs"
-        :model-value="modelValue"
-        :size="size"
-        @input="handleInput"
-    />
+    <el-switch v-else-if="editType === 'switch'" v-bind="$attrs" v-model="value" @input="handleInput" />
     <el-input-number
-        v-else-if="type === 'inputNumber'"
+        v-else-if="editType === 'inputNumber'"
         v-bind="$attrs"
-        :model-value="modelValue"
-        :placeholder="$attrs.placeholder || '请输入'"
-        :size="size"
+        v-model="value"
+        :placeholder="placeholder || '请输入'"
         @input="handleInput"
     />
     <el-date-picker
-        v-else-if="type === 'datePicker'"
+        v-else-if="editType === 'datePicker'"
         v-bind="$attrs"
-        :model-value="modelValue"
-        :placeholder="$attrs.placeholder || '请选择日期'"
-        :value-format="$attrs.valueFormat"
-        :type="$attrs.pickerType"
-        :size="size"
+        v-model="value"
+        :placeholder="placeholder || '请选择日期'"
         @input="handleInput"
     />
     <el-input
         v-else
+        :type="editType"
         v-bind="$attrs"
-        :model-value="modelValue"
-        :type="type"
-        :placeholder="$attrs.placeholder || '请输入'"
-        :size="size"
+        v-model="value"
+        :placeholder="placeholder || '请输入'"
         @input="handleInput"
     />
 </template>
@@ -63,7 +51,7 @@ const props = defineProps({
     /**
      * editable类型, select | switch | inputNumber | datePicker  | input
      */
-    type: {
+    editType: {
         type: String,
         default: 'input'
     },
@@ -89,33 +77,38 @@ const props = defineProps({
         default: 'value'
     },
     /**
-     * v-model语法糖值
+     * 输入框占位文本
+     */
+    placeholder: {
+        default: ''
+    },
+    /**
+     * 父组件传过来的值
      */
     modelValue: {
-        required: true,
-        default: ''
+        required: true
     }
 })
 
 const attrs = useAttrs()
+// console.log('attrs:', attrs)
 
 const emits = defineEmits(['update:modelValue'])
 
-const size = computed(() => {
-    return attrs.size ?? 'small'
+const value: any = computed({
+    get() {
+        return props.modelValue
+    },
+    set(value) {
+        emits('update:modelValue', value)
+    }
 })
 
 /* 处理输入 */
 const handleInput = (val: any) => {
+    // console.log('val更新值: ', val)
     emits('update:modelValue', val)
 }
 </script>
 
-<style lang="less" scoped>
-// :deep(.el-input__inner) {
-//     padding: 1px 4px;
-// }
-// :deep(.el-textarea__inner) {
-//     padding: 1px 4px;
-// }
-</style>
+<style lang="less" scoped></style>

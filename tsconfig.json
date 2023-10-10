@@ -23,7 +23,6 @@
         "src/**/*.d.ts",
         "src/**/*.tsx",
         "src/**/*.vue",
-        "postcss-px-to-viewport.d.ts",
         "types/**/*.d.ts"
     ]
 }
