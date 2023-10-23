@@ -1,6 +1,6 @@
 <template>
     <el-config-provider :locale="locale">
-        <router-view />
+        <router-view v-if="isRefresh" />
     </el-config-provider>
 </template>
 <script setup lang="ts">
@@ -9,6 +9,21 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 // 中文国际化
 const locale = zhCn
+
+// 无感刷新页面
+const isRefresh = ref(true)
+const reload = (): void => {
+    isRefresh.value = false
+    nextTick(() => {
+        isRefresh.value = true
+    })
+}
+
+// 子组件使用：
+// const reload = inject("reload") as () => void
+// 调用：reload()
+
+provide('reload', reload)
 
 console.log('VITE_PORT环境变量: ', import.meta.env.VITE_PORT)
 </script>

@@ -170,3 +170,12 @@ export const getNameById = (arr: SelectInterface[], id: string | number) => {
 export const formatFloat = (src: number, pos = 2) => {
     return Math.round(src * Math.pow(10, pos)) / Math.pow(10, pos)
 }
+
+/**
+ * 检查对象是否为空
+ * @param {*} obj
+ * @returns
+ */
+export const isEmptyObject = (obj: object): boolean => {
+    return Reflect.ownKeys(obj).length === 0 && obj.constructor === Object
+}
