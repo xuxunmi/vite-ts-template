@@ -364,7 +364,7 @@ const getSummaries = (param: SummaryMethodProps) => {
         } else if (index === 6) {
             sums[index] = 'N/A'
         }
-        const values = data.map(item => Number(item[column.property]))
+        const values = data.map(item => Number(item[column.property as keyof Product]))
         if (column.property === 'age' || column.property === 'deposit') {
             sums[index] = values
                 .reduce((prev, curr) => {

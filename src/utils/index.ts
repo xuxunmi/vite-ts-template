@@ -162,6 +162,25 @@ export const getNameById = (arr: SelectInterface[], id: string | number) => {
 }
 
 /**
+ * 传入id查找名称
+ * @param arr 树数组
+ * @param id id
+ */
+export const findNameById = (data: any[], id: string): string | null => {
+    for (const item of data) {
+        if (item.id === id) {
+            return item.name
+        } else if (item.children && item.children.length > 0) {
+            const name = findNameById(item.children, id)
+            if (name) {
+                return name
+            }
+        }
+    }
+    return null
+}
+
+/**
  * 保留指定位小数
  * @param {*} src
  * @param {*} pos
