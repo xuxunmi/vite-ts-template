@@ -5,7 +5,7 @@
 </template>
 <script setup lang="ts">
 import layout from '@/views/Layout/index.vue'
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 // import { useRoute } from "vue-router"
 
 // const route = useRoute()

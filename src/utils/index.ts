@@ -1,5 +1,10 @@
 import dayjs from 'dayjs'
+import weekday from 'dayjs/plugin/weekday'
+import weekOfYear from 'dayjs/plugin/weekOfYear'
 import { SelectInterface } from '@/interface/common'
+
+dayjs.extend(weekday)
+dayjs.extend(weekOfYear)
 
 /**
  * // 移除el-table树中的指定节点集合,可以用于前端table多行勾选假删除
@@ -197,4 +202,119 @@ export const formatFloat = (src: number, pos = 2) => {
  */
 export const isEmptyObject = (obj: object): boolean => {
     return Reflect.ownKeys(obj).length === 0 && obj.constructor === Object
+}
+
+/**
+ * 获取一年的所有周总数
+ * @param year 年份
+ */
+export const getWeeksInYear = (year: number) => {
+    const firstDayOfYear = new Date(year, 0, 1) // 获取指定年份的第一天
+    const lastDayOfYear = new Date(year, 11, 31) // 获取指定年份的最后一天
+
+    const firstWeekDay = firstDayOfYear.getDay() // 第一天是星期几
+    const timeDiff = lastDayOfYear.getTime() - firstDayOfYear.getTime() // 日期之间的时间差（毫秒）
+    const daysInYear = Math.floor(timeDiff / (24 * 60 * 60 * 1000)) + 1 // 一年中的总天数
+
+    let weeks = Math.ceil((daysInYear + firstWeekDay) / 7) // 计算周数
+    if (firstWeekDay === 0) {
+        // 如果第一天是周日，则减少一周
+        weeks--
+    }
+
+    return weeks
+}
+
+/**
+ * 生成一年的所有周数组
+ * @param year 年份
+ */
+export const createWeekInYear = (year?: number) => {
+    type weekType = {
+        from: string
+        to: string
+        name: string
+        id: string
+    }
+    const y = year || dayjs().year()
+    const currentYearWeeks: weekType[] = []
+    const prevYearWeeks: weekType[] = []
+    const prevWeeksNum = getWeeksInYear(y - 1)
+    const currentWeeksNum = getWeeksInYear(y)
+
+    // 上一年
+    for (let i = 0; i < prevWeeksNum; i++) {
+        const from = dayjs()
+            .year(y - 1)
+            .week(i)
+            .weekday(0)
+            .format('YYYY-MM-DD')
+        const to = dayjs()
+            .year(y - 1)
+            .week(i)
+            .weekday(7)
+            .format('YYYY-MM-DD')
+        const week: weekType = {
+            from,
+            to,
+            name:
+                dayjs()
+                    .year(y - 1)
+                    .format('YYYY') +
+                '-' +
+                `W${i + 1}(${from}—${to})`,
+            id:
+                dayjs()
+                    .year(y - 1)
+                    .format('YYYY') +
+                '-' +
+                (i + 1)
+        }
+        prevYearWeeks.push(week)
+    }
+
+    // 今年
+    for (let i = 0; i < currentWeeksNum; i++) {
+        const from = dayjs().year(y).week(i).weekday(1).format('YYYY-MM-DD')
+        const to = dayjs().year(y).week(i).weekday(7).format('YYYY-MM-DD')
+        const week: weekType = {
+            from,
+            to,
+            name: dayjs().year(y).format('YYYY') + '-' + `W${i + 1}(${from}—${to})`,
+            id: dayjs().year(y).format('YYYY') + '-' + (i + 1)
+        }
+        currentYearWeeks.push(week)
+    }
+    // 取上一年后半年的周数据
+    const prevHalfYearWeeks = prevYearWeeks.slice(Math.ceil(prevYearWeeks.length / 2))
+    // 上一年和今年合并起来
+    const weeksTotal: weekType[] = prevHalfYearWeeks.concat(currentYearWeeks)
+    // console.log(" weeksTotal:", weeksTotal)
+    return weeksTotal
+}
+
+/**
+ * 将数字金额转为中文大写金额
+ * @param {*} num：金额
+ * @returns 大写金额
+ */
+export const convertToChineseNumeral = (num: string): string => {
+    let unit = '千百拾亿千百拾万千百拾元角分'
+    let str = ''
+    num += '00'
+    const dotIndex = num.indexOf('.')
+    if (dotIndex >= 0) {
+        num = num.substring(0, dotIndex) + num.substring(dotIndex + 1, dotIndex + 3)
+    }
+    unit = unit.substring(unit.length - num.length)
+    for (let i = 0; i < num.length; i++) {
+        str += '零壹贰叁肆伍陆柒捌玖'.charAt(parseInt(num.charAt(i))) + unit.charAt(i)
+    }
+    return str
+        .replace(/零(千|百|拾|角)/g, '零')
+        .replace(/(零)+/g, '零')
+        .replace(/零(万|亿|元)/g, '$1')
+        .replace(/(亿)万|壹(十)/g, '$1$2')
+        .replace(/^元零?|零分/g, '')
+        .replace(/元$/g, '圆整')
 }
