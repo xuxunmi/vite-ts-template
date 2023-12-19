@@ -209,8 +209,20 @@ export const isEmptyObject = (obj: object): boolean => {
  * @param year 年份
  */
 export const getWeeksInYear = (year: number) => {
-    const firstDayOfYear = new Date(year, 0, 1) // 获取指定年份的第一天
-    const lastDayOfYear = new Date(year, 11, 31) // 获取指定年份的最后一天
+    // 当前年份的第一个月
+    const currentFirstMonth = dayjs().startOf('year').format('M')
+    // console.log("currentFirstMonth: ", currentFirstMonth)
+    // 当前年份的最后一个月
+    const currentLastMonth = dayjs().endOf('year').format('MM')
+    // console.log("currentLastMonth: ", currentLastMonth)
+    // 当前年份的第一天
+    const currentFirstDay = dayjs().startOf('year').format('D')
+    // console.log("currentFirstDay: ", currentFirstDay)
+    // 当前年份的最后一天
+    const currentLastDay = dayjs().endOf('year').format('DD')
+    // console.log("currentLastDay: ", currentLastDay)
+    const firstDayOfYear = new Date(year, +currentFirstMonth, +currentFirstDay) // 获取指定年份的第一个月第一天
+    const lastDayOfYear = new Date(year, +currentLastMonth, +currentLastDay) // 获取指定年份的最后一个月最后一天
 
     const firstWeekDay = firstDayOfYear.getDay() // 第一天是星期几
     const timeDiff = lastDayOfYear.getTime() - firstDayOfYear.getTime() // 日期之间的时间差（毫秒）
@@ -285,6 +297,7 @@ export const createWeekInYear = (year?: number) => {
         }
         currentYearWeeks.push(week)
     }
+    // console.log("currentYearWeeks:", currentYearWeeks)
     // 取上一年后半年的周数据
     const prevHalfYearWeeks = prevYearWeeks.slice(Math.ceil(prevYearWeeks.length / 2))
     // 上一年和今年合并起来
