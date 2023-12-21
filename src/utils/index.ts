@@ -312,7 +312,7 @@ export const createWeekInYear = (year?: number) => {
  * @returns 大写金额
  */
 export const convertToChineseNumeral = (num: string): string => {
-    let unit = '千百拾亿千百拾万千百拾元角分'
+    let unit = '千百拾亿千百拾万千百拾圆角分'
     let str = ''
     num += '00'
     const dotIndex = num.indexOf('.')
@@ -326,8 +326,8 @@ export const convertToChineseNumeral = (num: string): string => {
     return str
         .replace(/零(千|百|拾|角)/g, '零')
         .replace(/(零)+/g, '零')
-        .replace(/零(万|亿|元)/g, '$1')
+        .replace(/零(万|亿|圆)/g, '$1')
         .replace(/(亿)万|壹(十)/g, '$1$2')
-        .replace(/^元零?|零分/g, '')
-        .replace(/元$/g, '圆整')
+        .replace(/^圆零?|零分/g, '')
+        .replace(/圆$/g, '圆整')
 }
