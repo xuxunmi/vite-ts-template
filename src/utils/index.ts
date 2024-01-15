@@ -259,7 +259,7 @@ export const createWeekInYear = (year?: number) => {
         const from = dayjs()
             .year(y - 1)
             .week(i)
-            .weekday(0)
+            .weekday(1)
             .format('YYYY-MM-DD')
         const to = dayjs()
             .year(y - 1)
@@ -286,14 +286,17 @@ export const createWeekInYear = (year?: number) => {
     }
 
     // 今年
-    for (let i = 0; i < currentWeeksNum; i++) {
+    for (let i = 1; i <= currentWeeksNum; i++) {
         const from = dayjs().year(y).week(i).weekday(1).format('YYYY-MM-DD')
         const to = dayjs().year(y).week(i).weekday(7).format('YYYY-MM-DD')
         const week: weekType = {
             from,
             to,
-            name: dayjs().year(y).format('YYYY') + '-' + `W${i + 1}(${from}—${to})`,
-            id: dayjs().year(y).format('YYYY') + '-' + (i + 1)
+            name: dayjs().year(y).format('YYYY') + '-' + `W${i}(${from}—${to})`,
+            id: dayjs().year(y).format('YYYY') + '-' + i
+        }
+        if (from > dayjs().format('YYYY-MM-DD')) {
+            break
         }
         currentYearWeeks.push(week)
     }
@@ -304,6 +307,21 @@ export const createWeekInYear = (year?: number) => {
     const weeksTotal: weekType[] = prevHalfYearWeeks.concat(currentYearWeeks)
     // console.log(" weeksTotal:", weeksTotal)
     return weeksTotal
+}
+
+/**
+ * 保留指定位小数：不四舍五入
+ * @param {*} src
+ * @param {*} pos
+ * @returns
+ */
+export const truncateDecimals = (num: number, pos = 2): string => {
+    const factor = Math.pow(10, pos)
+    const truncatedNum = Math.floor(num * factor) / factor
+    const numString = truncatedNum.toString()
+    const [integerPart, decimalPart = ''] = numString.split('.')
+    const decimalPartWithZero = decimalPart.padEnd(pos, '0')
+    return `${integerPart}.${decimalPartWithZero}`
 }
 
 /**
