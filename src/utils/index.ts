@@ -310,6 +310,33 @@ export const createWeekInYear = (year?: number) => {
 }
 
 /**
+ * 生成指定年份的季度时间范围区间
+ * @param year 年份
+ */
+export const createQuarterDateRange = (year: number) => {
+    type quarterType = {
+        from: string
+        to: string
+        name: string
+        id: string
+    }
+    const y = year
+    const quartersDateRange: quarterType[] = []
+    for (let i = 1; i <= 4; i++) {
+        const from = dayjs().year(y).quarter(i).startOf('quarter').format('YYYY-MM-DD')
+        const to = dayjs().year(y).quarter(i).endOf('quarter').format('YYYY-MM-DD')
+        const quarter: quarterType = {
+            from,
+            to,
+            name: dayjs().year(y).format('YYYY') + '-' + `Q${i}(${from}—${to})`,
+            id: dayjs().year(y).format('YYYY') + '-' + i
+        }
+        quartersDateRange.push(quarter)
+    }
+    return quartersDateRange
+}
+
+/**
  * 保留指定位小数：不四舍五入
  * @param {*} src
  * @param {*} pos
