@@ -1,10 +1,12 @@
 import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
+import quarterOfYear from 'dayjs/plugin/quarterOfYear'
 import { SelectInterface } from '@/interface/common'
 
 dayjs.extend(weekday)
 dayjs.extend(weekOfYear)
+dayjs.extend(quarterOfYear)
 
 /**
  * // 移除el-table树中的指定节点集合,可以用于前端table多行勾选假删除
