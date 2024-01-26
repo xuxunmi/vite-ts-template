@@ -1,215 +1,293 @@
 <template>
-    <div class="tags-view-container" v-if="showTags">
-        <el-scrollbar wrap-class="scrollbar-wrapper">
-            <ul class="item-list">
-                <li
-                    class="tags-item"
-                    v-for="(tag, index) in tagsList"
-                    :class="{ active: isActive(tag.path) }"
-                    :key="index"
-                >
-                    <router-link :to="{ path: tag.path, query: tag.query }" class="tags-item-title">{{
-                        tag.title
-                    }}</router-link>
-                    <el-icon
-                        class="tags-item-icon"
-                        v-show="tagsList.length !== 1 && tag.title !== '首页'"
-                        @click="closeTags(index)"
-                        ><Close
-                    /></el-icon>
-                </li>
-            </ul>
-        </el-scrollbar>
-        <div class="tags-close-box">
-            <el-dropdown ref="dropdown" @command="handleTags">
-                <el-button size="small" type="primary">
-                    标签选项<el-icon class="el-icon--right"><arrow-down /></el-icon>
-                </el-button>
-                <template #dropdown>
-                    <el-dropdown-menu size="small">
-                        <el-dropdown-item command="other">关闭其他</el-dropdown-item>
-                        <el-dropdown-item command="all">关闭所有</el-dropdown-item>
-                    </el-dropdown-menu>
-                </template>
-            </el-dropdown>
-        </div>
+    <div class="tags-view-container">
+        <ScrollPane class="tags-view-wrapper" :tag-refs="tagRefs">
+            <router-link
+                ref="tagRefs"
+                class="tags-view-item"
+                v-for="tag in tagsViewStore.tagsList"
+                :key="tag.path"
+                :class="isActive(tag) ? 'active' : ''"
+                :to="{ path: tag.path, query: tag.query }"
+                @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
+                @contextmenu.prevent="openMenu(tag, $event)"
+            >
+                {{ tag.meta?.title }}
+                <el-icon v-if="!isAffix(tag)" :size="12" @click.prevent.stop="closeSelectedTag(tag)">
+                    <Close />
+                </el-icon>
+            </router-link>
+        </ScrollPane>
+        <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
+            <li @click="refreshSelectedTag(selectedTag)">刷新</li>
+            <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">关闭</li>
+            <li @click="closeOthersTags">关闭其它</li>
+            <li @click="closeAllTags(selectedTag)">关闭所有</li>
+        </ul>
     </div>
 </template>
 
 <script setup lang="ts" name="MainTags">
-import { useRoute, useRouter } from 'vue-router'
-import { useTagsViewStoreHook } from '@/stores/modules/tags-view'
+import ScrollPane from './ScrollPane.vue'
+import { getCurrentInstance, onMounted, ref, watch } from 'vue'
+import { type RouteRecordRaw, RouterLink, useRoute, useRouter } from 'vue-router'
+import { type TagView, useTagsViewStoreHook } from '@/stores/modules/tags-view'
+import path from 'path-browserify'
+// import { getRouterName, filterRouters } from '@/utils/dynamic-routes'
+// import { getDynamicsMenu } from '@/caches/localStorage'
+// import { systemManageRoutes, projectMonitorRoutes } from '@/router/dynamic-routes'
 
+const instance = getCurrentInstance()
 const route = useRoute()
 const router = useRouter()
-const useTagsViewStore = useTagsViewStoreHook()
-const { tagsList, deleteTagView, setTagView, clearTagView, closeOthersTagView } = useTagsViewStore
+const tagsViewStore = useTagsViewStoreHook()
+const {
+    addTagView,
+    addCachedView,
+    deleteTagView,
+    deleteCachedView,
+    closeOthersTagViews,
+    closeOthersCachedViews,
+    deleteAllTagViews,
+    deleteAllCachedViews
+} = tagsViewStore
+const tagRefs = ref<InstanceType<typeof RouterLink>[]>([])
+
+const visible = ref(false)
+const top = ref(0)
+const left = ref(0)
+const selectedTag = ref<TagView>({})
+let affixTags: TagView[] = []
 
 // 当前标签页
-const isActive = (path: string) => {
-    return path === route.fullPath
+const isActive = (tag: TagView) => {
+    return tag.path === route.path
 }
 
-const showTags = computed((): boolean => {
-    return tagsList.length > 0
-})
+const isAffix = (tag: TagView) => {
+    return tag.meta?.affix
+}
 
-// 设置标签
-const setTags = (route: any) => {
-    const isExist = tagsList.some(item => {
-        return item.path === route.fullPath
-    })
-    if (!isExist) {
-        if (tagsList.length >= 9) {
-            deleteTagView(0)
+const filterAffixTags = (routes: RouteRecordRaw[], basePath = '/') => {
+    let tags: TagView[] = []
+    routes.forEach(route => {
+        if (route.meta?.affix) {
+            const tagPath = path.resolve(basePath, route.path)
+            tags.push({
+                fullPath: tagPath,
+                path: tagPath,
+                name: route.name,
+                meta: { ...route.meta }
+            })
         }
-        setTagView({
-            name: route.name,
-            title: route.meta.title,
-            path: route.fullPath
-        })
+        if (route.children) {
+            const childTags = filterAffixTags(route.children, route.path)
+            if (childTags.length >= 1) {
+                tags = tags.concat(childTags)
+            }
+        }
+    })
+    return tags
+}
+
+const toLastView = (tagsList: TagView[], view: TagView) => {
+    const latestView = tagsList.slice(-1)[0]
+    if (latestView !== undefined && latestView.fullPath !== undefined) {
+        router.push(latestView.fullPath)
+    } else {
+        // 如果 TagsView 全部被关闭了，则默认重定向到主页
+        if (view.name === 'Home') {
+            // 重新加载主页
+            router.push({ path: '/redirect' + view.path, query: view.query })
+        } else {
+            router.push('/')
+        }
     }
 }
 
-watch(
-    () => route,
-    to => {
-        setTags(to)
-    },
-    { immediate: true, deep: true }
-)
+const openMenu = (tag: TagView, e: MouseEvent) => {
+    const menuMinWidth = 210
+    const offsetLeft = instance!.proxy!.$el.getBoundingClientRect().left
+    const offsetWidth = instance!.proxy!.$el.offsetWidth
+    const maxLeft = offsetWidth - menuMinWidth
+    const left15 = e.clientX - offsetLeft + 215
+    if (left15 > maxLeft) {
+        left.value = maxLeft
+    } else {
+        left.value = left15
+    }
+    top.value = e.clientY + 5
+    visible.value = true
+    selectedTag.value = tag
+}
 
-// 关闭单个标签
-const closeTags = (index: number) => {
-    const delItem = tagsList[index]
-    deleteTagView(index)
-    const item = tagsList[index] ? tagsList[index] : tagsList[index - 1]
-    if (item) {
-        delItem.path === route.fullPath && router.push({ path: item.path })
+const closeMenu = () => {
+    visible.value = false
+}
+
+// 初始化标签
+const initTags = () => {
+    // const dynamicRoutes = getDynamicsMenu()
+    // const routerNameArr = getRouterName(dynamicRoutes)
+    // const asyncRoutes = [...systemManageRoutes, ...projectMonitorRoutes]
+    // const addRoutersList: RouteRecordRaw[] = filterRouters(asyncRoutes, routerNameArr)
+    const routersList: RouteRecordRaw[] | undefined = router.options.routes[0].children
+    console.log('routersList:', routersList)
+    if (routersList) {
+        affixTags = filterAffixTags(routersList)
+        for (const tag of affixTags) {
+            // 必须含有 name 属性
+            if (tag.name) {
+                addTagView(tag)
+            }
+        }
+    }
+}
+
+// 新增标签
+const addTags = () => {
+    if (route.name) {
+        addTagView(route)
+        addCachedView(route)
+    }
+}
+
+// 刷新标签
+const refreshSelectedTag = (view: TagView) => {
+    deleteCachedView(view)
+    router.replace({ path: '/redirect' + view.path, query: view.query })
+}
+
+// 关闭当前标签
+const closeSelectedTag = (view: TagView) => {
+    deleteTagView(view)
+    deleteCachedView(view)
+    if (isActive(view)) {
+        toLastView(tagsViewStore.tagsList, view)
     }
 }
 
 // 关闭其他标签
-const closeOtherTags = () => {
-    const curItem = tagsList.filter(item => {
-        return item.path === route.fullPath
-    })
-    closeOthersTagView(curItem)
+const closeOthersTags = () => {
+    if (selectedTag.value.fullPath !== route.path && selectedTag.value.fullPath !== undefined) {
+        router.push(selectedTag.value.fullPath)
+    }
+    closeOthersTagViews(selectedTag.value)
+    closeOthersCachedViews(selectedTag.value)
 }
 
 // 关闭全部标签
-const closeAllTags = () => {
-    // 判断当前tags是否唯一且为首页
-    if (tagsList.length === 1 && route.name === 'home') return
-    clearTagView()
-    // 设置tagsList
-    setTagView({
-        name: 'home',
-        title: '首页',
-        path: '/home'
-    })
-    router.push({ path: '/home' })
-}
-
-const handleTags = (command: string) => {
-    switchCommandAction(command)
-}
-
-const switchCommandAction = (value: string) => {
-    switch (value) {
-        case 'other':
-            closeOtherTags()
-            break
-        case 'all':
-            closeAllTags()
-            break
-        default:
-            break
+const closeAllTags = (view: TagView) => {
+    deleteAllTagViews()
+    deleteAllCachedViews()
+    if (affixTags.some(tag => tag.path === route.path)) {
+        return
     }
+    toLastView(tagsViewStore.tagsList, view)
 }
+
+watch(
+    () => route,
+    () => {
+        addTags()
+    },
+    { deep: true }
+)
+
+watch(visible, value => {
+    if (value) {
+        document.body.addEventListener('click', closeMenu)
+    } else {
+        document.body.removeEventListener('click', closeMenu)
+    }
+})
 
 // f5刷新不触发
 onBeforeRouteUpdate(to => {
-    setTags(to)
+    addTagView(route)
+    addCachedView(route)
+})
+
+onMounted(() => {
+    initTags()
 })
 </script>
 
 <style lang="less" scoped>
 .tags-view-container {
-    position: fixed;
-    top: var(--v3-header-height);
-    z-index: 9;
-    width: 100vw;
     height: var(--v3-tagsview-height);
-    padding: 0 3px;
+    width: 100%;
+    background-color: #f2f3f5 !important;
     border-bottom: 1px solid #d8dce5;
-    box-shadow: 2px 2px 2px #cacbcb;
-    background-color: #f2f3f5;
-    .el-scrollbar {
-        height: 40px; // 必须设置el-scrollbar的高度
-        :deep(.scrollbar-wrapper) {
-            overflow-x: hidden !important;
-            overflow-y: hidden !important;
-        }
-        :deep(.el-scrollbar__bar.is-vertical) {
-            display: none !important;
-        }
-        .item-list {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            font-size: 13px;
-            color: black;
-            font-weight: 600;
-            line-height: 40px;
-        }
-        .tags-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 40px;
-            padding: 0 5px;
-            line-height: 40px;
-            text-align: center;
-            font-size: 14px;
-            -webkit-transition: all 0.3s ease-in;
-            -moz-transition: all 0.3s ease-in;
-            transition: all 0.3s ease-in;
+    box-shadow: 0 1px 3px 0 #00000010, 0 0 3px 0 #00000010;
+    .tags-view-wrapper {
+        .tags-view-item {
+            display: inline-block;
+            position: relative;
             cursor: pointer;
-
-            &-title,
-            &-icon {
-                position: relative;
-                top: 3px;
-            }
-            &-title {
-                min-width: 50px;
-                color: black;
-            }
-            &-icon {
+            height: 26px;
+            line-height: 26px;
+            border: 1px solid var(--v3-tagsview-tag-border-color);
+            border-radius: var(--v3-tagsview-tag-border-radius);
+            color: var(--v3-tagsview-tag-text-color);
+            background-color: var(--v3-tagsview-tag-bg-color);
+            padding: 0 8px;
+            font-size: 12px;
+            margin-left: 5px;
+            margin-top: 4px;
+            &:first-of-type {
                 margin-left: 5px;
-                font-size: 12px;
             }
-        }
-        .tags-item:not(.active):hover {
-            background-color: #3091ec;
-            border-radius: 3px;
-        }
-        .tags-item.active {
-            border-bottom: 2px solid #409eff;
+            &:last-of-type {
+                margin-right: 5px;
+            }
+            &.active {
+                background-color: var(--v3-tagsview-tag-active-bg-color);
+                color: var(--v3-tagsview-tag-active-text-color);
+                border-color: var(--v3-tagsview-tag-active-border-color);
+                &::before {
+                    content: '';
+                    background-color: var(--v3-tagsview-tag-active-before-color);
+                    display: inline-block;
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    position: relative;
+                    margin-right: 2px;
+                }
+            }
+            .el-icon {
+                position: relative;
+                top: -1px;
+                margin: 0 2px;
+                vertical-align: middle;
+                border-radius: 50%;
+                &:hover {
+                    background-color: var(--v3-tagsview-tag-icon-hover-bg-color);
+                    color: var(--v3-tagsview-tag-icon-hover-color);
+                }
+            }
         }
     }
-    .tags-close-box {
-        position: fixed;
-        top: calc(var(--v3-header-height) + 8px);
-        right: 5px;
-        z-index: 9;
-        text-align: center;
-        background-color: #f2f3f5;
-        box-shadow: -3px 0 15px 3px rgba(0, 0, 0, 0.1);
-        z-index: 9;
+    .contextmenu {
+        margin: 0;
+        background-color: #fff;
+        z-index: 3000;
+        position: absolute;
+        list-style-type: none;
+        padding: 5px 0;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 400;
+        color: #333;
+        box-shadow: 2px 2px 3px 0 #00000030;
+        li {
+            margin: 0;
+            padding: 7px 16px;
+            cursor: pointer;
+            &:hover {
+                background-color: #eee;
+            }
+        }
     }
 }
 </style>

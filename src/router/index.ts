@@ -18,7 +18,8 @@ const constantRoutes: Array<RouteRecordRaw> = [
                 component: () => import('@/views/Home/index.vue'),
                 meta: {
                     title: '首页',
-                    elIcon: 'HomeFilled'
+                    elIcon: 'HomeFilled',
+                    affix: true
                 }
             },
             {
@@ -27,6 +28,7 @@ const constantRoutes: Array<RouteRecordRaw> = [
                 component: () => import('@/views/TablePlus/index.vue'),
                 meta: {
                     title: '自定义表格',
+                    keepAlive: true,
                     elIcon: 'Grid'
                 }
             },
@@ -44,7 +46,8 @@ const constantRoutes: Array<RouteRecordRaw> = [
                         name: 'CodeRain',
                         component: () => import('@/views/UserManage/CodeRain/index.vue'),
                         meta: {
-                            title: '代码雨'
+                            title: '代码雨',
+                            keepAlive: true,
                         }
                     }
                 ]
@@ -55,6 +58,7 @@ const constantRoutes: Array<RouteRecordRaw> = [
                 component: Index,
                 meta: {
                     title: '工具管理',
+                    keepAlive: true,
                     elIcon: 'Tools'
                 },
                 children: [
