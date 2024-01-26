@@ -2,48 +2,48 @@ lockfileVersion: 5.4
 
 specifiers:
   '@element-plus/icons-vue': ^2.1.0
-  '@types/node': ^18.14.0
-  '@types/nprogress': ^0.2.0
-  '@types/path-browserify': ^1.0.0
+  '@types/node': ^18.16.17
+  '@types/nprogress': ^0.2.3
+  '@types/path-browserify': ^1.0.2
   '@types/qs': ^6.9.7
   '@types/sortablejs': ^1.15.2
-  '@vitejs/plugin-legacy': ^4.0.1
+  '@vitejs/plugin-legacy': ^4.0.4
   '@vitejs/plugin-vue': ^4.2.3
   '@vitejs/plugin-vue-jsx': ^3.0.1
   '@vue-macros/volar': ^0.14.2
   '@vue/tsconfig': ^0.1.3
-  autoprefixer: ^10.4.13
+  autoprefixer: ^10.4.14
   axios: ^1.4.0
   dayjs: ^1.11.9
-  element-plus: ^2.2.32
+  element-plus: ^2.3.9
   js-export-excel: ^1.1.4
   less: ^4.1.3
   npm-run-all: ^4.1.5
   nprogress: ^0.2.0
   path-browserify: ^1.0.1
-  pinia: ^2.0.32
+  pinia: ^2.1.3
   pinia-plugin-persistedstate: ^3.1.0
-  postcss: ^8.4.21
+  postcss: ^8.4.24
   postcss-import: ^15.1.0
   postcss-px-to-viewport: ^1.1.1
-  prettier: ^2.8.4
+  prettier: ^2.8.8
   qs: ^6.11.2
   screenfull: ^6.0.2
   sortablejs: ^1.15.0
-  tailwindcss: ^3.2.7
+  tailwindcss: ^3.3.2
   typescript: ~4.7.4
-  unplugin-auto-import: ^0.16.4
+  unplugin-auto-import: ^0.16.6
   unplugin-vue-components: ^0.25.1
   unplugin-vue-define-options: ^1.3.17
-  unplugin-vue-macros: ^1.9.1
-  vite: ^4.3.8
-  vite-plugin-pwa: ^0.14.4
+  unplugin-vue-macros: ^1.11.2
+  vite: ^4.3.9
+  vite-plugin-pwa: ^0.14.7
   vite-plugin-svg-icons: ^2.0.1
   vite-plugin-vue-setup-extend: ^0.4.0
   vite-svg-loader: ^4.0.0
   vue: ^3.3.4
-  vue-router: ^4.1.6
-  vue-tsc: ^1.1.5
+  vue-router: ^4.2.2
+  vue-tsc: ^1.6.5
 
 dependencies:
   '@element-plus/icons-vue': 2.1.0_vue@3.3.4
@@ -2504,7 +2504,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.7
-      caniuse-lite: 1.0.30001499
+      caniuse-lite: 1.0.30001580
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -2638,7 +2638,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001499
+      caniuse-lite: 1.0.30001580
       electron-to-chromium: 1.4.427
       node-releases: 2.0.12
       update-browserslist-db: 1.0.11_browserslist@4.21.7
@@ -2683,8 +2683,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /caniuse-lite/1.0.30001499:
-    resolution: {integrity: sha512-IhoQqRrW6WiecFcfZgoJS1YLEN1/HR1vHP5WNgjCARRW7KUNToHHTX3FrwCM+y4zkRa48D9rE90WFYc2IWhDWQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/caniuse-lite/-/caniuse-lite-1.0.30001499.tgz}
+  /caniuse-lite/1.0.30001580:
+    resolution: {integrity: sha512-mtj5ur2FFPZcCEpXFy8ADXbDACuNFXg6mxVDqp7tqooX6l3zwm+d8EPoeOSIFRDvHs8qu7/SLFOGniULkcH2iA==}
 
   /cfb/1.2.2:
     resolution: {integrity: sha512-KfdUZsSOw19/ObEWasvBP/Ac4reZvAGauZhs6S/gqNhXhI7cKwvlH7ulj+dOEYnca4bm4SGo8C1bTAQvnTjgQA==}
@@ -2733,7 +2733,7 @@ packages:
       normalize-path: 3.0.0
       readdirp: 3.6.0
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
 
   /class-utils/0.3.6:
     resolution: {integrity: sha512-qOhPa/Fj7s6TY8H8esGu5QNpMMQxz79h+urzrNYN6mn+9BnxlDGf5QZ+XeCDsxSjPqsSR56XOZOJmpeurnLMeg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/class-utils/-/class-utils-0.3.6.tgz}
@@ -2969,17 +2969,6 @@ packages:
     dependencies:
       ms: 2.0.0
     dev: true
-
-  /debug/3.2.7:
-    resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/debug/-/debug-3.2.7.tgz}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-    dependencies:
-      ms: 2.1.3
-    optional: true
 
   /debug/4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/debug/-/debug-4.3.4.tgz}
@@ -3488,8 +3477,8 @@ packages:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/fs.realpath/-/fs.realpath-1.0.0.tgz}
     dev: true
 
-  /fsevents/2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+  /fsevents/2.3.3:
+    resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
@@ -4118,10 +4107,8 @@ packages:
       image-size: 0.5.5
       make-dir: 2.1.0
       mime: 1.6.0
-      needle: 3.2.0
+      needle: 3.3.1
       source-map: 0.6.1
-    transitivePeerDependencies:
-      - supports-color
 
   /leven/3.1.0:
     resolution: {integrity: sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/leven/-/leven-3.1.0.tgz}
@@ -4403,10 +4390,6 @@ packages:
   /ms/2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/ms/-/ms-2.1.2.tgz}
 
-  /ms/2.1.3:
-    resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/ms/-/ms-2.1.3.tgz}
-    optional: true
-
   /muggle-string/0.2.2:
     resolution: {integrity: sha512-YVE1mIJ4VpUMqZObFndk9CJu6DBJR/GB13p3tXuNbwD4XExaI5EOuRl6BHeIDxIqXZVxSfAC+y6U1Z/IxCfKUg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/muggle-string/-/muggle-string-0.2.2.tgz}
     dev: true
@@ -4447,17 +4430,14 @@ packages:
       - supports-color
     dev: true
 
-  /needle/3.2.0:
-    resolution: {integrity: sha512-oUvzXnyLiVyVGoianLijF9O/RecZUf7TkBfimjGrLM4eQhXyeJwM6GeAWccwfQ9aa4gMCZKqhAOuLaMIcQxajQ==}
+  /needle/3.3.1:
+    resolution: {integrity: sha512-6k0YULvhpw+RoLNiQCRKOl09Rv1dPLr8hHnVjHqdolKwDrdNyk+Hmrthi4lIGPPz3r39dLx0hsF5s40sZ3Us4Q==}
     engines: {node: '>= 4.4.x'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      debug: 3.2.7
       iconv-lite: 0.6.3
       sax: 1.2.4
-    transitivePeerDependencies:
-      - supports-color
     optional: true
 
   /nice-try/1.0.5:
@@ -5018,7 +4998,7 @@ packages:
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /rollup/3.25.0:
@@ -5026,7 +5006,7 @@ packages:
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
 
   /run-parallel/1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/run-parallel/-/run-parallel-1.2.0.tgz}
@@ -5972,7 +5952,7 @@ packages:
       postcss: 8.4.24
       rollup: 3.25.0
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
 
   /vue-demi/0.14.5_vue@3.3.4:
     resolution: {integrity: sha512-o9NUVpl/YlsGJ7t+xuqJKx8EBGf1quRhCiT6D/J0pfwmk9zUwYkC7yrF4SZCe6fETvSM3UNL2edcbYrSyc4QHA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/vue-demi/-/vue-demi-0.14.5.tgz}
