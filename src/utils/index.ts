@@ -2,11 +2,16 @@ import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import quarterOfYear from 'dayjs/plugin/quarterOfYear'
+import localeData from "dayjs/plugin/localeData"
+import zh from "dayjs/locale/zh-cn"
+
 import { SelectInterface } from '@/interface/common'
 
 dayjs.extend(weekday)
 dayjs.extend(weekOfYear)
 dayjs.extend(quarterOfYear)
+dayjs.extend(localeData)
+dayjs.locale(zh)
 
 /**
  * // 移除el-table树中的指定节点集合,可以用于前端table多行勾选假删除
@@ -399,3 +404,13 @@ export const recursionArray = (arr: Array<any>, cb?: Function, child = "children
 //         item.children = data
 //         item.hasChildren = false
 // })
+
+/**
+ *将格式化日期转为本地星期几
+ * @param {*} dateString：格式化日期：2024-02-21
+ * @returns 星期四
+ */
+ export const getDayOfWeekZh = (dateString: string): string => {
+    const dayOfWeek = dayjs(dateString).locale("zh-cn").format("dddd")
+    return dayOfWeek
+}
