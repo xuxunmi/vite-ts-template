@@ -378,3 +378,19 @@ export const convertToChineseNumeral = (num: string): string => {
         .replace(/^圆零?|零分/g, '')
         .replace(/圆$/g, '圆整')
 }
+
+/**
+ * 递归数组
+ * @param arr 数组
+ * @param cb 回调事件
+ * @param child 子元素字段名
+ */
+export const recursionArray = (arr: Array<any>, cb?: Function, child = "children") => {
+    for (let i = 0; i < arr.length; i++) {
+        const flag = cb && cb(arr[i], i)
+        if (flag === "return") return true
+        if (arr[i][child] && arr[i][child].length) {
+            recursionArray(arr[i][child], cb, child)
+        }
+    }
+}
