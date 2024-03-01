@@ -394,3 +394,8 @@ export const recursionArray = (arr: Array<any>, cb?: Function, child = "children
         }
     }
 }
+// 使用示例： recursionArray(tableData.value, (item: any) => {
+//         // 新增/更改属性
+//         item.children = data
+//         item.hasChildren = false
+// })
