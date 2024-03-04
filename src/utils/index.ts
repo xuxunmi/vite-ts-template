@@ -410,7 +410,15 @@ export const recursionArray = (arr: Array<any>, cb?: Function, child = "children
  * @param {*} dateString：格式化日期：2024-02-21
  * @returns 星期四
  */
- export const getDayOfWeekZh = (dateString: string): string => {
+export const getDayOfWeekZh = (dateString: string): string => {
     const dayOfWeek = dayjs(dateString).locale("zh-cn").format("dddd")
     return dayOfWeek
+}
+
+/**
+ * 打开一个新窗口: 无浏览器刷新按钮，无浏览器标签栏：参考地址: https://blog.csdn.net/muguli2008/article/details/104899094
+ * @param {*} src
+ */
+export const windowOpenTab = (src: string) => {
+    window.open(src || '', "_blank", "scrollbars=yes,resizable=1")
 }
