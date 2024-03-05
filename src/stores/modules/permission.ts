@@ -4,6 +4,7 @@ import { type RouteRecordRaw } from 'vue-router'
 import router from '@/router'
 import { ElMessage } from 'element-plus'
 import { homeRoutes, systemManageRoutes, projectMonitorRoutes } from '@/router/dynamic-routes'
+import { setDynamicsMenu, setPermissionsBtn } from "@/caches/localStorage"
 import { getRouterName, filterRouters } from '@/utils/dynamic-routes'
 import { getDynamicMenuList, getAuthButton } from '@/api/common'
 
@@ -19,16 +20,18 @@ export const usePermissionStore = defineStore('permission', () => {
         try {
             const { data } = (await getDynamicMenuList()) as { data: RouteRecordRaw[] }
             if (!data.length) return
+            setDynamicsMenu(data)
             setRoutes(data)
             // 跳转路由列表第一个
             router.push({ path: data[0].path })
             return data
         } catch (error: any) {
-            ElMessage({
-                type: 'error',
-                message: error.msg,
-                center: true
-            })
+            if (error.msg)
+                ElMessage({
+                    type: "error",
+                    message: error.msg,
+                    center: true
+                })
             return
         }
     }
@@ -41,25 +44,27 @@ export const usePermissionStore = defineStore('permission', () => {
         addRoutersList.forEach(route => router.addRoute(route))
         isSetRoutes.value = true
     }
-    // const getPermissionsBtn = async () => {
-    //     try {
-    //         const { data } = (await getAuthButton()) as { data: string[] }
-    //         permissionsBtnList.value = data
-    //         console.log('permissionsBtnList： ', permissionsBtnList)
-    //         setPermissionsBtn(data)
-    //         return data
-    //     } catch (error: any) {
-    //         ElMessage({
-    //             type: 'error',
-    //             message: error.msg,
-    //             center: true
-    //         })
-    //         return
-    //     }
-    // }
-    return { isSetRoutes, dynamicRoutes, getDynamicRoutes, setRoutes, permissionsBtnList }
+    const getPermissionsBtn = async () => {
+        try {
+            const { data } = (await getAuthButton()) as { data: string[] }
+            permissionsBtnList.value = data
+            console.log('permissionsBtnList： ', permissionsBtnList)
+            setPermissionsBtn(data)
+            return data
+        } catch (error: any) {
+            if (error.msg)
+                ElMessage({
+                    type: "error",
+                    message: error.msg,
+                    center: true
+                })
+            return
+        }
+    }
+    return { isSetRoutes, dynamicRoutes, getDynamicRoutes, setRoutes, permissionsBtnList,getPermissionsBtn }
 })
 
+/** 在 setup 外使用 */
 export function usePermissionStoreHook() {
     return usePermissionStore(store)
 }

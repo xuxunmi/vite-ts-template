@@ -10,6 +10,7 @@ declare module 'vue' {
     Control: typeof import('./src/components/table-plus/control/index.vue')['default']
     'CustomVue.ce': typeof import('./src/components/WebComponents/customVue.ce.vue')['default']
     DialogFrame: typeof import('./src/components/dialog-frame/index.vue')['default']
+    DropLine: typeof import('./src/components/dropLine/index.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']

@@ -1,10 +1,12 @@
 import { ref } from 'vue'
 import { defineStore, createPinia } from 'pinia'
 import layoutSettings from '@/config/layout'
+import projectSettings from '@/config'
 
 const store = createPinia()
 
 export const useSettingsStore = defineStore('settings', () => {
+    const projectName = ref<string>(projectSettings.projectName)
     const fixedHeader = ref<boolean>(layoutSettings.fixedHeader)
     const showSettings = ref<boolean>(layoutSettings.showSettings)
     const showTagsView = ref<boolean>(layoutSettings.showTagsView)
@@ -16,6 +18,7 @@ export const useSettingsStore = defineStore('settings', () => {
     const showColorWeakness = ref<boolean>(layoutSettings.showColorWeakness)
 
     return {
+        projectName,
         fixedHeader,
         showSettings,
         showTagsView,

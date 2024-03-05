@@ -5,7 +5,7 @@
                 <router-link key="expand" to="/">
                     <div class="logo-text">
                         <img src="@/assets/logo.svg" />
-                        <span v-if="!isCollapse">Vite+TS+Admin</span>
+                        <span v-if="!isCollapse">{{ projectName }}</span>
                     </div>
                 </router-link>
             </transition>
@@ -33,6 +33,7 @@ import MenuNavBar from '../MenuNavBar/index.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { type RouteRecordRaw } from 'vue-router'
 import { useAppStore } from '@/stores'
+import { useSettingsStoreHook } from '@/stores/modules/settings'
 
 defineOptions({
     name: 'LayoutMain'
@@ -41,6 +42,13 @@ defineOptions({
 const route = useRoute()
 const router = useRouter()
 const useApp = useAppStore()
+const useSettingsStore = useSettingsStoreHook()
+
+// 项目名称
+const projectName = computed(() => {
+    const { projectName } = useSettingsStore
+    return projectName
+})
 
 // 默认激活菜单的 index
 const activeMenu = computed(() => {
