@@ -44,21 +44,18 @@ const dropLine: Directive = {
         let starX: number, startWidth: number
         // 返回当前元素在其父元素的子元素节点中的前一个元素节点
         let preDom = el.previousElementSibling
-        // 返回当前元素在其父元素的子元素节点中的后一个元素节点
-        let nextDom = el.nextElementSibling
-        let [letfMinWidth, rightMinWidth] = binding.value || [300, 400]
-        nextDom.style.minWidth = rightMinWidth + 'px'
+        const [leftMinWidth, rightMinWidth] = binding.value || [300, 400]
         el.onmousedown = (e: any) => {
             starX = e.clientX
             startWidth = preDom.clientWidth
             e.preventDefault()
             document.onmousemove = e => {
-                // 获取前一个兄弟节点修改宽度
-                let preWidth = startWidth + e.clientX - starX
-                if (preWidth > letfMinWidth) {
-                    preDom.style.width = preWidth + 'px'
+                const parentWidth = el.parentNode.clientWidth
+                const preWidth = startWidth + e.clientX - starX
+                const nextWidth = parentWidth - preWidth
+                if (preWidth >= leftMinWidth && nextWidth >= rightMinWidth) {
+                    preDom.style.width = preWidth + "px"
                 }
-                nextDom.style.width = 'calc(100% - ' + preWidth + 'px)'
             }
             document.onmouseup = () => {
                 document.onmousemove = null

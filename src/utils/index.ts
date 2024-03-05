@@ -364,24 +364,24 @@ export const truncateDecimals = (num: number, pos = 2): string => {
  * @returns 大写金额
  */
 export const convertToChineseNumeral = (num: string): string => {
-    let unit = '千百拾亿千百拾万千百拾圆角分'
-    let str = ''
-    num += '00'
-    const dotIndex = num.indexOf('.')
+    let unit = "仟佰拾亿仟佰拾万仟佰拾圆角分"
+    let str = ""
+    num += "00"
+    const dotIndex = num.indexOf(".")
     if (dotIndex >= 0) {
         num = num.substring(0, dotIndex) + num.substring(dotIndex + 1, dotIndex + 3)
     }
     unit = unit.substring(unit.length - num.length)
     for (let i = 0; i < num.length; i++) {
-        str += '零壹贰叁肆伍陆柒捌玖'.charAt(parseInt(num.charAt(i))) + unit.charAt(i)
+        str += "零壹贰叁肆伍陆柒捌玖".charAt(parseInt(num.charAt(i))) + unit.charAt(i)
     }
     return str
-        .replace(/零(千|百|拾|角)/g, '零')
-        .replace(/(零)+/g, '零')
-        .replace(/零(万|亿|圆)/g, '$1')
-        .replace(/(亿)万|壹(十)/g, '$1$2')
-        .replace(/^圆零?|零分/g, '')
-        .replace(/圆$/g, '圆整')
+        .replace(/零(仟|佰|拾|角)/g, "零")
+        .replace(/(零)+/g, "零")
+        .replace(/零(万|亿|圆)/g, "$1")
+        .replace(/(亿)万|壹(十)/g, "$1$2")
+        .replace(/^圆零?|零分/g, "")
+        .replace(/圆$/g, "圆整")
 }
 
 /**
