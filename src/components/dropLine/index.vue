@@ -16,6 +16,34 @@
 
 <script lang="ts" setup>
 import { type Directive } from 'vue'
+
+// 使用示例：
+//     <div class="app-container">
+//         <div class="sf-container">
+//             <div class="sf-container-main">
+//                 <drop-line left-width="300px" :minDropWidth="[150, 150]">
+//                     <template #left>
+//                         <productList class="product-list" />
+//                     </template>
+//                     <template #right>
+//                         <div class="sf-container-main-content">
+//                             <div class="sf-table-wrapper">
+//                                 <drop-line left-width="40%" :minDropWidth="[250, 400]">
+//                                     <template #left>
+//                                         <productFolder class="product-folder" />
+//                                     </template>
+//                                     <template #right>
+//                                         <folderContent class="folder-content" />
+//                                     </template>
+//                                 </drop-line>
+//                             </div>
+//                         </div>
+//                     </template>
+//                 </drop-line>
+//             </div>
+//         </div>
+//     </div>
+
 //#region 参数和方法
 const props = defineProps({
     /**
@@ -32,7 +60,7 @@ const props = defineProps({
      */
     minDropWidth: {
         type: Array,
-        default: [100, 100]
+        default: () => [100, 100]
     },
     /**
      * 左右内容最小宽度
@@ -40,7 +68,7 @@ const props = defineProps({
      */
     minContainerWidth: {
         type: Array,
-        default: [100, 100]
+        default: () => [100, 100]
     }
 })
 
