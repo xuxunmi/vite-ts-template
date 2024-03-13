@@ -11,6 +11,7 @@ declare module 'vue' {
     'CustomVue.ce': typeof import('./src/components/WebComponents/customVue.ce.vue')['default']
     DialogFrame: typeof import('./src/components/dialog-frame/index.vue')['default']
     DropLine: typeof import('./src/components/dropLine/index.vue')['default']
+    DynamicFormItem: typeof import('./src/components/dynamicFormItem/index.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
