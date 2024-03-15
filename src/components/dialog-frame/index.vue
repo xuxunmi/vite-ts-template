@@ -27,8 +27,13 @@
  * 父组件使用：
  *    <dialogFrame :title="'对话框标题'" v-model:visible="dialogVisible" :footer="false">
  *        <!-- 子组件使用 -->
- *        <component v-model:visible="dialogVisible" />
+ *        <component v-if="dialogVisible.dialog" v-model:visible="dialogVisible.dialog" />
  *    </dialogFrame>
+ *    // 显示不同的弹窗
+ *    const dialogVisible: { [key: string]: boolean } = reactive({
+ *        dialog: false, // 新增/编辑对话框 
+ *    })
+ 
  *
  * 子组件使用：
  *    <div class="mt-6 text-center">
