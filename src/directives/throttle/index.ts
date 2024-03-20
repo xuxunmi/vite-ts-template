@@ -37,3 +37,28 @@ export const throttle: Directive = {
         el.removeEventListener('click', el.__handleClick__)
     }
 }
+
+/**
+ * 防止重复点击提交按钮
+ * @directive 默认方式：v-reclickDirective，如 `<el-button v-reclickDirective></el-button>`
+ * @directive 参数方式：v-reclickDirective="number"，如 `<el-button v-reclickDirective="500"></el-button>`
+ */
+export const reclickDirective: Directive = {
+    mounted(el:ElType, binding: DirectiveBinding) {
+        const { time } = binding.value
+        el.addEventListener('click', () => {
+            if (!el.disabled) {
+                el.disabled = true;
+                setTimeout(
+                    () => {
+                        el.disabled = false;
+                    },
+                    time === undefined ? 500 : time
+                );
+            }
+        });
+    },
+    unmounted(el) {
+        el.disabled = false;
+    },
+}

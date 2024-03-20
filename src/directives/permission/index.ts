@@ -1,4 +1,4 @@
-import { type Directive } from 'vue'
+import type { Directive, DirectiveBinding } from 'vue'
 import { getPermissionsBtn } from '@/caches/localStorage'
 
 /**
@@ -6,7 +6,7 @@ import { getPermissionsBtn } from '@/caches/localStorage'
  * 使用：v-permission="['admin','editor']"
  */
 export const permission: Directive = {
-    mounted(el, binding) {
+    mounted(el, binding:DirectiveBinding) {
         const { value } = binding
         const btnList: string[] = getPermissionsBtn()
         if (Array.isArray(value) && value.length > 0) {
