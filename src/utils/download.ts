@@ -1,8 +1,8 @@
-import axios from "axios"
-import dayjs from "dayjs"
+import axios from 'axios'
+import dayjs from 'dayjs'
 
 const currentDateTime = computed(() => {
-    return dayjs(new Date()).format("YYYY-MM-DD")
+    return dayjs(new Date()).format('YYYY-MM-DD')
 })
 
 /**
@@ -13,15 +13,15 @@ const currentDateTime = computed(() => {
 export function downloadBlobFileTemplate(url: string, filename: string) {
     return axios({
         url: url,
-        method: "GET",
-        responseType: "blob"
-    }).then((response) => {
-        console.log("response: ", response)
+        method: 'GET',
+        responseType: 'blob'
+    }).then(response => {
+        console.log('response: ', response)
         const blob = new Blob([response.data])
-        const link = document.createElement("a")
+        const link = document.createElement('a')
         link.href = URL.createObjectURL(blob)
         link.download = filename
-        const body = document.getElementsByTagName("body")[0]
+        const body = document.getElementsByTagName('body')[0]
         body.appendChild(link)
         link.click()
         window.setTimeout(function () {
@@ -39,7 +39,7 @@ export function downloadBlobFileTemplate(url: string, filename: string) {
  */
 export function downloadFile1(data: any, filename: string, time: string | undefined) {
     if (!data) return
-    const link = document.createElement("a")
+    const link = document.createElement('a')
     link.href = URL.createObjectURL(data as Blob)
     link.download = time ? `${filename}_${time}` : `${filename}_${currentDateTime.value}`
     document.body.appendChild(link)
@@ -58,7 +58,7 @@ export function downloadFile1(data: any, filename: string, time: string | undefi
  */
 export function downloadFile2(data: any, filename: string) {
     if (!data) return
-    const link = document.createElement("a")
+    const link = document.createElement('a')
     link.href = URL.createObjectURL(data as Blob)
     link.download = filename
     document.body.appendChild(link)

@@ -16,7 +16,7 @@ export const useTagsViewStore = defineStore(
         // 新增标签
         const addTagView = (view: TagView) => {
             if (
-                tagsList.value.some((v:TagView, index:number) => {
+                tagsList.value.some((v: TagView, index: number) => {
                     if (v.path === view.path) {
                         if (v.fullPath !== view.fullPath) {
                             // 防止 query 参数丢失
@@ -50,17 +50,17 @@ export const useTagsViewStore = defineStore(
         const deleteCachedView = (view: TagView) => {
             if (typeof view.name !== 'string') return
             const index = cachedTagsList.value.indexOf(view.name)
-            
+
             index > -1 && cachedTagsList.value.splice(index, 1)
         }
 
         // 关闭其他标签
         const closeOthersTagViews = (view: TagView) => {
-            console.log('tagsList.value:',tagsList.value)
-            tagsList.value = tagsList.value.filter((v:TagView) => {
+            console.log('tagsList.value:', tagsList.value)
+            tagsList.value = tagsList.value.filter((v: TagView) => {
                 return v.meta?.affix || v.path === view.path
             })
-            console.log('tagsList.value:',tagsList.value)
+            console.log('tagsList.value:', tagsList.value)
         }
         const closeOthersCachedViews = (view: TagView) => {
             if (typeof view.name !== 'string') return
@@ -77,7 +77,7 @@ export const useTagsViewStore = defineStore(
         const deleteAllTagViews = () => {
             // keep affix tags
             const affixTags = tagsList.value.filter((tag: TagView) => tag.meta?.affix)
-            console.log('affixTags:',affixTags)
+            console.log('affixTags:', affixTags)
             tagsList.value = affixTags
         }
         const deleteAllCachedViews = () => {
@@ -98,7 +98,7 @@ export const useTagsViewStore = defineStore(
         }
     },
     {
-        persist: true // 开启持久化 
+        persist: true // 开启持久化
     }
 )
 

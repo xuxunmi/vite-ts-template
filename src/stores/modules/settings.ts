@@ -34,4 +34,3 @@ export const useSettingsStore = defineStore('settings', () => {
 export function useSettingsStoreHook() {
     return useSettingsStore(store)
 }
-

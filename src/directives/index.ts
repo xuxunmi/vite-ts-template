@@ -4,8 +4,6 @@ import { dropLine } from './dropLine'
 import { permission } from './permission'
 import { throttle, reclickDirective } from './throttle'
 
-
-
 const directives: any = {
     focus,
     dropLine,

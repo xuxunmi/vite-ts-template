@@ -44,21 +44,21 @@ export const throttle: Directive = {
  * @directive 参数方式：v-reclickDirective="number"，如 `<el-button v-reclickDirective="500"></el-button>`
  */
 export const reclickDirective: Directive = {
-    mounted(el:ElType, binding: DirectiveBinding) {
+    mounted(el: ElType, binding: DirectiveBinding) {
         const { time } = binding.value
         el.addEventListener('click', () => {
             if (!el.disabled) {
-                el.disabled = true;
+                el.disabled = true
                 setTimeout(
                     () => {
-                        el.disabled = false;
+                        el.disabled = false
                     },
                     time === undefined ? 500 : time
-                );
+                )
             }
-        });
+        })
     },
     unmounted(el) {
-        el.disabled = false;
-    },
+        el.disabled = false
+    }
 }

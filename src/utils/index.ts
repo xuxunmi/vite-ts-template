@@ -2,8 +2,8 @@ import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import quarterOfYear from 'dayjs/plugin/quarterOfYear'
-import localeData from "dayjs/plugin/localeData"
-import zh from "dayjs/locale/zh-cn"
+import localeData from 'dayjs/plugin/localeData'
+import zh from 'dayjs/locale/zh-cn'
 
 import { SelectInterface } from '@/interface/common'
 
@@ -364,24 +364,24 @@ export const truncateDecimals = (num: number, pos = 2): string => {
  * @returns 大写金额
  */
 export const convertToChineseNumeral = (num: string): string => {
-    let unit = "仟佰拾亿仟佰拾万仟佰拾圆角分"
-    let str = ""
-    num += "00"
-    const dotIndex = num.indexOf(".")
+    let unit = '仟佰拾亿仟佰拾万仟佰拾圆角分'
+    let str = ''
+    num += '00'
+    const dotIndex = num.indexOf('.')
     if (dotIndex >= 0) {
         num = num.substring(0, dotIndex) + num.substring(dotIndex + 1, dotIndex + 3)
     }
     unit = unit.substring(unit.length - num.length)
     for (let i = 0; i < num.length; i++) {
-        str += "零壹贰叁肆伍陆柒捌玖".charAt(parseInt(num.charAt(i))) + unit.charAt(i)
+        str += '零壹贰叁肆伍陆柒捌玖'.charAt(parseInt(num.charAt(i))) + unit.charAt(i)
     }
     return str
-        .replace(/零(仟|佰|拾|角)/g, "零")
-        .replace(/(零)+/g, "零")
-        .replace(/零(万|亿|圆)/g, "$1")
-        .replace(/(亿)万|壹(十)/g, "$1$2")
-        .replace(/^圆零?|零分/g, "")
-        .replace(/圆$/g, "圆整")
+        .replace(/零(仟|佰|拾|角)/g, '零')
+        .replace(/(零)+/g, '零')
+        .replace(/零(万|亿|圆)/g, '$1')
+        .replace(/(亿)万|壹(十)/g, '$1$2')
+        .replace(/^圆零?|零分/g, '')
+        .replace(/圆$/g, '圆整')
 }
 
 /**
@@ -390,10 +390,10 @@ export const convertToChineseNumeral = (num: string): string => {
  * @param cb 回调事件
  * @param child 子元素字段名
  */
-export const recursionArray = (arr: Array<any>, cb?: Function, child = "children") => {
+export const recursionArray = (arr: Array<any>, cb?: Function, child = 'children') => {
     for (let i = 0; i < arr.length; i++) {
         const flag = cb && cb(arr[i], i)
-        if (flag === "return") return true
+        if (flag === 'return') return true
         if (arr[i][child] && arr[i][child].length) {
             recursionArray(arr[i][child], cb, child)
         }
@@ -411,7 +411,7 @@ export const recursionArray = (arr: Array<any>, cb?: Function, child = "children
  * @returns 星期四
  */
 export const getDayOfWeekZh = (dateString: string): string => {
-    const dayOfWeek = dayjs(dateString).locale("zh-cn").format("dddd")
+    const dayOfWeek = dayjs(dateString).locale('zh-cn').format('dddd')
     return dayOfWeek
 }
 
@@ -420,5 +420,5 @@ export const getDayOfWeekZh = (dateString: string): string => {
  * @param {*} src
  */
 export const windowOpenTab = (src: string) => {
-    window.open(src || '', "_blank", "scrollbars=yes,resizable=1")
+    window.open(src || '', '_blank', 'scrollbars=yes,resizable=1')
 }

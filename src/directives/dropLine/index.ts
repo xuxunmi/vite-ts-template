@@ -43,7 +43,7 @@ export const dropLine: Directive = {
                 const preWidth = startWidth + e.clientX - starX
                 const nextWidth = parentWidth - preWidth
                 if (preWidth >= leftMinWidth && nextWidth >= rightMinWidth) {
-                    preDom.style.width = preWidth + "px"
+                    preDom.style.width = preWidth + 'px'
                 }
             }
             document.onmouseup = () => {

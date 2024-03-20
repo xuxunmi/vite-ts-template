@@ -20,6 +20,10 @@ import { VitePWA } from 'vite-plugin-pwa'
 // Element Plus按需引入
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+// 图片压缩
+import viteImagemin from 'vite-plugin-imagemin'
+//Gzip文件压缩
+import viteCompression from 'vite-plugin-compression'
 // 使用svg
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path, { resolve } from 'path'
@@ -63,6 +67,47 @@ export default defineConfig({
         }),
         Components({
             resolvers: [ElementPlusResolver()]
+        }),
+        viteImagemin({
+            // gif图片压缩
+            gifsicle: {
+                optimizationLevel: 7, // 选择1到3之间的优化级别
+                interlaced: false // 隔行扫描gif进行渐进式渲染
+            },
+            // png
+            optipng: {
+                optimizationLevel: 7 // 选择0到7之间的优化级别
+            },
+            // jpeg
+            mozjpeg: {
+                quality: 20 // 压缩质量，范围从0(最差)到100(最佳)。
+            },
+            // png
+            pngquant: {
+                quality: [0.8, 0.9], // Min和max是介于0(最差)到1(最佳)之间的数字，类似于JPEG。达到或超过最高质量所需的最少量的颜色。如果转换导致质量低于最低质量，图像将不会被保存。
+                speed: 4 // 压缩速度，1(强力)到11(最快)
+            },
+            // svg压缩
+            svgo: {
+                plugins: [
+                    {
+                        name: 'removeViewBox'
+                    },
+                    {
+                        name: 'removeEmptyAttrs',
+                        active: false
+                    }
+                ]
+            }
+        }),
+        //开启Gzip压缩
+        viteCompression({
+            verbose: true, // 是否在控制台中输出压缩结果
+            disable: false,
+            threshold: 10240, // 如果体积大于阈值，将被压缩，单位为b，体积过小时请不要压缩，以免适得其反
+            algorithm: 'gzip', // 压缩算法，可选['gzip'，' brotliccompress '，'deflate '，'deflateRaw']
+            ext: '.gz',
+            deleteOriginFile: true // 源文件压缩后是否删除(我为了看压缩后的效果，先选择了true)
         }),
         createSvgIconsPlugin({
             iconDirs: [path.resolve(process.cwd(), 'src/icons/svg')],
@@ -110,7 +155,7 @@ export default defineConfig({
             plugins: [
                 require('tailwindcss'),
                 require('autoprefixer'),
-                require('postcss-import'),
+                require('postcss-import')
                 // postcssPxToViewport({
                 //     unitToConvert: 'px', // 需要转换的单位，默认为px
                 //     viewportWidth: 1920, // 设计稿的视口宽度
@@ -165,6 +210,8 @@ export default defineConfig({
         assetsDir: 'assets',
         // 小于此阈值的导入或引用资源将内联为base64编码，设置为0可禁用此项。默认4096（4kb）
         assetsInlineLimit: 4096,
+        // 规定触发警告的 chunk 大小。（以 kbs 为单位）
+        chunkSizeWarningLimit: 2000,
         // 启用/禁用CSS代码拆分，如果禁用，整个项目的所有CSS将被提取到一个CSS文件中,默认true
         cssCodeSplit: true,
         // 构建后是否生成source map文件，默认false
@@ -181,6 +228,20 @@ export default defineConfig({
             format: {
                 /** 删除注释 */
                 comments: false
+            }
+        },
+        rollupOptions: {
+            // 不同类型文件分包
+            output: {
+                chunkFileNames: 'js/[name]-[hash].js', // 引入文件名的名称
+                entryFileNames: 'js/[name]-[hash].js', // 包的入口文件名称
+                assetFileNames: '[ext]/[name]-[hash].[ext]', // 资源文件像 字体，图片等
+                // 最小化拆分包
+                manualChunks(id) {
+                    if (id.includes('node_modules')) {
+                        return id.toString().split('node_modules/')[1].split('/')[0].toString()
+                    }
+                }
             }
         }
     }

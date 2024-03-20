@@ -5,7 +5,7 @@ interface ProjectSettings {
 }
 
 const projectSettings: ProjectSettings = {
-    projectName: 'Vite+TS+Admin',
+    projectName: 'Vite+TS+Admin'
 }
 
 export default projectSettings

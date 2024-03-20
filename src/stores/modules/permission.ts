@@ -4,7 +4,7 @@ import { type RouteRecordRaw } from 'vue-router'
 import router from '@/router'
 import { ElMessage } from 'element-plus'
 import { homeRoutes, systemManageRoutes, projectMonitorRoutes } from '@/router/dynamic-routes'
-import { setDynamicsMenu, setPermissionsBtn } from "@/caches/localStorage"
+import { setDynamicsMenu, setPermissionsBtn } from '@/caches/localStorage'
 import { getRouterName, filterRouters } from '@/utils/dynamic-routes'
 import { getDynamicMenuList, getAuthButton } from '@/api/common'
 
@@ -28,7 +28,7 @@ export const usePermissionStore = defineStore('permission', () => {
         } catch (error: any) {
             if (error.msg)
                 ElMessage({
-                    type: "error",
+                    type: 'error',
                     message: error.msg,
                     center: true
                 })
@@ -54,14 +54,14 @@ export const usePermissionStore = defineStore('permission', () => {
         } catch (error: any) {
             if (error.msg)
                 ElMessage({
-                    type: "error",
+                    type: 'error',
                     message: error.msg,
                     center: true
                 })
             return
         }
     }
-    return { isSetRoutes, dynamicRoutes, getDynamicRoutes, setRoutes, permissionsBtnList,getPermissionsBtn }
+    return { isSetRoutes, dynamicRoutes, getDynamicRoutes, setRoutes, permissionsBtnList, getPermissionsBtn }
 })
 
 /** 在 setup 外使用 */

@@ -47,7 +47,7 @@ const constantRoutes: Array<RouteRecordRaw> = [
                         component: () => import('@/views/UserManage/CodeRain/index.vue'),
                         meta: {
                             title: '代码雨',
-                            keepAlive: true,
+                            keepAlive: true
                         }
                     }
                 ]

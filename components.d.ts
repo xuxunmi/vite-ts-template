@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    CollapseTransition: typeof import('./src/components/collapse-transition/index.vue')['default']
     Control: typeof import('./src/components/table-plus/control/index.vue')['default']
     'CustomVue.ce': typeof import('./src/components/WebComponents/customVue.ce.vue')['default']
     DialogFrame: typeof import('./src/components/dialog-frame/index.vue')['default']

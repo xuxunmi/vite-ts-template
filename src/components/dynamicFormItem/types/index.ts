@@ -1,5 +1,5 @@
 // 表单中的组件类型
-export type ItemFormType = "input" | "password" | "textarea" | "select" | "cascader" | "daterange" | "date"
+export type ItemFormType = 'input' | 'password' | 'textarea' | 'select' | 'cascader' | 'daterange' | 'date'
 
 // 下拉选项配置
 export type ItemOptions = {
