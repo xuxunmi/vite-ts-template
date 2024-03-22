@@ -31,7 +31,7 @@ const props = defineProps({
 })
 
 const route = useRoute()
-const settingsStore = useSettingsStoreHook()
+const useSettingsStore = useSettingsStoreHook()
 
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
 const scrollbarContentRef = ref<HTMLDivElement>()
@@ -120,7 +120,7 @@ watch(
 )
 
 const showScreenfull = computed(() => {
-    return settingsStore.showScreenfull
+    return useSettingsStore.showScreenfull
 })
 </script>
 
