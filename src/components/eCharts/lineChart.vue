@@ -37,6 +37,18 @@ const initChart = () => {
     }
 }
 
+// 重新刷新渲折线图
+watch(
+    () => props.option,
+    () => {
+        initChart()
+    },
+    {
+        immediate: true,
+        deep: true
+    }
+)
+
 const resizeChart = () => {
     lineChart?.resize()
 }
