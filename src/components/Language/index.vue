@@ -29,6 +29,7 @@
 
 import { SelectInterface } from '@/interface/common'
 import { setLanguage } from '@/caches/localStorage'
+import { useI18n } from 'vue-i18n'
 
 defineOptions({
     name: 'Language'
@@ -46,7 +47,12 @@ const languageList: SelectInterface[] = [
     }
 ]
 
+const { locale } = useI18n()
+console.log('locale: ', locale)
+
 const handleLanguageSetting = (command: string) => {
+    locale.value = command
+    // document.title = '睿蓝EPC系统';
     setLanguage(command)
 }
 </script>
