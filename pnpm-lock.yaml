@@ -45,6 +45,7 @@ specifiers:
   vite-plugin-vue-setup-extend: ^0.4.0
   vite-svg-loader: ^4.0.0
   vue: ^3.3.4
+  vue-i18n: '9'
   vue-router: ^4.2.2
   vue-tsc: ^1.6.5
 
@@ -68,6 +69,7 @@ dependencies:
   unplugin-vue-macros: 1.11.2_vite@4.3.9+vue@3.3.4
   vite-svg-loader: 4.0.0
   vue: 3.3.4
+  vue-i18n: 9.11.0_vue@3.3.4
   vue-router: 4.2.2_vue@3.3.4
 
 devDependencies:
@@ -1495,6 +1497,27 @@ packages:
     resolution: {integrity: sha512-m0G6wlnhm/AX0H12IOWtK8gASEMffnX08RtKkCgTdHb9JpHKGloI7icFfLg9ZmQeavcvR0PKmzxClyuFPSjKWw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/@floating-ui/utils/-/utils-0.1.1.tgz}
     dev: false
 
+  /@intlify/core-base/9.11.0:
+    resolution: {integrity: sha512-cveOqAstjLZIiyatcP/HrzrQ87cZI8ScPQna3yvoM8zjcjcIRK1MRvmxUNlPdg0rTNJMZw7rixPVM58O5aHVPA==}
+    engines: {node: '>= 16'}
+    dependencies:
+      '@intlify/message-compiler': 9.11.0
+      '@intlify/shared': 9.11.0
+    dev: false
+
+  /@intlify/message-compiler/9.11.0:
+    resolution: {integrity: sha512-x31Gl7cscnoI4UUY1yaIy8e7vVMVW1VVlTXZz4SIHKqoSEUkfmgqK8NAx1e7RcoHEbICR7uyCbud0ZL1s4OGXQ==}
+    engines: {node: '>= 16'}
+    dependencies:
+      '@intlify/shared': 9.11.0
+      source-map-js: 1.0.2
+    dev: false
+
+  /@intlify/shared/9.11.0:
+    resolution: {integrity: sha512-KHSNgi7sRjmSm7aD8QH8WFt9VfKaekJuJ473opbJlkGY3EDnDUU8ikIhG8PbasQbgNvbY3m3tWNGqk2omIdwMA==}
+    engines: {node: '>= 16'}
+    dev: false
+
   /@jridgewell/gen-mapping/0.3.3:
     resolution: {integrity: sha512-HLhSWOLRi875zjjMG/r+Nv0oCW8umGb0BgEhyX3dDX3egwZtB8PqLnjz3yedt8R5StBrzcg4aBpnh8UA9D1BoQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/@jridgewell/gen-mapping/-/gen-mapping-0.3.3.tgz}
     engines: {node: '>=6.0.0'}
@@ -2324,7 +2347,7 @@ packages:
       '@vue/shared': 3.3.4
 
   /@vue/devtools-api/6.5.0:
-    resolution: {integrity: sha512-o9KfBeaBmCKl10usN4crU53fYtC1r7jJwdGKjPT24t348rHxgfpZ0xL3Xm/gLUYnc0oTp8LAmrxOeLyu6tbk2Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/@vue/devtools-api/-/devtools-api-6.5.0.tgz}
+    resolution: {integrity: sha512-o9KfBeaBmCKl10usN4crU53fYtC1r7jJwdGKjPT24t348rHxgfpZ0xL3Xm/gLUYnc0oTp8LAmrxOeLyu6tbk2Q==}
     dev: false
 
   /@vue/language-core/1.8.8_typescript@4.7.4:
@@ -6780,7 +6803,7 @@ packages:
     dev: false
 
   /source-map-js/1.0.2:
-    resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/source-map-js/-/source-map-js-1.0.2.tgz}
+    resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
     engines: {node: '>=0.10.0'}
 
   /source-map-resolve/0.5.3:
@@ -7781,6 +7804,18 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
+      vue: 3.3.4
+    dev: false
+
+  /vue-i18n/9.11.0_vue@3.3.4:
+    resolution: {integrity: sha512-vU4gY6lu8Pdfs9BgKGiDAJmFDf88cceR47KcSB0VW4xJzUrXR/7qwqM7A8dQ2nedhoIDxoOm5Ro4pFd2KvJqbA==}
+    engines: {node: '>= 16'}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      '@intlify/core-base': 9.11.0
+      '@intlify/shared': 9.11.0
+      '@vue/devtools-api': 6.5.0
       vue: 3.3.4
     dev: false
 

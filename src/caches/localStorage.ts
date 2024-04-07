@@ -15,6 +15,18 @@ export const removeToken = () => {
 }
 //#endregion
 
+//#region 系统语言
+export const getLanguage = () => {
+    return localStorage.getItem(CacheKey.LANGUAGE)
+}
+export const setLanguage = (language: string) => {
+    localStorage.setItem(CacheKey.LANGUAGE, language)
+}
+export const removeLanguage = () => {
+    localStorage.removeItem(CacheKey.LANGUAGE)
+}
+//#endregion
+
 //#region 主题
 export const getActiveThemeName = () => {
     return localStorage.getItem(CacheKey.ACTIVE_THEME_NAME) as ThemeName

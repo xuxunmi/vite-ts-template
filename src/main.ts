@@ -27,6 +27,11 @@ app.use(directives)
 import { loadSvg } from '@/icons'
 loadSvg(app)
 
+// 引入i18n语言国际化
+import i18n from "@/lang/i18n"
+
+app.use(i18n)
+
 app.use(pinia)
 
 app.use(router)

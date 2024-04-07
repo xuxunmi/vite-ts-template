@@ -16,6 +16,7 @@ export const useSettingsStore = defineStore('settings', () => {
     const showScreenfull = ref<boolean>(layoutSettings.showScreenfull)
     const showGreyMode = ref<boolean>(layoutSettings.showGreyMode)
     const showColorWeakness = ref<boolean>(layoutSettings.showColorWeakness)
+    const showLanguage = ref<boolean>(layoutSettings.showLanguage)
 
     return {
         projectName,
@@ -27,7 +28,8 @@ export const useSettingsStore = defineStore('settings', () => {
         showThemeSwitch,
         showScreenfull,
         showGreyMode,
-        showColorWeakness
+        showColorWeakness,
+        showLanguage
     }
 })
 

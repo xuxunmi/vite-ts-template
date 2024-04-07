@@ -18,6 +18,8 @@ interface LayoutSettings {
     showGreyMode: boolean
     /** 是否显示色弱模式 */
     showColorWeakness: boolean
+    /** 是否显示切换语言 */
+    showLanguage: boolean
 }
 
 const layoutSettings: LayoutSettings = {
@@ -29,7 +31,8 @@ const layoutSettings: LayoutSettings = {
     showThemeSwitch: false,
     showScreenfull: false,
     showGreyMode: false,
-    showColorWeakness: false
+    showColorWeakness: false,
+    showLanguage: true
 }
 
 export default layoutSettings

@@ -4,14 +4,16 @@
     </el-config-provider>
 </template>
 <script setup lang="ts">
-import layout from '@/views/Layout/index.vue'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import enUk from 'element-plus/es/locale/lang/en'
+import { getLanguage } from '@/caches/localStorage'
 // import { useRoute } from "vue-router"
 
 // const route = useRoute()
 
 // 中文国际化
-const locale = zhCn
+const currentLanguage = getLanguage()
+const locale = currentLanguage === 'zh_CN' ? zhCn : enUk
 
 // 无感刷新页面
 const isRefresh = ref(true)
@@ -22,11 +24,11 @@ const reload = (): void => {
     })
 }
 
+provide('reload', reload)
+
 // 子组件使用：
 // const reload = inject("reload") as () => void
 // 调用：reload()
-
-provide('reload', reload)
 
 console.log('VITE_PORT环境变量: ', import.meta.env.VITE_PORT)
 

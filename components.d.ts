@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    BarChart: typeof import('./src/components/eCharts/barChart.vue')['default']
     CollapseTransition: typeof import('./src/components/collapse-transition/index.vue')['default']
     Control: typeof import('./src/components/table-plus/control/index.vue')['default']
     'CustomVue.ce': typeof import('./src/components/WebComponents/customVue.ce.vue')['default']
@@ -43,12 +44,16 @@ declare module 'vue' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     Index: typeof import('./src/components/WebComponents/Index.vue')['default']
+    Language: typeof import('./src/components/Language/index.vue')['default']
+    LineChart: typeof import('./src/components/eCharts/lineChart.vue')['default']
     ModifyPassword: typeof import('./src/components/modifyPassword/index.vue')['default']
+    PieChart: typeof import('./src/components/eCharts/pieChart.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Screenfull: typeof import('./src/components/Screenfull/index.vue')['default']
     SvgIcon: typeof import('./src/components/svg-icon/index.vue')['default']
     TablePlus: typeof import('./src/components/table-plus/index.vue')['default']
+    ThemeSwitch: typeof import('./src/components/themeSwitch/index.vue')['default']
     Toolbar: typeof import('./src/components/table-plus/toolbar/index.vue')['default']
   }
   export interface ComponentCustomProperties {
