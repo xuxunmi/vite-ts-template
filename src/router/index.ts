@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from 'vue-router'
 const Layout = () => import('@/views/Layout/index.vue')
 const Index = () => import('@/views/Index/index.vue')
 const Login = () => import('@/views/Login/index.vue')
@@ -96,7 +96,10 @@ const constantRoutes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-    history: createWebHashHistory(import.meta.env.BASE_URL), // hash模型
+    history:
+        import.meta.env.VITE_ROUTER_HISTORY === 'hash'
+            ? createWebHashHistory(import.meta.env.BASE_URL)
+            : createWebHistory(import.meta.env.VITE_PUBLIC_PATH), // hash模型
     // 滚动行为
     scrollBehavior: (to, from, savePosition) => {
         if (savePosition) {

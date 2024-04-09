@@ -8,10 +8,14 @@ declare module '*.vue' {
     export default component
 }
 
-interface ImportMetaEnv {
-    VITE_PORT: number
-    VITE_BASE_API: string
-    VITE_PUBLIC_PATH: string
-    VITE_PROXY_DOMAIN: string
-    VITE_PROXY_DOMAIN_REAL: string
+declare interface ImportMetaEnv {
+    readonly VITE_PORT: number
+    readonly VITE_BASE_API: string
+    readonly VITE_PUBLIC_PATH: string
+    readonly VITE_PROXY_DOMAIN: string
+    readonly VITE_PROXY_DOMAIN_REAL: string
+}
+
+interface ImportMeta {
+    readonly env: ImportMetaEnv
 }
