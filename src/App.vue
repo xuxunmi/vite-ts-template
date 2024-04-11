@@ -1,19 +1,16 @@
 <template>
-    <el-config-provider :locale="locale">
+    <el-config-provider :locale="locale === 'zh_cn' ? zhCn : enUk">
         <router-view v-if="isRefresh" />
     </el-config-provider>
 </template>
 <script setup lang="ts">
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import enUk from 'element-plus/es/locale/lang/en'
-import { getLanguage } from '@/caches/localStorage'
 // import { useRoute } from "vue-router"
+import { useI18n } from 'vue-i18n'
 
 // const route = useRoute()
-
-// 中文国际化
-const currentLanguage = getLanguage()
-const locale = currentLanguage === 'zh_CN' ? zhCn : enUk
+const { locale } = useI18n()
 
 // 无感刷新页面
 const isRefresh = ref(true)
