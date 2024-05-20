@@ -30,6 +30,9 @@ import path, { resolve } from 'path'
 
 import svgLoader from 'vite-svg-loader'
 
+// 支持require导入第三方模块
+import vitePluginRequire from "vite-plugin-require"
+
 const isProduction = process.env.NODE_ENV === 'production'
 
 // https://vitejs.dev/config/
@@ -145,7 +148,8 @@ export default defineConfig(({ command, mode }) => {
                         }
                     ]
                 }
-            })
+            }),
+            vitePluginRequire()
         ],
         resolve: {
             // 设置路径别名

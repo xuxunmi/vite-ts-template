@@ -1,5 +1,7 @@
 import { createI18n } from "vue-i18n"
 import { getLanguage } from '@/caches/localStorage'
+import { useInternationalStoreHook } from "@/stores/modules/international"
+import { getInternationalFields } from "@/caches/localStorage"
 
 // elementPlus中的语言配置
 import elementZhLocale from "element-plus/es/locale/lang/zh-cn"
@@ -9,19 +11,24 @@ import elementEnLocale from "element-plus/es/locale/lang/en"
 import zhLocale from "./zh_CN"
 import enLocale from "./en_US"
 
-// const { zh, en } = store.getters.internationalFields || getStorage('internationalFields', false);
+const internationalStore = useInternationalStoreHook()
+const { zh, en } =
+    Object.keys(internationalStore.internationalFields).length === 0
+        ? getInternationalFields()
+        : internationalStore.internationalFields
+console.log(zh, en, Object.keys(internationalStore.internationalFields))
 
 // 配置国际化语言包
 const messages = {
     zh_CN: {
         ...zhLocale, // 本地文本语言包
-        ...elementZhLocale // elementPlus语言包
-        // ...zh
+        ...elementZhLocale, // elementPlus语言包
+        ...zh // 动态中英文
     },
     en_US: {
         ...enLocale,
-        ...elementEnLocale
-        // ...en
+        ...elementEnLocale,
+        ...en
     }
 }
 console.log("messages: ", messages)

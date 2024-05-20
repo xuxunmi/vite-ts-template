@@ -1,17 +1,4 @@
-import dayjs from 'dayjs'
-import weekday from 'dayjs/plugin/weekday'
-import weekOfYear from 'dayjs/plugin/weekOfYear'
-import quarterOfYear from 'dayjs/plugin/quarterOfYear'
-import localeData from 'dayjs/plugin/localeData'
-import zh from 'dayjs/locale/zh-cn'
-
 import { SelectInterface } from '@/interface/common'
-
-dayjs.extend(weekday)
-dayjs.extend(weekOfYear)
-dayjs.extend(quarterOfYear)
-dayjs.extend(localeData)
-dayjs.locale(zh)
 
 /**
  * // 移除el-table树中的指定节点集合,可以用于前端table多行勾选假删除
@@ -42,6 +29,43 @@ export const removeItemInTree = (tree: any, node: any): boolean => {
         }
     }
     return false
+}
+
+/**
+ * 设置数组元素位置
+ * @param type 操作类型
+ * @param index 元素下标
+ * @param arr 数组
+ */
+export const setArrayEleOrder = (type: string, index: number, arr: any[]) => {
+    // console.log('setArrayEleOrder', type, index, arr)
+    if (type === 'up') {
+        // 上移
+        if (index > 0 && index < arr.length) {
+            let temp = arr[index]
+            arr[index] = arr[index - 1]
+            arr[index - 1] = temp
+        }
+    } else if (type === 'down') {
+        // 下移
+        if (index >= 0 && index < arr.length - 1) {
+            let temp = arr[index]
+            arr[index] = arr[index + 1]
+            arr[index + 1] = temp
+        }
+    } else if (type === 'top') {
+        // 置顶
+        if (index > 0 && index < arr.length) {
+            let element = arr.splice(index, 1)[0]
+            arr.unshift(element)
+        }
+    } else if (type === 'bottom') {
+        // 置底
+        if (index >= 0 && index < arr.length - 1) {
+            let element = arr.splice(index, 1)[0]
+            arr.push(element)
+        }
+    }
 }
 
 /**
@@ -154,15 +178,6 @@ export const uniqueArray = (arr: any[]) => {
     return [...new Set(arr)]
 }
 
-/** 格式化时间 */
-export const formatDateTime = (time: string | number | Date, format: string | undefined = 'YYYY-MM-DD HH:mm:ss') => {
-    if (!time) {
-        return 'N/A'
-    }
-    const date = new Date(time)
-    return dayjs(date).format(format)
-}
-
 /**
  * 根据id查找name
  * @param arr 数组
@@ -178,7 +193,7 @@ export const getNameById = (arr: SelectInterface[], id: string | number) => {
  * @param arr 树数组
  * @param id id
  */
-export const findNameById = (data: any[], id: string): string | null => {
+export const findNameById = (data: SelectInterface[], id: string): string | null => {
     for (const item of data) {
         if (item.id === id) {
             return item.name
@@ -212,150 +227,23 @@ export const isEmptyObject = (obj: object): boolean => {
 }
 
 /**
- * 获取一年的所有周总数
- * @param year 年份
- */
-export const getWeeksInYear = (year: number) => {
-    // 当前年份的第一个月
-    const currentFirstMonth = dayjs().startOf('year').format('M')
-    // console.log("currentFirstMonth: ", currentFirstMonth)
-    // 当前年份的最后一个月
-    const currentLastMonth = dayjs().endOf('year').format('MM')
-    // console.log("currentLastMonth: ", currentLastMonth)
-    // 当前年份的第一天
-    const currentFirstDay = dayjs().startOf('year').format('D')
-    // console.log("currentFirstDay: ", currentFirstDay)
-    // 当前年份的最后一天
-    const currentLastDay = dayjs().endOf('year').format('DD')
-    // console.log("currentLastDay: ", currentLastDay)
-    const firstDayOfYear = new Date(year, +currentFirstMonth, +currentFirstDay) // 获取指定年份的第一个月第一天
-    const lastDayOfYear = new Date(year, +currentLastMonth, +currentLastDay) // 获取指定年份的最后一个月最后一天
-
-    const firstWeekDay = firstDayOfYear.getDay() // 第一天是星期几
-    const timeDiff = lastDayOfYear.getTime() - firstDayOfYear.getTime() // 日期之间的时间差（毫秒）
-    const daysInYear = Math.floor(timeDiff / (24 * 60 * 60 * 1000)) + 1 // 一年中的总天数
-
-    let weeks = Math.ceil((daysInYear + firstWeekDay) / 7) // 计算周数
-    if (firstWeekDay === 0) {
-        // 如果第一天是周日，则减少一周
-        weeks--
-    }
-
-    return weeks
-}
-
-/**
- * 生成一年的所有周数组
- * @param year 年份
- */
-export const createWeekInYear = (year?: number) => {
-    type weekType = {
-        from: string
-        to: string
-        name: string
-        id: string
-    }
-    const y = year || dayjs().year()
-    const currentYearWeeks: weekType[] = []
-    const prevYearWeeks: weekType[] = []
-    const prevWeeksNum = getWeeksInYear(y - 1)
-    const currentWeeksNum = getWeeksInYear(y)
-
-    // 上一年
-    for (let i = 0; i < prevWeeksNum; i++) {
-        const from = dayjs()
-            .year(y - 1)
-            .week(i)
-            .weekday(1)
-            .format('YYYY-MM-DD')
-        const to = dayjs()
-            .year(y - 1)
-            .week(i)
-            .weekday(7)
-            .format('YYYY-MM-DD')
-        const week: weekType = {
-            from,
-            to,
-            name:
-                dayjs()
-                    .year(y - 1)
-                    .format('YYYY') +
-                '-' +
-                `W${i + 1}(${from}—${to})`,
-            id:
-                dayjs()
-                    .year(y - 1)
-                    .format('YYYY') +
-                '-' +
-                (i + 1)
-        }
-        prevYearWeeks.push(week)
-    }
-
-    // 今年
-    for (let i = 1; i <= currentWeeksNum; i++) {
-        const from = dayjs().year(y).week(i).weekday(1).format('YYYY-MM-DD')
-        const to = dayjs().year(y).week(i).weekday(7).format('YYYY-MM-DD')
-        const week: weekType = {
-            from,
-            to,
-            name: dayjs().year(y).format('YYYY') + '-' + `W${i}(${from}—${to})`,
-            id: dayjs().year(y).format('YYYY') + '-' + i
-        }
-        if (from > dayjs().format('YYYY-MM-DD')) {
-            break
-        }
-        currentYearWeeks.push(week)
-    }
-    // console.log("currentYearWeeks:", currentYearWeeks)
-    // 取上一年后半年的周数据
-    const prevHalfYearWeeks = prevYearWeeks.slice(Math.ceil(prevYearWeeks.length / 2))
-    // 上一年和今年合并起来
-    const weeksTotal: weekType[] = prevHalfYearWeeks.concat(currentYearWeeks)
-    // console.log(" weeksTotal:", weeksTotal)
-    return weeksTotal
-}
-
-/**
- * 生成指定年份的季度时间范围区间
- * @param year 年份
- */
-export const createQuarterDateRange = (year: number) => {
-    type quarterType = {
-        from: string
-        to: string
-        name: string
-        id: string
-    }
-    const y = year
-    const quartersDateRange: quarterType[] = []
-    for (let i = 1; i <= 4; i++) {
-        const from = dayjs().year(y).quarter(i).startOf('quarter').format('YYYY-MM-DD')
-        const to = dayjs().year(y).quarter(i).endOf('quarter').format('YYYY-MM-DD')
-        const quarter: quarterType = {
-            from,
-            to,
-            name: dayjs().year(y).format('YYYY') + '-' + `Q${i}(${from}—${to})`,
-            id: dayjs().year(y).format('YYYY') + '-' + i
-        }
-        quartersDateRange.push(quarter)
-    }
-    return quartersDateRange
-}
-
-/**
- * 保留指定位小数：不四舍五入
+ * 保留两位小数：不四舍五入
  * @param {*} src
  * @param {*} pos
  * @returns
  */
-export const truncateDecimals = (num: number, pos = 2): string => {
-    const factor = Math.pow(10, pos)
-    const truncatedNum = Math.floor(num * factor) / factor
-    const numString = truncatedNum.toString()
-    const [integerPart, decimalPart = ''] = numString.split('.')
-    const decimalPartWithZero = decimalPart.padEnd(pos, '0')
-    return `${integerPart}.${decimalPartWithZero}`
+export const truncateDecimals = (num: number): string => {
+    const result = Number(num.toString().match(/^\d+(?:\.\d{0,2})?/))
+    let s = result.toString()
+    let rs = s.indexOf('.')
+    if (rs < 0) {
+        rs = s.length
+        s += '.'
+    }
+    while (s.length <= rs + 2) {
+        s += '0'
+    }
+    return s
 }
 
 /**
@@ -404,16 +292,6 @@ export const recursionArray = (arr: Array<any>, cb?: Function, child = 'children
 //         item.children = data
 //         item.hasChildren = false
 // })
-
-/**
- *将格式化日期转为本地星期几
- * @param {*} dateString：格式化日期：2024-02-21
- * @returns 星期四
- */
-export const getDayOfWeekZh = (dateString: string): string => {
-    const dayOfWeek = dayjs(dateString).locale('zh-cn').format('dddd')
-    return dayOfWeek
-}
 
 /**
  * 打开一个新窗口: 无浏览器刷新按钮，无浏览器标签栏：参考地址: https://blog.csdn.net/muguli2008/article/details/104899094

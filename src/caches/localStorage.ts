@@ -17,13 +17,25 @@ export const removeToken = () => {
 
 //#region 系统语言
 export const getLanguage = () => {
-    return localStorage.getItem(CacheKey.LANGUAGE)
+    return getStorage(CacheKey.LANGUAGE,false)
 }
 export const setLanguage = (language: string) => {
-    localStorage.setItem(CacheKey.LANGUAGE, language)
+    setStorage(CacheKey.LANGUAGE, language,false)
 }
 export const removeLanguage = () => {
-    localStorage.removeItem(CacheKey.LANGUAGE)
+    removeStorage(CacheKey.LANGUAGE,false)
+}
+//#endregion
+
+//#region 中英文国际化
+export const getInternationalFields = () => {
+    return JSON.parse(getStorage(CacheKey.INTERNATIONAL_FIELDS, false) || "{}")
+}
+export const setInternationalFields = (Fields: Object) => {
+    setStorage(CacheKey.INTERNATIONAL_FIELDS, JSON.stringify(Fields || "{}"),false)
+}
+export const removeInternationalFields = () => {
+    removeStorage(CacheKey.INTERNATIONAL_FIELDS,false)
 }
 //#endregion
 

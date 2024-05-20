@@ -8,6 +8,7 @@ class CacheKey {
     static readonly DYNAMICS_MENU_LIST = `${SYSTEM_CACHE_NAME}-dynamics-menu-list`
     static readonly PERMISSIONS_BTN_LIST = `${SYSTEM_CACHE_NAME}-permissions-btn-list`
     static readonly LANGUAGE = `${SYSTEM_CACHE_NAME}-language`
+    static readonly INTERNATIONAL_FIELDS = `${SYSTEM_CACHE_NAME}-internationalFields`
 }
 
 export default CacheKey

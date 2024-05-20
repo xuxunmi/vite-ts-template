@@ -1,21 +1,21 @@
 <template>
-    <div class="drop-container">
-        <div class="drop-left scrollbar" :style="{ width: leftWidth }">
+    <div ref="DropRef" class="drop-container">
+        <div class="drop-left scrollbar">
             <div class="drop-left-container" :style="{ 'min-width': minContainerWidth[0] + 'px' }">
-                <slot name="left"></slot>
+                <slot name="left" />
             </div>
         </div>
-        <div class="drop-line" v-dropLine="minDropWidth"></div>
+        <div class="drop-line" v-dropLine="minDropWidth" />
         <div class="drop-right scrollbar">
             <div class="drop-right-container" :style="{ 'min-width': minContainerWidth[1] + 'px' }">
-                <slot name="right"></slot>
+                <slot name="right" />
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { type Directive } from 'vue'
+import { type Directive, onMounted, ref } from 'vue'
 
 // 使用示例：
 //     <div class="app-container">
@@ -85,9 +85,9 @@ const vDropLine: Directive = {
             startWidth = preDom.clientWidth
             e.preventDefault()
             document.onmousemove = (e: any) => {
-                let parentWidth = el.parentNode.clientWidth
-                let preWidth = startWidth + e.clientX - starX
-                let nextWidth = parentWidth - preWidth
+                const parentWidth = el.parentNode.clientWidth
+                const preWidth = startWidth + e.clientX - starX
+                const nextWidth = parentWidth - preWidth
                 if (preWidth >= leftMinWidth && nextWidth >= rightMinWidth) {
                     preDom.style.width = preWidth + 'px'
                 }
@@ -99,6 +99,16 @@ const vDropLine: Directive = {
         }
     }
 }
+
+const DropRef = ref<HTMLDivElement>()
+const setLeftWidth = (width: string) => {
+    const leftDom = DropRef.value?.querySelector('.drop-left') as HTMLDivElement
+    if (leftDom) leftDom.style.width = width
+}
+
+onMounted(() => {
+    setLeftWidth(props.leftWidth)
+})
 </script>
 
 <style lang="scss" scoped>
