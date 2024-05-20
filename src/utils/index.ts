@@ -193,7 +193,7 @@ export const getNameById = (arr: SelectInterface[], id: string | number) => {
  * @param arr 树数组
  * @param id id
  */
-export const findNameById = (data: SelectInterface[], id: string): string | null => {
+export const findNameById = (data: any[], id: string): string | null => {
     for (const item of data) {
         if (item.id === id) {
             return item.name
