@@ -81,10 +81,11 @@ const vDropLine: Directive = {
         const preDom = el.previousElementSibling
         const [leftMinWidth, rightMinWidth] = binding.value || [300, 400]
         el.onmousedown = (e: any) => {
+            e.preventDefault()
             starX = e.clientX
             startWidth = preDom.clientWidth
-            e.preventDefault()
             document.onmousemove = (e: any) => {
+                document.body.style.cursor = 'col-resize'
                 const parentWidth = el.parentNode.clientWidth
                 const preWidth = startWidth + e.clientX - starX
                 const nextWidth = parentWidth - preWidth
@@ -95,6 +96,7 @@ const vDropLine: Directive = {
             document.onmouseup = () => {
                 document.onmousemove = null
                 document.onmouseup = null
+                document.body.style.cursor = 'initial'
             }
         }
     }
