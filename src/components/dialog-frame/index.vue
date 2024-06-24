@@ -8,6 +8,7 @@
         v-model="dialogVisible"
         :title="title"
         :width="width"
+        :fullscreen="fullscreen"
         center
         align-center
         @close="closeDialog"
@@ -79,16 +80,22 @@ const props = defineProps({
     draggable: {
         type: Boolean,
         default: true
+    },
+    // 是否为全屏 Dialog
+    fullscreen: {
+        type: Boolean,
+        default: false
     }
 })
 
 const dialogVisible = ref<boolean>(props.visible)
 
-const emits = defineEmits(['update:visible'])
+const emits = defineEmits(['update:visible', 'close'])
 
 // 关闭对话框
 const closeDialog = () => {
     dialogVisible.value = false
+    emits('close')
 }
 
 watch(
