@@ -7,7 +7,9 @@ interface DefaultPaginationData {
     pageSize: number
     layout: string
     small?: boolean
+    show?: boolean
     hideOnSinglePage?: boolean // 只有一页时是否隐藏
+    teleported?: boolean // 是否将下拉菜单teleport至 body
 }
 
 interface PaginationData {
@@ -19,6 +21,7 @@ interface PaginationData {
     small?: boolean
     hideOnSinglePage?: boolean // 只有一页时是否隐藏
     show?: boolean // pt-table(分页显示/隐藏)
+    teleported?: boolean // 是否将下拉菜单teleport至 body
 }
 
 /** 默认的分页参数 */
@@ -29,7 +32,9 @@ const defaultPaginationData: DefaultPaginationData = {
     pageSize: 10,
     layout: "total, prev, pager, next, sizes",
     small: true,
-    hideOnSinglePage: false
+    show: true,
+    hideOnSinglePage: false,
+    teleported: false
 }
 
 export const usePagination = (initialPaginationData: PaginationData = {}) => {
