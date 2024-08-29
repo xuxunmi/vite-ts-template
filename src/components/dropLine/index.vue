@@ -1,15 +1,19 @@
 <template>
     <div ref="DropRef" class="drop-container">
-        <div class="drop-left scrollbar">
+        <div v-show="showLeft" class="drop-left scrollbar">
             <div class="drop-left-container" :style="{ 'min-width': minContainerWidth[0] + 'px' }">
                 <slot name="left" />
             </div>
         </div>
-        <div class="drop-line" v-dropLine="minDropWidth" />
+        <div v-show="showLeft" class="drop-line" v-dropLine="minDropWidth" />
         <div class="drop-right scrollbar">
             <div class="drop-right-container" :style="{ 'min-width': minContainerWidth[1] + 'px' }">
                 <slot name="right" />
             </div>
+            <el-icon class="drop-fold-left" @click="showLeft = !showLeft">
+                <DArrowLeft v-if="showLeft" />
+                <DArrowRight v-else />
+            </el-icon>
         </div>
     </div>
 </template>
@@ -108,6 +112,9 @@ const setLeftWidth = (width: string) => {
     if (leftDom) leftDom.style.width = width
 }
 
+// 左侧折叠
+const showLeft = ref(true)
+
 onMounted(() => {
     setLeftWidth(props.leftWidth)
 })
@@ -124,9 +131,17 @@ onMounted(() => {
         }
     }
     .drop-right {
+        position: relative;
         flex: 1;
         .drop-right-container {
             height: 100%;
+        }
+        .drop-fold-left {
+            position: absolute;
+            top: 0;
+            left: -2px;
+            cursor: pointer;
+            z-index: 999;
         }
     }
     .drop-line {
