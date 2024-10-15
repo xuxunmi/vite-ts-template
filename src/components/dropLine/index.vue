@@ -10,7 +10,7 @@
             <div class="drop-right-container" :style="{ 'min-width': minContainerWidth[1] + 'px' }">
                 <slot name="right" />
             </div>
-            <el-icon class="drop-fold-left" @click="showLeft = !showLeft">
+            <el-icon class="drop-fold-left" @click="handleDropFoldLeft">
                 <DArrowLeft v-if="showLeft" />
                 <DArrowRight v-else />
             </el-icon>
@@ -75,8 +75,9 @@ const props = defineProps({
         default: () => [100, 100]
     }
 })
-
 //#endregion
+
+const emits = defineEmits(["dropWidthChange"])
 
 // 拖拽指令
 const vDropLine: Directive = {
@@ -96,6 +97,7 @@ const vDropLine: Directive = {
                 if (preWidth >= leftMinWidth && nextWidth >= rightMinWidth) {
                     preDom.style.width = preWidth + 'px'
                 }
+                emits("dropWidthChange")
             }
             document.onmouseup = () => {
                 document.onmousemove = null
@@ -114,6 +116,14 @@ const setLeftWidth = (width: string) => {
 
 // 左侧折叠
 const showLeft = ref(true)
+const handleDropFoldLeft = () => {
+    showLeft.value = !showLeft.value
+    // 延迟一秒触发
+    if (timer.value) clearTimeout(timer.value)
+    timer.value = setTimeout(() => {
+        emits("dropWidthChange")
+    }, 50)
+}
 
 onMounted(() => {
     setLeftWidth(props.leftWidth)
