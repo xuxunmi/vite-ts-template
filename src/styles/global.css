@@ -105,6 +105,7 @@ template {
 
 * {
     -webkit-tap-highlight-color: transparent;
+    /* 系统提供的瘦滚动条宽度，或者比默认滚动条宽度更窄的宽 */
     scrollbar-width: thin;
 }
 
@@ -132,12 +133,12 @@ body {
     -moz-osx-font-smoothing: grayscale;
     font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial,
         sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.5;
     color: #333;
     -webkit-appearance: none;
     letter-spacing: 0;
-    scroll-behavior: smooth;
+    scroll-behavior: smooth; // 平滑滚动
 }
 
 article,
