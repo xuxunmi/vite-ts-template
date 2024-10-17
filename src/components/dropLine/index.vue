@@ -116,6 +116,7 @@ const setLeftWidth = (width: string) => {
 
 // 左侧折叠
 const showLeft = ref(true)
+const timer = ref()
 const handleDropFoldLeft = () => {
     showLeft.value = !showLeft.value
     // 延迟一秒触发
@@ -155,7 +156,7 @@ onMounted(() => {
         }
     }
     .drop-line {
-        width: 1px;
+        width: 4px;
         height: 100%;
         margin: 0 1px;
         background-color: #ddd;
