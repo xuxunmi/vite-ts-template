@@ -7,7 +7,6 @@ interface DefaultPaginationData {
     pageSize: number
     layout: string
     small?: boolean
-    show?: boolean
     hideOnSinglePage?: boolean // 只有一页时是否隐藏
     teleported?: boolean // 是否将下拉菜单teleport至 body
 }
@@ -28,16 +27,15 @@ interface PaginationData {
 const defaultPaginationData: DefaultPaginationData = {
     total: 0,
     currentPage: 1,
-    pageSizes: [10, 20, 30, 40, 50],
-    pageSize: 10,
-    layout: "total, prev, pager, next, sizes",
+    pageSizes: [20, 50, 100, 200, 500],
+    pageSize: 20,
+    layout: "total, jumper, prev, pager, next, sizes",
     small: true,
-    show: true,
     hideOnSinglePage: false,
     teleported: false
 }
 
-export const usePagination = (initialPaginationData: PaginationData = {}) => {
+export const usePagination = (initialPaginationData: PaginationData = {})=> {
     /** 合并分页参数 */
     const pageData = reactive({ ...defaultPaginationData, ...initialPaginationData })
     /** 改变当前页码 */
