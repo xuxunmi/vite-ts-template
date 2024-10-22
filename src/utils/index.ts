@@ -32,43 +32,6 @@ export const removeItemInTree = (tree: any, node: any): boolean => {
 }
 
 /**
- * 设置数组元素位置
- * @param type 操作类型
- * @param index 元素下标
- * @param arr 数组
- */
-export const setArrayEleOrder = (type: string, index: number, arr: any[]) => {
-    // console.log('setArrayEleOrder', type, index, arr)
-    if (type === 'up') {
-        // 上移
-        if (index > 0 && index < arr.length) {
-            let temp = arr[index]
-            arr[index] = arr[index - 1]
-            arr[index - 1] = temp
-        }
-    } else if (type === 'down') {
-        // 下移
-        if (index >= 0 && index < arr.length - 1) {
-            let temp = arr[index]
-            arr[index] = arr[index + 1]
-            arr[index + 1] = temp
-        }
-    } else if (type === 'top') {
-        // 置顶
-        if (index > 0 && index < arr.length) {
-            let element = arr.splice(index, 1)[0]
-            arr.unshift(element)
-        }
-    } else if (type === 'bottom') {
-        // 置底
-        if (index >= 0 && index < arr.length - 1) {
-            let element = arr.splice(index, 1)[0]
-            arr.push(element)
-        }
-    }
-}
-
-/**
  *
  * @param {array} tree 树数据源
  * @param {string} targetId 目标树节点id
@@ -278,12 +241,12 @@ export const convertToChineseNumeral = (num: string): string => {
  * @param cb 回调事件
  * @param child 子元素字段名
  */
-export const recursionArray = (arr: Array<any>, cb?: Function, child = 'children') => {
+export const recursionArray = (arr: any[], cb?: (item: any, i: number, parent: any) => void | 'return' | boolean, child = "children", parent?: any) => {
     for (let i = 0; i < arr.length; i++) {
-        const flag = cb && cb(arr[i], i)
-        if (flag === 'return') return true
+        const flag = cb && cb(arr[i], i, parent)
+        if (flag === "return") return true
         if (arr[i][child] && arr[i][child].length) {
-            recursionArray(arr[i][child], cb, child)
+            recursionArray(arr[i][child], cb, child, arr[i])
         }
     }
 }
@@ -300,3 +263,65 @@ export const recursionArray = (arr: Array<any>, cb?: Function, child = 'children
 export const windowOpenTab = (src: string) => {
     window.open(src || '', '_blank', 'scrollbars=yes,resizable=1')
 }
+
+/**
+ * 设置数组元素位置
+ * @param type 操作类型
+ * @param index 元素下标
+ * @param arr 数组
+ * @param string 顺序号
+ */
+export const setObjectOrder = (obj1?: any, obj2?: any, order?: string) => {
+    if (obj1 && obj2 && order) {
+        const temp = obj1[order]
+        obj1[order] = obj2[order]
+        obj2[order] = temp
+    }
+}
+export const setArrayEleOrder = (type: string, index: number, arr: any[], order?: string) => {
+    // console.log("setArrayEleOrder", type, index, arr)
+    if (type === "up") {
+        // 上移
+        if (index > 0 && index < arr.length) {
+            setObjectOrder(arr[index], arr[index - 1], order)
+            const temp = arr[index]
+            arr[index] = arr[index - 1]
+            arr[index - 1] = temp
+        }
+    } else if (type === "down") {
+        // 下移
+        if (index >= 0 && index < arr.length - 1) {
+            setObjectOrder(arr[index], arr[index - 1], order)
+            const temp = arr[index]
+            arr[index] = arr[index + 1]
+            arr[index + 1] = temp
+        }
+    } else if (type === "top") {
+        // 置顶
+        if (index > 0 && index < arr.length) {
+            if (order) {
+                const firstOrder = arr[0][order]
+                for (let i = 0; i < index; i++) arr[i][order] = arr[i + 1][order]
+                arr[index][order] = firstOrder
+            }
+            const element = arr.splice(index, 1)[0]
+            arr.unshift(element)
+        }
+    } else if (type === "bottom") {
+        // 置底
+        if (index >= 0 && index < arr.length - 1) {
+            if (order) {
+                const lastOrder = arr[arr.length - 1][order]
+                for (let i = index + 1; i < arr.length; i++) arr[i][order] = arr[i - 1][order]
+                arr[index][order] = lastOrder
+            }
+            const element = arr.splice(index, 1)[0]
+            arr.push(element)
+        }
+    }
+}
+// 使用示例： 
+// 设置顺序
+// const setOrder = (type: string, index: number, list: any[]) => {
+//     setArrayEleOrder(type, index, list, 'configurationSeq')
+// }
