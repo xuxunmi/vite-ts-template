@@ -1,8 +1,9 @@
 import { ref } from "vue"
-import store from "@/store"
-import { defineStore } from "pinia"
-import { getInternationalFieldsData } from "@/api/system/systemLanguage"
+import { defineStore, createPinia } from 'pinia'
+// import { getInternationalFieldsData } from "@/api/system/systemLanguage"
 // import { setInternationalFields } from "@/caches/localStorage"
+
+const store = createPinia()
 
 export const useInternationalStore = defineStore("international", () => {
     // 中英文国际化语言

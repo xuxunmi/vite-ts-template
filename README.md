@@ -36,7 +36,7 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ```sh
 # 安装依赖
-pnpm install
+pnpm install || cnpm install || npm install
 ```
 
 ### Compile and Hot-Reload for Development
