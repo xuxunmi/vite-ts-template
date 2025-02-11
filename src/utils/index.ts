@@ -269,7 +269,7 @@ export const windowOpenTab = (src: string) => {
  * @param type 操作类型
  * @param index 元素下标
  * @param arr 数组
- * @param string 顺序号
+ * @param order 排序字段
  */
 export const setObjectOrder = (obj1?: any, obj2?: any, order?: string) => {
     if (obj1 && obj2 && order) {
