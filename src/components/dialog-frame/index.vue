@@ -1,26 +1,29 @@
 <template>
-    <el-dialog
-        :append-to-body="true"
-        :modal-append-to-body="false"
-        :close-on-click-modal="false"
-        :close-on-press-escape="false"
-        :destroy-on-close="true"
-        v-model="dialogVisible"
-        :title="title"
-        :width="width"
-        :fullscreen="fullscreen"
-        center
-        align-center
-        @close="closeDialog"
-    >
-        <slot />
-        <template v-if="footer" #footer>
-            <span class="dialog-footer">
-                <el-button size="small" @click="dialogVisible = false">取消</el-button>
-                <el-button size="small" type="primary" @click="dialogVisible = false">确定</el-button>
-            </span>
-        </template>
-    </el-dialog>
+    <div v-if="dialogVisible" v-dialogDrag="headerClass">
+        <el-dialog
+            :append-to-body="true"
+            :modal-append-to-body="false"
+            :close-on-click-modal="false"
+            :close-on-press-escape="false"
+            :destroy-on-close="true"
+            v-model="dialogVisible"
+            :title="title"
+            :width="width"
+            :fullscreen="fullscreen"
+            :header-class="headerClass"
+            center
+            align-center
+            @close="closeDialog"
+        >
+            <slot />
+            <template v-if="footer" #footer>
+                <span class="dialog-footer">
+                    <el-button size="small" type="primary" @click="dialogVisible = false">保存</el-button>
+                    <el-button size="small" type="primary" @click="dialogVisible = false">取消</el-button>
+                </span>
+            </template>
+        </el-dialog>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -48,10 +51,10 @@
  *    const emits = defineEmits(["update:visible"])
  */
 
-import { ref, watch } from 'vue'
+import { ref, watch } from "vue"
 
 defineOptions({
-    name: 'dialogFrame'
+    name: "dialogFrame"
 })
 
 const props = defineProps({
@@ -61,11 +64,11 @@ const props = defineProps({
     },
     title: {
         type: String,
-        default: '标题'
+        default: "标题"
     },
     width: {
         type: String,
-        default: '30%'
+        default: "30%"
     },
     footer: {
         type: Boolean,
@@ -76,12 +79,7 @@ const props = defineProps({
         type: Boolean,
         default: true
     },
-    // 是否可拖拽
-    draggable: {
-        type: Boolean,
-        default: true
-    },
-    // 是否为全屏 Dialog
+    // 全屏
     fullscreen: {
         type: Boolean,
         default: false
@@ -90,13 +88,14 @@ const props = defineProps({
 
 const dialogVisible = ref<boolean>(props.visible)
 
-const emits = defineEmits(['update:visible', 'close'])
+const emits = defineEmits(["update:visible", "close"])
 
 // 关闭对话框
 const closeDialog = () => {
     dialogVisible.value = false
-    emits('close')
+    emits("close")
 }
+const headerClass = `dialog-${new Date().getTime()}`
 
 watch(
     () => props.visible,
@@ -108,13 +107,9 @@ watch(
 watch(
     () => dialogVisible.value,
     (val: boolean) => {
-        emits('update:visible', val)
+        emits("update:visible", val)
     }
 )
 </script>
 
-<style lang="scss" scoped>
-.dialog-footer button:first-child {
-    margin-right: 10px;
-}
-</style>
+<style lang="scss" scoped></style>

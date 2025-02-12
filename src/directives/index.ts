@@ -3,13 +3,15 @@ import { focus } from './focus'
 import { dropLine } from './dropLine'
 import { permission } from './permission'
 import { throttle, reclickDirective } from './throttle'
+import { dialogDrag } from './dialogDrag'
 
 const directives: any = {
     focus,
     dropLine,
     permission,
     throttle,
-    reclickDirective
+    reclickDirective,
+    dialogDrag
 }
 
 export default {

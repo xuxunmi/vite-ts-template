@@ -1,10 +1,5 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 import ExportJsonExcel from "js-export-excel"
-import dayjs from 'dayjs'
-
-const currentDateTime = computed(() => {
-    return dayjs(new Date()).format('YYYY-MM-DD')
-})
 
 /**
  * @description:导出下载模板
@@ -33,31 +28,12 @@ export function downloadBlobFileTemplate(url: string, filename: string) {
 }
 
 /**
- * 下载文件（需要后端指定文件流的下载类型）
- * @param {String} data blob数据
- * @param {String} filename 文件名称
- * @param {String} time 时间
- */
-export function downloadFile1(data: any, filename: string, time: string | undefined) {
-    if (!data) return
-    const link = document.createElement('a')
-    link.href = URL.createObjectURL(data as Blob)
-    link.download = time ? `${filename}_${time}` : `${filename}_${currentDateTime.value}`
-    document.body.appendChild(link)
-    link.click()
-    window.setTimeout(function () {
-        document.body.removeChild(link)
-        URL.revokeObjectURL(link.href)
-    }, 0)
-}
-
-/**
  * 下载文件
  * @param {String} data blob数据
  * @param {String} filename 文件名称含文件后缀
- * @param {String} type 文件类型
+ * @param {String} time 时间
  */
-export function downloadFile2(data: any, filename: string, type?: string) {
+export function downloadFile(data: any, filename: string, type?: string) {
     if (!data) return
     // 当Blob的type为: application/octet-stream 时，指定为.xlsx类型
     let blob
