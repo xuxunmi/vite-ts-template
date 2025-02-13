@@ -6,7 +6,7 @@ interface DefaultPaginationData {
     pageSizes: number[]
     pageSize: number
     layout: string
-    small?: boolean
+    size?: 'large' | 'default' | 'small'
     hideOnSinglePage?: boolean // 只有一页时是否隐藏
     teleported?: boolean // 是否将下拉菜单teleport至 body
 }
@@ -17,7 +17,7 @@ interface PaginationData {
     pageSizes?: number[]
     pageSize?: number
     layout?: string
-    small?: boolean
+    size?: 'large' | 'default' | 'small'
     hideOnSinglePage?: boolean // 只有一页时是否隐藏
     show?: boolean // pt-table(分页显示/隐藏)
     teleported?: boolean // 是否将下拉菜单teleport至 body
@@ -28,14 +28,14 @@ const defaultPaginationData: DefaultPaginationData = {
     total: 0,
     currentPage: 1,
     pageSizes: [20, 50, 100, 200, 500],
-    pageSize: 20,
+    pageSize: 100,
     layout: "total, jumper, prev, pager, next, sizes",
-    small: true,
+    size: 'small',
     hideOnSinglePage: false,
     teleported: false
 }
 
-export const usePagination = (initialPaginationData: PaginationData = {})=> {
+export const usePagination = (initialPaginationData: PaginationData = {}) => {
     /** 合并分页参数 */
     const pageData = reactive({ ...defaultPaginationData, ...initialPaginationData })
     /** 改变当前页码 */

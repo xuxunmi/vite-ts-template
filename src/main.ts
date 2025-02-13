@@ -11,6 +11,10 @@ import '@/styles/global.css'
 import '@/styles/index.less'
 import 'tailwindcss/tailwind.css'
 
+// 自定义前端表格
+import CustomTableFront from "@/plugins/customTable-front"
+import "@/plugins/customTable-front/dist/style.css"
+
 const app = createApp(App)
 
 const pinia = createPinia().use(piniaPluginPersistedstate)
@@ -35,5 +39,7 @@ app.use(i18n)
 app.use(pinia)
 
 app.use(router)
+
+app.use(CustomTableFront)
 
 app.mount('#app')
