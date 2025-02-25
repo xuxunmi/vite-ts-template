@@ -44,31 +44,65 @@ const handleSort = (a: any, b: any, data: sortParamsType) => {
         }
     } else {
         // 字符串
+        const stringAValue: any = String(aValue)
+        const stringBValue: any = String(bValue)
         if (data.sorted === "ascending") {
-            const stringAValue: any = String(aValue)
-            const stringBValue: any = String(bValue)
-            const n = !isNaN(Number(stringAValue)), n2 = !isNaN(Number(stringBValue));
-            if (n && n2) return stringAValue - stringBValue;
-            if (n) return -1;
-            if (n2) return 1;
-            const e = escape(stringAValue).indexOf("%u") > -1, e2 = escape(stringBValue).indexOf("%u") > -1
-            if (e && e2) return stringAValue.localeCompare(stringBValue);
-            if (e) return 1;
-            if (e2) return -1;
-            return stringAValue.localeCompare(stringBValue);
+            return customSort(stringAValue, stringBValue)
         } else if (data.sorted === "descending") {
-            const stringAValue = String(aValue)
-            const stringBValue = String(bValue)
-            const n = !isNaN(Number(stringAValue)), n2 = !isNaN(Number(stringBValue));
-            if (n && n2) return stringBValue as any - (stringAValue as any);
-            if (n) return 1;
-            if (n2) return -1;
-            const e = escape(stringAValue).indexOf("%u") > -1, e2 = escape(stringBValue).indexOf("%u") > -1
-            if (e && e2) return stringBValue.localeCompare(stringAValue);
-            if (e) return -1;
-            if (e2) return 1;
-            return stringBValue.localeCompare(stringAValue);
+            return customSort(stringBValue, stringAValue)
         }
     }
     return 0
+}
+
+const customSort = (a: string, b: string) => {
+    const aIsNumber = typeof a === 'number'
+    const bIsNumber = typeof b === 'number'
+    if (aIsNumber && bIsNumber) return a - b
+    if (aIsNumber) return -1
+    if (bIsNumber) return 1
+
+    const strA = String(a)
+    const strB = String(b)
+
+    let i = 0
+    while (i < strA.length && i < strB.length) {
+        const charA = strA[i]
+        const charB = strB[i]
+        const typeA = getCharType(charA)
+        const typeB = getCharType(charB)
+
+        if (typeA !== typeB) {
+            return typeA - typeB // 按类型优先级排序
+        } else {
+            let compareResult = 0
+            switch (typeA) {
+                case 0: // 数字
+                    compareResult = parseInt(charA) - parseInt(charB)
+                    break
+                case 1: // 字母
+                    compareResult = charA.localeCompare(charB)
+                    break
+                case 2: // 中文
+                    compareResult = charA.localeCompare(charB, 'zh')
+                    break
+                case 3: // 特殊字符
+                    compareResult = charA.localeCompare(charB)
+                    break
+                default:
+                    compareResult = charA.localeCompare(charB)
+            }
+            if (compareResult !== 0) return compareResult
+        }
+        i++
+    }
+    return strA.length - strB.length
+}
+
+const getCharType = (char: string) => {
+    if (/[0-9]/.test(char)) return 0
+    if (/[a-zA-Z]/.test(char)) return 1
+    if (/[\u4e00-\u9fa5]/.test(char)) return 2
+    if (/[^\w\s]/.test(char)) return 3
+    return 4
 }
