@@ -146,9 +146,13 @@ export const uniqueArray = (arr: any[]) => {
  * @param arr 数组
  * @param id id
  */
-export const getNameById = (arr: SelectInterface[], id: string | number) => {
-    const element = arr.find(ele => ele.id === id)
-    return element?.name || undefined
+export const getNameById = (arr: SelectInterface[] | Array<any>, id: string | number, options = {
+    value: "id",
+    label: "name"
+}) => {
+    const { value, label } = options
+    const element = arr.find((ele) => ele[value] === id)
+    return element ? element[label] : ""
 }
 
 /**
@@ -250,7 +254,7 @@ export const recursionArray = (arr: any[], cb?: (item: any, i: number, parent: a
         }
     }
 }
-// 使用示例： recursionArray(tableData.value, (item: any) => {
+// 使用示例： recursionArray(tableData.value, (item: any, index: number, parent: any) => {
 //         // 新增/更改属性
 //         item.children = data
 //         item.hasChildren = false
