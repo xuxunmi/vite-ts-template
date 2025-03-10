@@ -142,9 +142,10 @@ export const uniqueArray = (arr: any[]) => {
 }
 
 /**
- * 根据id查找name
+ * 传入id查找名称
  * @param arr 数组
  * @param id id
+ * @param options 选项配置
  */
 export const getNameById = (arr: SelectInterface[] | Array<any>, id: string | number, options = {
     value: "id",
