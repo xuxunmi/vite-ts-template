@@ -11,7 +11,7 @@ import type { Directive, DirectiveBinding } from 'vue'
  *
  * <div class="flex">
  *      <div class="prev"></div>
- *      <div v-dropLine="[400, 400]" class="drag-line" />
+ *      <div v-dropLine="[300, 400]" class="drag-line" />
  *      <div class="next"></div>
  * </div>
  *

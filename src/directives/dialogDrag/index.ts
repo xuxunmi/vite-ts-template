@@ -1,6 +1,6 @@
 import type { Directive, DirectiveBinding } from "vue"
 
-/** 拖拽指令
+/** 弹窗拖拽指令
  * dialogDrag指令拖拽时不可超出视口最高；
  * 最低，最左，最右不限制
  */
@@ -38,7 +38,20 @@ export const initDialogDrag = (dom: any) => {
     }
 }
 
-/** 拖拽指令
+/**
+ * 使用示例：
+ * <div v-if="dialogVisible" v-dialogDrag="headerClass">
+ *    <el-dialog :header-class="headerClass">
+ *      内容......
+ *    </el-dialog>
+ * </div>
+ * 
+ * const headerClass = `dialog-${new Date().getTime()}`
+ * 
+ * /
+ * 
+
+/** 消息框拖拽指令
  * initElMessageBoxDrag消息框拖拽时不可超出视口最高；
  * 最低，最左，最右不限制
  */
@@ -98,3 +111,4 @@ export const initElMessageBoxDrag = (className: string) => {
  *        })
  *}
  * /
+ * 

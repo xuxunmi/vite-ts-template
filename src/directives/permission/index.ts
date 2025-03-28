@@ -6,12 +6,13 @@ import { getPermissionsBtn } from '@/caches/localStorage'
  * 使用：v-permission="['admin','editor']"
  */
 export const permission: Directive = {
-    mounted(el, binding: DirectiveBinding) {
+    mounted(el: any, binding: DirectiveBinding) {
         const { value } = binding
         const btnList: string[] = getPermissionsBtn()
         if (Array.isArray(value) && value.length > 0) {
             const permissionRoles = value
             const hasPermission = btnList.some((btn: string) => permissionRoles.includes(btn))
+            // console.log("hasPermission: ", hasPermission)
             if (!hasPermission) {
                 // 隐藏
                 // el.style.display = "none"

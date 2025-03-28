@@ -4,6 +4,7 @@ import { dropLine } from './dropLine'
 import { permission } from './permission'
 import { throttle, reclickDirective } from './throttle'
 import { dialogDrag } from './dialogDrag'
+import { customLoading } from './loading'
 
 const directives: any = {
     focus,
@@ -11,7 +12,8 @@ const directives: any = {
     permission,
     throttle,
     reclickDirective,
-    dialogDrag
+    dialogDrag,
+    customLoading
 }
 
 export default {
