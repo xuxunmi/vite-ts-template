@@ -1,13 +1,50 @@
 /** 自定义 Element UI 样式 */
 .el-table {
-    font-size: 14px;
+    font-size: 13px;
     &.row-click {
         cursor: pointer;
     }
     th.el-table__cell {
         background-color: #f5f7fa !important;
+        .cell {
+            padding: 0 10px;
+        }
+    }
+    .cell.el-tooltip {
+        white-space: break-spaces; // 换行显示
+    }
+    .el-table-column--selection {
+        .cell {
+            padding: 0 10px;
+        }
+    }
+    .el-table__header,
+    .el-table__body {
+        .cell {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            // white-space: break-spaces; // 换行显示
+            // color: #000;
+        }
+        tr.current-row > td.el-table__cell {
+            background-color: #f9e2d0;
+        }
     }
 }
+
+.el-tree--highlight-current {
+    .el-tree-node.is-current > .el-tree-node__content {
+        background-color: #f9e2d0;
+    }
+}
+.el-tree  {
+    .el-tree-node:focus > .el-tree-node__content {
+        background-color: #f9e2d0;
+    }
+}
+
+
 
 /* 解决级联选择器超出屏幕现象 */
 .el-cascader-panel {
@@ -19,15 +56,13 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none !important;
 }
 input[type='number'] {
+    -webkit-appearance: none;
     -moz-appearance: textfield !important;
+    appearance: textfield !important;
 }
 /* 解决el-input设置类型为number时，中文输入法光标上移问题 */
 .el-input__inner {
     line-height: 1px !important;
-}
-
-.el-dialog.is-align-center {
-    border-radius: 5px !important;
 }
 
 /*去除upload组件过渡效果*/
@@ -39,6 +74,54 @@ input[type='number'] {
     -o-object-fit: scale-down !important;
        object-fit: scale-down !important;
 }*/
+
+// 弹窗
+.el-dialog.is-align-center {
+    border-radius: 5px !important;
+}
+.el-dialog {
+    .el-dialog__headerbtn {
+        font-size: 24px;
+        z-index: 999;
+    }
+    .el-dialog__body {
+        box-sizing: border-box;
+        .el-table {
+            .cell {
+                font-size: 13px !important;
+            }
+            .cell.el-tooltip {
+                white-space: break-spaces; // 换行显示
+            }
+            .el-table__header {
+                .cell {
+                    // overflow: hidden;
+                    // white-space: nowrap;
+                    // text-overflow: ellipsis;
+                    white-space: break-spaces; // 换行显示
+                    color: #000;
+                }
+            }
+        }
+    }
+}
+
+// Notification 通知框
+.el-notification {
+    .el-notification__group {
+        .el-notification__content {
+            margin: 20px 0 0;
+            p {
+                max-height: 200px;
+                min-width: 265px;
+                overflow-y: auto;
+            }
+        }
+        .el-notification__closeBtn {
+            font-weight: 700;
+        }
+    }
+}
 
 /* 分页，参考 Bootstrap 的响应式设计 WIDTH = 768 */
 .el-pagination {

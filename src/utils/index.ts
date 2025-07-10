@@ -157,6 +157,31 @@ export const getNameById = (arr: SelectInterface[] | Array<any>, id: string | nu
 }
 
 /**
+ * 传入多个id查找名称
+ * @param arr 数组
+ * @param ids 数组
+ * @param options 选项
+ */
+export const getBatchNameByIds = (
+    arr: SelectInterface[] | Array<any>,
+    ids: string[] | number[],
+    options = {
+        value: 'id',
+        label: 'name'
+    }
+) => {
+    const { value, label } = options;
+    // 遍历ids，找到所有匹配的name，过滤掉无效id
+    const names = ids
+        .map(id => {
+            const item = arr.find(ele => ele[value] === id);
+            return item ? item[label] : '';
+        })
+        .filter(name => name !== '');
+    return names.join(', '); // 用逗号拼接
+};
+
+/**
  * 传入id查找名称
  * @param arr 树数组
  * @param id id
