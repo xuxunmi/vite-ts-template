@@ -10,7 +10,12 @@
             autocomplete="off"
             size="small"
         >
-            <el-form-item label="原密码：" prop="oldPassword">
+            <el-form-item prop="oldPassword">
+                <template #label>
+                    <el-tooltip content="原密码：" placement="top">
+                        <span class="label-text">原密码：</span>
+                    </el-tooltip>
+                </template>
                 <el-input
                     style="width: 100%"
                     type="password"
