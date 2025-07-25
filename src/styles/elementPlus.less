@@ -1,23 +1,29 @@
 /** 自定义 Element UI 样式 */
 .el-table {
     font-size: 13px;
+
     &.row-click {
         cursor: pointer;
     }
+
     th.el-table__cell {
         background-color: #f5f7fa !important;
+
         .cell {
             padding: 0 10px;
         }
     }
+
     .cell.el-tooltip {
         white-space: break-spaces; // 换行显示
     }
+
     .el-table-column--selection {
         .cell {
             padding: 0 10px;
         }
     }
+
     .el-table__header,
     .el-table__body {
         .cell {
@@ -27,19 +33,45 @@
             // white-space: break-spaces; // 换行显示
             // color: #000;
         }
-        tr.current-row > td.el-table__cell {
+
+        tr.current-row>td.el-table__cell {
             background-color: #f9e2d0;
         }
     }
 }
 
+// el-form label超出长度显示省略号，鼠标放上去显示label完整内容
+.el-form {
+    .el-form-item {
+        .el-form-item__label {
+            .label-text {
+                display: inline-block;
+                max-width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+    .el-form-item[class*="is-required"] {
+        .el-form-item__label {
+            &::before {
+                position: relative;
+                top: -12px;
+                right: 0;
+            }
+        }
+    }
+}
+
 .el-tree--highlight-current {
-    .el-tree-node.is-current > .el-tree-node__content {
+    .el-tree-node.is-current>.el-tree-node__content {
         background-color: #f9e2d0;
     }
 }
-.el-tree  {
-    .el-tree-node:focus > .el-tree-node__content {
+
+.el-tree {
+    .el-tree-node:focus>.el-tree-node__content {
         background-color: #f9e2d0;
     }
 }
@@ -55,11 +87,13 @@
 input::-webkit-inner-spin-button {
     -webkit-appearance: none !important;
 }
+
 input[type='number'] {
     -webkit-appearance: none;
     -moz-appearance: textfield !important;
     appearance: textfield !important;
 }
+
 /* 解决el-input设置类型为number时，中文输入法光标上移问题 */
 .el-input__inner {
     line-height: 1px !important;
@@ -79,20 +113,25 @@ input[type='number'] {
 .el-dialog.is-align-center {
     border-radius: 5px !important;
 }
+
 .el-dialog {
     .el-dialog__headerbtn {
         font-size: 24px;
         z-index: 999;
     }
+
     .el-dialog__body {
         box-sizing: border-box;
+
         .el-table {
             .cell {
                 font-size: 13px !important;
             }
+
             .cell.el-tooltip {
                 white-space: break-spaces; // 换行显示
             }
+
             .el-table__header {
                 .cell {
                     // overflow: hidden;
@@ -100,6 +139,30 @@ input[type='number'] {
                     // text-overflow: ellipsis;
                     white-space: break-spaces; // 换行显示
                     color: #000;
+                }
+            }
+        }
+
+        .el-form {
+            .el-form-item {
+                .el-form-item__label {
+                    .label-text {
+                        display: inline-block;
+                        max-width: 100%;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
+
+            .el-form-item[class*="is-required"] {
+                .el-form-item__label {
+                    &::before {
+                        position: relative;
+                        top: -12px;
+                        right: 0;
+                    }
                 }
             }
         }
@@ -111,12 +174,14 @@ input[type='number'] {
     .el-notification__group {
         .el-notification__content {
             margin: 20px 0 0;
+
             p {
                 max-height: 200px;
                 min-width: 265px;
                 overflow-y: auto;
             }
         }
+
         .el-notification__closeBtn {
             font-weight: 700;
         }
@@ -126,6 +191,7 @@ input[type='number'] {
 /* 分页，参考 Bootstrap 的响应式设计 WIDTH = 768 */
 .el-pagination {
     @media screen and (max-width: 768px) {
+
         .el-pagination__total,
         .el-pagination__sizes,
         .el-pagination__jump,
