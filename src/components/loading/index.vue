@@ -10,6 +10,22 @@
     </div>
 </template>
 
+<style lang="scss">
+.loading-wrapper {
+    position: relative;
+}
+.loading-icon-none {
+    .pt-loading {
+        .pt-loading-icon {
+            display: none;
+        }
+        .pt-loading-text {
+            display: none;
+        }
+    }
+}
+</style>
+
 <style scoped>
 @keyframes rotate {
     from {

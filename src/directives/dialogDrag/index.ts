@@ -9,6 +9,7 @@ export const dialogDrag: Directive = {
         nextTick(() => initDialogDrag(document.querySelector(`.${binding.value}`)))
     }
 }
+
 export const initDialogDrag = (dom: any) => {
     if (!dom) return
     const dragEle = dom
