@@ -5,6 +5,7 @@ import { permission } from './permission'
 import { throttle, reclickDirective } from './throttle'
 import { dialogDrag } from './dialogDrag'
 import { customLoading } from './loading'
+import { customFullScreen } from './fullScreen'
 
 const directives: any = {
     focus,
@@ -13,7 +14,8 @@ const directives: any = {
     throttle,
     reclickDirective,
     dialogDrag,
-    customLoading
+    customLoading,
+    customFullScreen
 }
 
 export default {
