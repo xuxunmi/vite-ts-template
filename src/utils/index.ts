@@ -147,13 +147,17 @@ export const uniqueArray = (arr: any[]) => {
  * @param id id
  * @param options 选项配置
  */
-export const getNameById = (arr: SelectInterface[] | Array<any>, id: string | number, options = {
-    value: "id",
-    label: "name"
-}) => {
+export const getNameById = (
+    arr: SelectInterface[] | Array<any>,
+    id: string | number,
+    options = {
+        value: 'id',
+        label: 'name'
+    }
+) => {
     const { value, label } = options
-    const element = arr.find((ele) => ele[value] === id)
-    return element ? element[label] : ""
+    const element = arr.find(ele => ele[value] === id)
+    return element ? element[label] : ''
 }
 
 /**
@@ -170,16 +174,16 @@ export const getBatchNameByIds = (
         label: 'name'
     }
 ) => {
-    const { value, label } = options;
+    const { value, label } = options
     // 遍历ids，找到所有匹配的name，过滤掉无效id
     const names = ids
         .map(id => {
-            const item = arr.find(ele => ele[value] === id);
-            return item ? item[label] : '';
+            const item = arr.find(ele => ele[value] === id)
+            return item ? item[label] : ''
         })
-        .filter(name => name !== '');
-    return names.join(', '); // 用逗号拼接
-};
+        .filter(name => name !== '')
+    return names.join(', ') // 用逗号拼接
+}
 
 /**
  * 传入id查找名称
@@ -271,10 +275,15 @@ export const convertToChineseNumeral = (num: string): string => {
  * @param cb 回调事件
  * @param child 子元素字段名
  */
-export const recursionArray = (arr: any[], cb?: (item: any, i: number, parent: any) => void | 'return' | boolean, child = "children", parent?: any) => {
+export const recursionArray = (
+    arr: any[],
+    cb?: (item: any, i: number, parent: any) => void | 'return' | boolean,
+    child = 'children',
+    parent?: any
+) => {
     for (let i = 0; i < arr.length; i++) {
         const flag = cb && cb(arr[i], i, parent)
-        if (flag === "return") return true
+        if (flag === 'return') return true
         if (arr[i][child] && arr[i][child].length) {
             recursionArray(arr[i][child], cb, child, arr[i])
         }
@@ -301,32 +310,42 @@ export const windowOpenTab = (src: string) => {
  * @param arr 数组
  * @param order 排序字段
  */
-export const setObjectOrder = (obj1?: any, obj2?: any, order?: string) => {
+export const setObjectOrder = (obj1?: any, obj2?: any, order?: string, orderChange?: (obj1: any, obj2: any, order: string) => void) => {
     if (obj1 && obj2 && order) {
         const temp = obj1[order]
         obj1[order] = obj2[order]
         obj2[order] = temp
+        if (typeof orderChange === 'function') orderChange(obj1, obj2, order)
     }
 }
-export const setArrayEleOrder = (type: string, index: number, arr: any[], order?: string) => {
+export type setArrayEleOrderType = "up" | "down" | "top" | "bottom";
+export const setArrayEleOrder = (
+    type: setArrayEleOrderType,
+    index: number,
+    arr: any[],
+    order?: string,
+    orderChange?: (obj1: any, obj2: any, order: string) => void
+) => {
     // console.log("setArrayEleOrder", type, index, arr)
-    if (type === "up") {
+    if (type === 'up') {
         // 上移
         if (index > 0 && index < arr.length) {
-            setObjectOrder(arr[index], arr[index - 1], order)
+            setObjectOrder(arr[index], arr[index - 1], order, orderChange)
             const temp = arr[index]
             arr[index] = arr[index - 1]
             arr[index - 1] = temp
+            return true
         }
-    } else if (type === "down") {
+    } else if (type === 'down') {
         // 下移
         if (index >= 0 && index < arr.length - 1) {
-            setObjectOrder(arr[index], arr[index - 1], order)
+            setObjectOrder(arr[index], arr[index - 1], order, orderChange)
             const temp = arr[index]
             arr[index] = arr[index + 1]
             arr[index + 1] = temp
+            return true
         }
-    } else if (type === "top") {
+    } else if (type === 'top') {
         // 置顶
         if (index > 0 && index < arr.length) {
             if (order) {
@@ -336,8 +355,9 @@ export const setArrayEleOrder = (type: string, index: number, arr: any[], order?
             }
             const element = arr.splice(index, 1)[0]
             arr.unshift(element)
+            return true
         }
-    } else if (type === "bottom") {
+    } else if (type === 'bottom') {
         // 置底
         if (index >= 0 && index < arr.length - 1) {
             if (order) {
@@ -347,10 +367,11 @@ export const setArrayEleOrder = (type: string, index: number, arr: any[], order?
             }
             const element = arr.splice(index, 1)[0]
             arr.push(element)
+            return true
         }
     }
 }
-// 使用示例： 
+// 使用示例：
 // 设置顺序
 // const setOrder = (type: string, index: number, list: any[]) => {
 //     setArrayEleOrder(type, index, list, 'configurationSeq')
