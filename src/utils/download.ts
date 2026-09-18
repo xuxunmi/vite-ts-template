@@ -20,17 +20,18 @@ export function downloadBlobFileTemplate(url: string, filename: string) {
         console.log("response: ", response)
         const blob = new Blob([response.data])
         const link = document.createElement("a")
-        link.href = URL.createObjectURL(blob)
+        const objectUrl = URL.createObjectURL(blob)
+        link.href = objectUrl
         link.download = filename
-        const body = document.getElementsByTagName("body")[0]
-        body.appendChild(link)
+        document.body.appendChild(link)
         link.click()
-        window.setTimeout(function () {
-            URL.revokeObjectURL(link.href)
-            body.removeChild(link)
+        window.setTimeout(() => {
+            URL.revokeObjectURL(objectUrl)
+            document.body.removeChild(link)
         }, 0)
     })
 }
+
 
 /**
  * 下载文件（需要后端指定文件流的下载类型）
